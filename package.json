@@ -1,0 +1,30 @@
+{
+  "name": "layout",
+  "version": "0.0.0",
+  "description": "layout",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/",
+    "test:unit": "node test/",
+    "test:unit:cover": "nyc node test/; nyc report --reporter=lcov",
+    "test:unit:cleanup": "rm -f test/screenshots/*-diff.png; exit 0",
+    "test:stryker": "stryker run"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "browserify": "^16.2.3"
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "^2.0.0",
+    "@stryker-mutator/html-reporter": "^2.0.0",
+    "@stryker-mutator/javascript-mutator": "^2.0.0",
+    "browserify-istanbul": "^3.0.1",
+    "canvas": "^2.5.0",
+    "node-resemble-js": "^0.2.0",
+    "nodemon": "^1.19.1",
+    "nyc": "^13.3.0",
+    "resemblejs": "^3.1.0",
+    "tape": "^4.10.1"
+  }
+}
