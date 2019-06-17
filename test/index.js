@@ -196,6 +196,31 @@ tape('vertical layout, right-aligned', t => {
   screenshot('vertical-right', canvas, t)
 })
 
+tape('bugger', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const marginA = 100
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
+        c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'right' },
+          c('label', new Label(), { font: 'sans', size: 100, text: 'i' }),
+          c('label', new Label(), { font: 'sans', size: 100, text: 'Wide' }),
+          c('label', new Label(), { font: 'sans', size: 100, text: '|' })
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('bugger', canvas, t)
+})
+
 tape('busted layout', t => {
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Margin, Button, Label, SpacedLine } = proxyquire('../lib/components', {

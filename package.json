@@ -8,7 +8,8 @@
     "test:unit": "node test/",
     "test:unit:cover": "nyc node test/; nyc report --reporter=lcov",
     "test:unit:cleanup": "rm -f test/screenshots/*-diff.png; exit 0",
-    "test:stryker": "stryker run"
+    "test:stryker": "stryker run",
+    "test:unit:watch": "nodemon node test/index.js"
   },
   "author": "",
   "license": "MIT",
