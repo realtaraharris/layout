@@ -4,12 +4,10 @@ const fs = require('fs')
 const { createCanvas } = require('canvas')
 const tape = require('tape')
 const resemble = require('node-resemble-js')
+const proxyquire = require('proxyquire')
 
 const log = require('../lib/log')
 const { clearTerminal } = require('./lib/util')
-
-const { c, renderRoot } = require('../lib/layout')
-const { Root, Margin, Button, Label, SpacedLine } = require('../lib/components')
 
 const WIDTH = 800
 const HEIGHT = 600
@@ -48,7 +46,84 @@ function screenshot(name, canvas, t) {
 
 clearTerminal()
 
+tape('spacedLine', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const marginA = 0
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'left' },
+        c('label', new Label(), { font: 'sans', size: 90, text: 'Push Me', done: () => {} }),
+        c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
+          c('label', new Label(), { font: 'sans', size: 100, text: 'A', done: () => {} })
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('spaced-line-horizontal-left', canvas, t)
+})
+
+tape('spacedLine', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const marginA = 0
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'right' },
+        c('label', new Label(), { font: 'sans', size: 90, text: 'Push Me', done: () => {} }),
+        c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
+          c('label', new Label(), { font: 'sans', size: 100, text: 'A', done: () => {} })
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('spaced-line-horizontal-right', canvas, t)
+})
+
+tape('spacedLine', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const marginA = 0
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'left' },
+        c('label', new Label(), { font: 'sans', size: 90, text: 'Push Me', done: () => {} }),
+        c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
+          c('label', new Label(), { font: 'sans', size: 100, text: 'A', done: () => {} })
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('spaced-line-vertical-left', canvas, t)
+})
+
 tape('vertical layout', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Button, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const marginA = 0
@@ -83,6 +158,11 @@ tape('vertical layout', t => {
 })
 
 tape('vertical layout, right-aligned', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Button, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const marginA = 0
@@ -117,6 +197,11 @@ tape('vertical layout, right-aligned', t => {
 })
 
 tape('busted layout', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Button, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const demo1 = ({ x, y, width, height }) => (
@@ -136,12 +221,17 @@ tape('busted layout', t => {
 })
 
 tape('margin', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const marginA = 10
   const demo1 = ({ x, y, width, height }) => (
     c('root', new Root(), { x, y, width, height },
-      c('spacedLine', new SpacedLine(), { mode: 'horizontal' },
+      c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'left' },
         c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
           c('label', new Label(), { font: 'sans', size: 100, text: 'A', done: () => {} }),
         ),
@@ -157,6 +247,11 @@ tape('margin', t => {
 })
 
 tape('horizontal layout', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Button, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const marginA = 0
@@ -191,19 +286,24 @@ tape('horizontal layout', t => {
 })
 
 tape('diagonal layout', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Button, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const marginA = 20
   const demo1 = ({ x, y, width, height }) => (
     c('root', new Root(), { x, y, width, height },
-      c('spacedLine', new SpacedLine(), { mode: 'diagonal' },
+      c('spacedLine', new SpacedLine(), { mode: 'diagonal', align: 'left' },
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
         c('button', new Button(), { onInput: log, onClick: log },
           c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
-            c('spacedLine', new SpacedLine(), { mode: 'vertical' },
+            c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'left' },
               c('label', new Label(), { font: 'sans', size: 100, text: 'A', done: () => {} }),
               c('label', new Label(), { font: 'sans', size: 100, text: 'A', done: () => {} })
             ),
@@ -228,13 +328,18 @@ tape('diagonal layout', t => {
 })
 
 tape('mixed layout, no margins', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const marginA = 0
   const demo1 = ({ x, y, width, height }) => (
     c('root', new Root(), { x, y, width, height },
-      c('spacedLine', new SpacedLine(), { mode: 'horizontal' },
-        c('spacedLine', new SpacedLine(), { mode: 'vertical' },
+      c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'left' },
+        c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'left' },
           c('label', new Label(), { font: 'sans', size: 100, text: 'A', done: () => {} }),
           c('label', new Label(), { font: 'sans', size: 100, text: 'B', done: () => {} })
         ),
@@ -246,4 +351,67 @@ tape('mixed layout, no margins', t => {
 
   renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
   screenshot('mixed', canvas, t)
+})
+
+tape('components-line-215', t => {
+  t.plan(2) // we expect one error
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.ok // the test passes only if we trigger the error
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'heft' },
+        c('label', new Label(), { font: 'sans', size: 20, text: 'c' }),
+        c('label', new Label(), { font: 'serif', size: 30, text: 'd' })
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+})
+
+tape('components-line-228', t => {
+  t.plan(2) // we expect one error
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.ok // the test passes only if we trigger the error
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'heft' },
+        c('label', new Label(), { font: 'sans', size: 20, text: 'c' }),
+        c('label', new Label(), { font: 'serif', size: 30, text: 'd' })
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+})
+
+tape('components-line-246', t => {
+  t.plan(4) // we expect one error
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.ok // the test passes only if we trigger the error
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('spacedLine', new SpacedLine(), { mode: 'bertical', align: 'left' },
+        c('label', new Label(), { font: 'sans', size: 20, text: 'c' }),
+        c('label', new Label(), { font: 'serif', size: 30, text: 'd' })
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
 })

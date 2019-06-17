@@ -3,3 +3,5 @@ package-lock.json
 node_modules/
 .stryker-tmp/
 reports/
+.nyc_output/
+coverage/

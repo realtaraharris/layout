@@ -24,6 +24,7 @@
     "node-resemble-js": "^0.2.0",
     "nodemon": "^1.19.1",
     "nyc": "^13.3.0",
+    "proxyquire": "^2.1.0",
     "resemblejs": "^3.1.0",
     "tape": "^4.10.1"
   }
