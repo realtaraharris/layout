@@ -221,6 +221,31 @@ tape('bugger', t => {
   screenshot('bugger', canvas, t)
 })
 
+tape('newbug', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const marginA = 100
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
+        c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'center' },
+          c('label', new Label(), { font: 'sans', size: 25, text: 'i' }),
+          c('label', new Label(), { font: 'sans', size: 25, text: 'Wide' }),
+          c('label', new Label(), { font: 'sans', size: 25, text: '|' })
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('newbug', canvas, t)
+})
+
 tape('busted layout', t => {
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Margin, Button, Label, SpacedLine } = proxyquire('../lib/components', {
@@ -379,7 +404,7 @@ tape('mixed layout, no margins', t => {
 })
 
 tape('components-line-215', t => {
-  t.plan(2) // we expect one error
+  t.plan(2)
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Label, SpacedLine } = proxyquire('../lib/components', {
     './log': t.ok // the test passes only if we trigger the error
@@ -400,7 +425,7 @@ tape('components-line-215', t => {
 })
 
 tape('components-line-228', t => {
-  t.plan(2) // we expect one error
+  t.plan(2)
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Label, SpacedLine } = proxyquire('../lib/components', {
     './log': t.ok // the test passes only if we trigger the error
@@ -420,8 +445,29 @@ tape('components-line-228', t => {
   renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
 })
 
+tape('components-line-236', t => {
+  t.plan(6)
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.ok // the test passes only if we trigger the error
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('spacedLine', new SpacedLine(), { mode: 'diagone', align: 'left' },
+        c('label', new Label(), { font: 'sans', size: 20, text: 'c' }),
+        c('label', new Label(), { font: 'serif', size: 30, text: 'd' })
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+})
+
 tape('components-line-246', t => {
-  t.plan(4) // we expect one error
+  t.plan(6)
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Label, SpacedLine } = proxyquire('../lib/components', {
     './log': t.ok // the test passes only if we trigger the error
