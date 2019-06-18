@@ -46,7 +46,7 @@ function screenshot(name, canvas, t) {
 
 clearTerminal()
 
-tape('spacedLine', t => {
+tape('spaced-line-horizontal-left-with-margin', t => {
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
     './log': t.fail
@@ -67,10 +67,10 @@ tape('spacedLine', t => {
   )
 
   renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
-  screenshot('spaced-line-horizontal-left', canvas, t)
+  screenshot('spaced-line-horizontal-left-with-margin', canvas, t)
 })
 
-tape('spacedLine', t => {
+tape('spaced-line-horizontal-right-with-margin', t => {
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
     './log': t.fail
@@ -91,10 +91,10 @@ tape('spacedLine', t => {
   )
 
   renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
-  screenshot('spaced-line-horizontal-right', canvas, t)
+  screenshot('spaced-line-horizontal-right-with-margin', canvas, t)
 })
 
-tape('spacedLine', t => {
+tape('spaced-line-vertical-left-with-margin', t => {
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
     './log': t.fail
@@ -115,7 +115,7 @@ tape('spacedLine', t => {
   )
 
   renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
-  screenshot('spaced-line-vertical-left', canvas, t)
+  screenshot('spaced-line-vertical-left-with-margin', canvas, t)
 })
 
 tape('vertical layout', t => {
@@ -196,7 +196,7 @@ tape('vertical layout, right-aligned', t => {
   screenshot('vertical-right', canvas, t)
 })
 
-tape('bugger', t => {
+tape('spaced-line vertical right', t => {
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
     './log': t.fail
@@ -218,10 +218,10 @@ tape('bugger', t => {
   )
 
   renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
-  screenshot('bugger', canvas, t)
+  screenshot('spaced-line-vertical-right', canvas, t)
 })
 
-tape('newbug', t => {
+tape('spaced-line vertical center', t => {
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
     './log': t.fail
@@ -243,10 +243,85 @@ tape('newbug', t => {
   )
 
   renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
-  screenshot('newbug', canvas, t)
+  screenshot('spaced-line-vertical-center', canvas, t)
 })
 
-tape('busted layout', t => {
+tape('spaced-line horizontal center', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const marginA = 100
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
+        c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'center' },
+          c('label', new Label(), { font: 'sans', size: 25, text: 'i' }),
+          c('label', new Label(), { font: 'sans', size: 25, text: 'Wide' }),
+          c('label', new Label(), { font: 'sans', size: 25, text: '|' })
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('spaced-line-horizontal-center', canvas, t)
+})
+
+tape('spaced-line diagonal center', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const marginA = 100
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
+        c('spacedLine', new SpacedLine(), { mode: 'diagonal', align: 'center' },
+          c('label', new Label(), { font: 'sans', size: 25, text: 'i' }),
+          c('label', new Label(), { font: 'sans', size: 25, text: 'Wide' }),
+          c('label', new Label(), { font: 'sans', size: 25, text: '|' })
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('spaced-line-diagonal-center', canvas, t)
+})
+
+tape('spaced-line-horizontal-right', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const marginA = 100
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
+        c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'right' },
+          c('label', new Label(), { font: 'sans', size: 25, text: 'i' }),
+          c('label', new Label(), { font: 'sans', size: 25, text: 'Wide' }),
+          c('label', new Label(), { font: 'sans', size: 25, text: '|' }),
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('spaced-line-horizontal-right', canvas, t)
+})
+
+tape('spaced-line-vertical-center-with-margin', t => {
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Margin, Button, Label, SpacedLine } = proxyquire('../lib/components', {
     './log': t.fail
@@ -267,7 +342,7 @@ tape('busted layout', t => {
   )
 
   renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
-  screenshot('busted', canvas, t)
+  screenshot('spaced-line-vertical-center-with-margin', canvas, t)
 })
 
 tape('margin', t => {
