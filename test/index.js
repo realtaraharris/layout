@@ -345,6 +345,56 @@ tape('spaced-line-vertical-center-with-margin', t => {
   screenshot('spaced-line-vertical-center-with-margin', canvas, t)
 })
 
+tape('complex-nested', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Margin, Button, Label, SpacedLine } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'center' },
+        c('button', new Button(), { onInput: log, onClick: log },
+          c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+            c('label', new Label(), { font: 'sans', size: 70, text: 'B' })
+          )
+        ),
+        c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'center' },
+          c('button', new Button(), { onInput: log, onClick: log },
+            c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+              c('label', new Label(), { font: 'sans', size: 70, text: 'B' })
+            )
+          ),
+          c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+            c('label', new Label(), { font: 'sans', size: 70, text: 'B' })
+          ),
+          c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+            c('label', new Label(), { font: 'sans', size: 70, text: 'B' })
+          ),
+          c('margin', new Margin(), { top: 200, bottom: 10, left: 10, right: 100 },
+            c('label', new Label(), { font: 'sans', size: 150, text: 'Butter' })
+          ),
+          c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+            c('label', new Label(), { font: 'sans', size: 70, text: 'B' })
+          )
+        ),
+        c('spacedLine', new SpacedLine(), { mode: 'diagonal', align: 'center' },
+          c('button', new Button(), { onInput: log, onClick: log },
+            c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+              c('label', new Label(), { font: 'sans', size: 70, text: 'B' })
+            )
+          )
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('complex-nested', canvas, t)
+})
+
 tape('margin', t => {
   const { c, renderRoot } = require('../lib/layout')
   const { Root, Margin, Label, SpacedLine } = proxyquire('../lib/components', {
