@@ -528,6 +528,77 @@ tape('mixed layout, no margins', t => {
   screenshot('mixed', canvas, t)
 })
 
+tape('viewport', t => {
+  const { c, renderRoot } = require('../lib/layout')
+  const { Root, Label, SpacedLine, Button, Margin, Viewport } = proxyquire('../lib/components', {
+    './log': t.fail
+  })
+
+  const canvas = createCanvas(WIDTH, HEIGHT)
+  const ctx = canvas.getContext('2d')
+  const marginA = 0
+
+  const shrink = 40
+
+  const demo1 = ({ x, y, width, height }) => (
+    c('root', new Root(), { x, y, width, height },
+      c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'center' },
+        c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+          c('label', new Label(), { font: 'serif', size: 30, text: 'item 0' }),
+        ),
+        c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'center' },
+          c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+            c('label', new Label(), { font: 'serif', size: 30, text: 'item 1' }),
+          ),
+          c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+            c('label', new Label(), { font: 'serif', size: 30, text: 'item 2' }),
+          ),
+          c('viewport', new Viewport(), { width: 500 - shrink, height: 284 - shrink, offsetX: 1.0, offsetY: 1.0 },
+            c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'center' },
+              c('button', new Button(), { onInput: log, onClick: log },
+                c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+                  c('label', new Label(), { font: 'sans', size: 70, text: 'crazy 88s' })
+                )
+              ),
+              c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'center' },
+                c('button', new Button(), { onInput: log, onClick: log },
+                  c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+                    c('label', new Label(), { font: 'sans', size: 70, text: 'a' })
+                  )
+                ),
+                c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+                  c('label', new Label(), { font: 'sans', size: 70, text: 'b' })
+                ),
+                c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+                  c('label', new Label(), { font: 'sans', size: 70, text: 'c' })
+                ),
+                c('margin', new Margin(), { top: 50, bottom: 10, left: 10, right: 100 },
+                  c('label', new Label(), { font: 'sans', size: 50, text: 'Il Caffe' })
+                ),
+                c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+                  c('label', new Label(), { font: 'sans', size: 70, text: 'd' })
+                )
+              ),
+              c('spacedLine', new SpacedLine(), { mode: 'diagonal', align: 'center' },
+                c('button', new Button(), { onInput: log, onClick: log },
+                  c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
+                    c('label', new Label(), { font: 'sans', size: 70, text: 'B' })
+                  )
+                )
+              ),
+              c('label', new Label(), { font: 'sans', size: 20, text: 'c' }),
+              c('label', new Label(), { font: 'serif', size: 30, text: 'd' })
+            )
+          )
+        )
+      )
+    )
+  )
+
+  renderRoot(ctx, demo1({ x: 0, y: 0, width: WIDTH, height: HEIGHT }))
+  screenshot('viewport', canvas, t)
+})
+
 tape('components-line-215', t => {
   t.plan(2)
   const { c, renderRoot } = require('../lib/layout')
