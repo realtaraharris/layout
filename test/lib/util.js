@@ -1,10 +1,10 @@
-// can't use strict because it specifically disallows octal escape characters
+'use strict'
 
 /**
  * Clears the terminal's scrollback buffer
  */
 function clearTerminal() {
-  process.stdout.write('\033c')
+  process.stdout.write('\x1Bc')
 }
 
 exports.clearTerminal = clearTerminal
