@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "node test/",
-    "test:unit": "node test/",
+    "test:unit": "npm run test:unit:standard && npm run test:unit:cover",
+    "test:unit:standard": "standard *.js **/*.js",
     "test:unit:cover": "nyc node test/; nyc report --reporter=lcov",
     "test:unit:cleanup": "rm -f test/screenshots/*-diff.png; exit 0",
-    "test:stryker": "stryker run",
+    "test:unit:stryker": "stryker run",
     "test:unit:watch": "nodemon node test/index.js"
   },
   "author": "",
@@ -27,6 +28,8 @@
     "nyc": "^13.3.0",
     "proxyquire": "^2.1.0",
     "resemblejs": "^3.1.0",
-    "tape": "^4.10.1"
+    "standard": "^12.0.1",
+    "tape": "^4.10.1",
+    "tape-catch": "^1.0.6"
   }
 }

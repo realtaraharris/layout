@@ -1,8 +1,9 @@
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     mutate: [
       'lib/layout.js',
       'lib/components.js',
+      'lib/components/text.js'
     ],
     mutator: 'javascript',
     packageManager: 'npm',
