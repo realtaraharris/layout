@@ -24,11 +24,6 @@ tape('rasterize polygon (convex)', t => {
 
   const intersections = rasterizePolygon(lineLoop, boundingBox, 1)
 
-  // for (let intersection of intersections) {
-  //   const [ x, y ] = intersection
-  //   console.log(`${x}, ${y}`)
-  // }
-
   const expected = [{
     intervals: [ 0, 20 ],
     box: { y: 0, height: 1 }
@@ -110,11 +105,6 @@ tape('rasterize polygon (concave)', t => {
   ]
 
   const intersections = rasterizePolygon(lineLoop, boundingBox, 1)
-
-  // for (let intersection of intersections) {
-  //   const [ x, y ] = intersection
-  //   console.log(`${x}, ${y}`)
-  // }
 
   const expected = [{
     intervals: [0, 15],
@@ -238,7 +228,7 @@ tape('merge two rasterized polygons', t => {
   }
 
   const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')  
+  const ctx = canvas.getContext('2d')
 
   ctx.fillStyle = 'white'
   ctx.fillRect(0, 0, WIDTH, HEIGHT)
@@ -256,11 +246,6 @@ tape('merge two more rasterized polygons', t => {
     [ 40, 0, 40, 40 ],
     [ 40, 40, 0, 40 ],
     [ 0, 40, 0, 0 ]
-
-    // [ 5, 5, 10, 10 ],
-    // [ 10, 10, 15, 5 ],
-    // [ 15, 5, 10, 0 ],
-    // [ 10, 0, 5, 5 ]
   ]
 
   const squareBB = [
@@ -268,22 +253,6 @@ tape('merge two more rasterized polygons', t => {
   ]
 
   const squareBoxes = rasterizePolygon(square, squareBB, 1)
-
-  // const mounds = [
-  //   [ 5, 5, 10, 10 ],
-  //   [ 10, 10, 15, 5 ],
-  //   [ 15, 5, 10, 0 ],
-  //   [ 10, 0, 5, 5 ]
-  // ]
-
-  // const mounds = [
-  //   [ 0, 0, 8, 18 ], // x1, y1, x2, y2
-  //   [ 8, 18, 13, 13 ],
-  //   [ 13, 13, 18, 18 ],
-  //   [ 18, 18, 26, 0 ],
-  //   [ 26, 0, 13, 10 ],
-  //   [ 13, 10, 0, 0 ]
-  // ]
 
   const mounds = [
     [ 0, 0, 10, 12 ], // x1, y1, x2, y2
@@ -320,8 +289,8 @@ tape('merge two more rasterized polygons', t => {
   const [ firstX, firstY ] = mounds[0]
   ctx.moveTo((firstX + moundsBB[0]) * scaleX, (firstY + moundsBB[1]) * scaleY)
   for (let i = 0; i < mounds.length; i++) {
-    const [ x1, y1, x2, y2 ] = mounds[i]
-    ctx.lineTo((x1 + moundsBB[0]) * scaleX , (y1 + moundsBB[1]) * scaleY)
+    const [ x1, y1 ] = mounds[i] // x1, y1, x2, y2
+    ctx.lineTo((x1 + moundsBB[0]) * scaleX, (y1 + moundsBB[1]) * scaleY)
   }
   ctx.lineTo((firstX + moundsBB[0]) * scaleX, (firstY + moundsBB[1]) * scaleY)
   ctx.stroke()
@@ -334,7 +303,7 @@ function renderBoxes (textBoxes, renderContext, scaleX, scaleY) {
     for (let i = 0; i < tb.intervals.length; i += 2) {
       const startX = tb.intervals[i]
       const endX = tb.intervals[i + 1]
-      
+
       const finalX = 0 + (startX * scaleX)
       const finalY = 0 + (tb.box.y * scaleY)
       const finalW = (endX - startX) * scaleX
