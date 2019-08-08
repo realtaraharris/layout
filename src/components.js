@@ -9,21 +9,21 @@ class Layout {
 }
 
 class Root extends Layout {
-  size (renderContext, { x, y, width, height }, childBox) {
+  size (renderContext, { x, y, width, height }, childBox) { // eslint-disable-line no-unused-vars
     this.box.width = childBox.width
     this.box.height = childBox.height
 
     // no need to return anything here because the root node has no parent
   }
 
-  position (renderContext, { x, y, width, height }, updatedParentPosition, childCount) {
+  position (renderContext, { x, y, width, height }, updatedParentPosition, childCount) { // eslint-disable-line no-unused-vars
     this.box.x = updatedParentPosition.x
     this.box.y = updatedParentPosition.y
 
     return Array(childCount).fill(Object.assign({}, updatedParentPosition))
   }
 
-  render (renderContext, { x, y, width, height }) {
+  render (renderContext, { x, y, width, height }) { // eslint-disable-line no-unused-vars
     renderContext.fillStyle = 'black'
     renderContext.fillRect(
       this.box.x,
@@ -50,7 +50,7 @@ class Label extends Layout { // TODO: add check to ensure labels have NO childre
     return Object.assign({}, newBox)
   }
 
-  position (renderContext, { x, y, width, height }, updatedParentPosition) {
+  position (renderContext, { x, y, width, height }, updatedParentPosition) { // eslint-disable-line no-unused-vars
     this.box.x = updatedParentPosition.x
     this.box.y = updatedParentPosition.y
 
@@ -78,7 +78,7 @@ class Margin extends Layout {
     }
   }
 
-  position (renderContext, { top, right, bottom, left }, updatedParentPosition, childCount) {
+  position (renderContext, { top, right, bottom, left }, updatedParentPosition, childCount) { // eslint-disable-line no-unused-vars
     this.box.x = updatedParentPosition.x
     this.box.y = updatedParentPosition.y
 
@@ -131,27 +131,27 @@ class SpacedLine extends Layout {
         box.y = _h
 
         switch (mode) {
-          case 'vertical':
-            _h += box.height
+        case 'vertical':
+          _h += box.height
 
-            if (box.width > widest) {
-              widest = box.width
-              _w = box.width // set the width to the _last_ box's width
-            }
-            break
-          case 'horizontal':
-            if (box.height > tallest) {
-              tallest = box.height
-              _h = box.height // set the height to the _last_ box's height
-            }
-            _w += box.width
-            break
-          case 'diagonal':
-            _w += box.width
-            _h += box.height
-            break
-          default:
-            log('invalid layout mode in spacedLine:', mode)
+          if (box.width > widest) {
+            widest = box.width
+            _w = box.width // set the width to the _last_ box's width
+          }
+          break
+        case 'horizontal':
+          if (box.height > tallest) {
+            tallest = box.height
+            _h = box.height // set the height to the _last_ box's height
+          }
+          _w += box.width
+          break
+        case 'diagonal':
+          _w += box.width
+          _h += box.height
+          break
+        default:
+          log('invalid layout mode in spacedLine:', mode)
         }
       }
 
@@ -161,7 +161,7 @@ class SpacedLine extends Layout {
     return false // stops the traversal here
   }
 
-  position (renderContext, { mode, align }, updatedParentPosition, childCount) {
+  position (renderContext, { mode, align }, updatedParentPosition, childCount) { // eslint-disable-line no-unused-vars
     this.box.x = updatedParentPosition.x
     this.box.y = updatedParentPosition.y
 
@@ -188,34 +188,34 @@ class SpacedLine extends Layout {
 
       if (mode === 'horizontal') {
         switch (align) {
-          case 'left':
-            _x += box.x
-            break
-          case 'center':
-            _x += box.x
-            _y = updatedParentPosition.y + (finalBox.height / 2) - (box.height / 2)
-            break
-          case 'right':
-            _x += box.x
-            _y = updatedParentPosition.y + finalBox.height - box.height
-            break
-          default:
-            log('invalid alignment mode in spacedLine:', align)
-            break
+        case 'left':
+          _x += box.x
+          break
+        case 'center':
+          _x += box.x
+          _y = updatedParentPosition.y + (finalBox.height / 2) - (box.height / 2)
+          break
+        case 'right':
+          _x += box.x
+          _y = updatedParentPosition.y + finalBox.height - box.height
+          break
+        default:
+          log('invalid alignment mode in spacedLine:', align)
+          break
         }
       } else if (mode === 'vertical') {
         switch (align) {
-          case 'left':
-            break
-          case 'center':
-            _x += (finalBox.width / 2) - (box.width / 2)
-            break
-          case 'right':
-            _x += finalBox.width - (box.width)
-            break
-          default:
-            log('invalid alignment mode in spacedLine:', align)
-            break
+        case 'left':
+          break
+        case 'center':
+          _x += (finalBox.width / 2) - (box.width / 2)
+          break
+        case 'right':
+          _x += finalBox.width - (box.width)
+          break
+        default:
+          log('invalid alignment mode in spacedLine:', align)
+          break
         }
       } else if (mode === 'diagonal') {
         _x += box.x
@@ -226,43 +226,43 @@ class SpacedLine extends Layout {
       positionedChildren.push({ x: _x, y: _y })
 
       switch (mode) {
-        case 'vertical':
-          _y += box.height
-          break
-        case 'horizontal':
-          _x += box.width
-          break
-        case 'diagonal':
-          _x += box.width
-          _y += box.height
-          break
-        default:
-          log('invalid layout mode in spacedLine:', mode)
-          break
+      case 'vertical':
+        _y += box.height
+        break
+      case 'horizontal':
+        _x += box.width
+        break
+      case 'diagonal':
+        _x += box.width
+        _y += box.height
+        break
+      default:
+        log('invalid layout mode in spacedLine:', mode)
+        break
       }
     }
 
     return positionedChildren
   }
 
-  render (renderContext) {
+  render (renderContext) { // eslint-disable-line no-unused-vars
   }
 }
 
 class Button extends Layout {
-  size (renderContext, { x, y, width, height }, childBox) {
+  size (renderContext, { x, y, width, height }, childBox) { // eslint-disable-line no-unused-vars
     // this.box = Object.assign({}, childBox)
     return childBox // sends a child box up
   }
 
-  position (renderContext, { x, y, width, height }, updatedParentPosition) {
+  position (renderContext, { x, y, width, height }, updatedParentPosition) { // eslint-disable-line no-unused-vars
     this.box.x = updatedParentPosition.x
     this.box.y = updatedParentPosition.y
 
     return [updatedParentPosition]
   }
 
-  render (renderContext, { x, y, width, height }) {
+  render (renderContext, { x, y, width, height }) { // eslint-disable-line no-unused-vars
   }
 }
 

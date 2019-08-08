@@ -1,0 +1,230 @@
+'use strict'
+
+const { Layout } = require('../components')
+const { insertSorted } = require('../geometry')
+const { fromPolygons } = require('../../lib/csg/src/csg')
+const Vector = require('../../lib/csg/src/vector')
+
+const createHyphenator = require('hyphen')
+const hyphenationPatternsEnUs = require('hyphen/patterns/en-us')
+
+function split(input, ctx, style) {
+  const words = input.split(/[ [\]\r\n/\\]+/)
+
+  Object.assign(ctx, style) // we need to measure text with a particular style
+  
+  let result = []
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i]
+
+    const syllables = word.split('*')
+
+    if (syllables.length > 1) {
+      const measurements = syllables.map(syl => {
+        const textMetrics = ctx.measureText(syl)
+
+        return {
+          width: textMetrics.width,
+          height: textMetrics.emHeightAscent
+        }
+      })
+
+      result.push({
+        token: syllables,
+        type: 'syllables',
+        measurements
+      })
+    } else {
+      const textMetrics = ctx.measureText(word)
+      result.push({
+        token: word,
+        type: 'word',
+        width: textMetrics.width,
+        height: textMetrics.emHeightAscent
+      })
+    }      
+  }
+
+  return result
+}
+
+function polyToBoundingBoxX (polygon) {
+  let minX
+  let maxX = 0
+
+  for (let { x } of polygon) {
+    if (minX === undefined || x < minX) {
+      minX = x
+    } else if (x > maxX) {
+      maxX = x
+    }
+  }
+
+  return [ minX, maxX ]
+}
+
+function textPolyCutup (polygons, stepHeight, width, height) {
+  let result = []
+  const steps = Math.floor(height / stepHeight)
+  for (let i = 0; i < steps - 1; i++) {
+    const y = i * stepHeight
+    const maxY = y + stepHeight
+    const linePolygon = fromPolygons([ [[0, y], [width, y], [width, maxY], [0, maxY]] ])
+    const splitPolys = polygons.intersect(linePolygon).toPolygons()
+
+    // as we get the horizontal boxes, get the bounding x coords
+    const row = []
+    for (const splitPolygon of splitPolys) { 
+      if (splitPolygon.length < 3) { continue } // filter out points, lines
+
+      const [ minX, maxX ] = polyToBoundingBoxX(splitPolygon, y, maxY)
+
+      if (minX === maxX) { continue }
+
+      insertSorted(row, minX) // ensure that each box will be sorted by the x coord
+      insertSorted(row, maxX)
+    }
+
+    // TODO: this is not a great format. consider just sending x, y, width, height
+    for (let j = 0; j < row.length - 1; j += 2) {
+      const minX = row[j]
+      const maxX = row[j + 1]
+
+      result.push([
+        new Vector([minX, y]), // 0, 0
+        new Vector([maxX, y]), // 1, 0
+        new Vector([maxX, maxY]), // 1, 1
+        new Vector([minX, maxY]), // 0, 1
+        new Vector([minX, y])  // 0, 0
+      ])
+    }
+  }
+
+  return result
+}
+
+class Text extends Layout {
+  constructor () {
+    super()
+    this.childBoxes = []
+    this.textBoxes = null
+  }
+
+  size (renderContext, { width, height, text, style, polygons, lineHeight }, childBox) {
+    this.childBoxes.push(childBox)
+
+    const hyphen = createHyphenator(hyphenationPatternsEnUs, { hyphenChar: '*' })
+    const syl = hyphen(text)
+
+    this.tokens = split(syl, renderContext, style)
+
+    this.textBoxes = textPolyCutup(polygons, lineHeight, width, height)
+
+    this.box = Object.assign({}, { width, height })
+    return { width, height }
+  }
+
+  position (renderContext, props, updatedParentPosition) {
+    this.box.x = updatedParentPosition.x
+    this.box.y = updatedParentPosition.y
+
+    return [updatedParentPosition]
+  }
+
+  render (renderContext, { /* lineHeight = 19, scrollPosition = 1, */ style }) {
+    const SPACE_WIDTH = 4
+
+    renderContext.strokeStyle = 'teal'
+    renderContext.strokeRect(
+      this.box.x,
+      this.box.y,
+      this.box.width,
+      this.box.height
+    )
+
+    renderContext.beginPath()
+    renderContext.rect(
+      this.box.x,
+      this.box.y,
+      this.box.width,
+      this.box.height
+    )
+    renderContext.clip()
+
+    Object.assign(renderContext, style) // we need to paint text with a particular style
+
+    renderContext.fillStyle = 'white'
+    const dashWidth = renderContext.measureText('-').width
+
+    let syllableCounter = 0
+    let tokenCursor = 0
+    for (let tb of this.textBoxes) {
+      const startX = tb[0].x
+      const endX = tb[1].x
+
+      const startY = tb[0].y
+      const endY = tb[2].y
+      
+      const finalX = this.box.x + (startX)
+      const finalY = this.box.y + (startY)
+      const finalW = (endX - startX)
+      const finalH = (endY - startY)
+
+      let tempWidth = 0
+
+      renderContext.strokeStyle = 'teal'
+      renderContext.strokeRect(finalX, finalY, finalW, finalH)
+
+      // continue
+
+      while (tempWidth < finalW) {
+        const token2 = this.tokens[tokenCursor]
+
+        if (!token2) { break }
+
+        if (token2.type === 'word') {
+          if (tempWidth > finalW - token2.width) { break }
+
+          renderContext.fillText(token2.token, finalX + tempWidth, finalY + 20)
+
+          // renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
+          // renderContext.strokeRect(finalX + tempWidth, finalY, token2.width, 20)
+
+          tempWidth += token2.width + SPACE_WIDTH
+          tokenCursor++
+        } else if (token2.type === 'syllables') {
+          while (token2.token[syllableCounter]) {
+            const syl = token2.token[syllableCounter]
+            const meas = token2.measurements[syllableCounter].width
+
+            if (tempWidth + meas + dashWidth <= finalW) {
+              renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
+              renderContext.strokeRect(finalX + tempWidth, finalY, meas, 20)
+
+              renderContext.fillText(syl, finalX + tempWidth, finalY + 20)
+              tempWidth += meas
+              syllableCounter++
+            } else if (syllableCounter > 0) {
+              renderContext.fillText('-', finalX + tempWidth, finalY + 20)
+              break
+            } else {
+              break
+            }
+          }
+
+          if (syllableCounter >= token2.token.length) {
+            syllableCounter = 0
+            tokenCursor++
+            tempWidth += SPACE_WIDTH
+          } else {
+            break
+          }
+        } else {
+          console.error('invalid type:', token2.type)
+        }
+      }
+    }
+  }  
+}
+
+module.exports = { Text, textPolyCutup }
