@@ -23,8 +23,8 @@ class Root extends Layout {
     return Array(childCount).fill(Object.assign({}, updatedParentPosition))
   }
 
-  render (renderContext, { x, y, width, height }) { // eslint-disable-line no-unused-vars
-    renderContext.fillStyle = 'black'
+  render (renderContext, { x, y, width, height, color }) { // eslint-disable-line no-unused-vars
+    renderContext.fillStyle = color
     renderContext.fillRect(
       this.box.x,
       this.box.y,

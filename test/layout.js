@@ -22,7 +22,7 @@ tape('spaced-line-horizontal-left-with-margin', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 0
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'left' },
         c('label', new Label(), { font: 'sans', size: 90, text: 'Push Me', done: () => {} }),
         c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
@@ -46,7 +46,7 @@ tape('spaced-line-horizontal-right-with-margin', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 0
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'right' },
         c('label', new Label(), { font: 'sans', size: 90, text: 'Push Me', done: () => {} }),
         c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
@@ -70,7 +70,7 @@ tape('spaced-line-vertical-left-with-margin', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 0
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'left' },
         c('label', new Label(), { font: 'sans', size: 90, text: 'Push Me', done: () => {} }),
         c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
@@ -94,7 +94,7 @@ tape('vertical layout', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 0
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'center' },
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
@@ -133,7 +133,7 @@ tape('vertical layout, right-aligned', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 0
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'right' },
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
@@ -172,7 +172,7 @@ tape('spaced-line vertical right', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 100
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
         c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'right' },
           c('label', new Label(), { font: 'sans', size: 100, text: 'i' }),
@@ -197,7 +197,7 @@ tape('spaced-line vertical center', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 100
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
         c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'center' },
           c('label', new Label(), { font: 'sans', size: 25, text: 'i' }),
@@ -222,7 +222,7 @@ tape('spaced-line horizontal center', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 100
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
         c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'center' },
           c('label', new Label(), { font: 'sans', size: 25, text: 'i' }),
@@ -247,7 +247,7 @@ tape('spaced-line diagonal center', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 100
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
         c('spacedLine', new SpacedLine(), { mode: 'diagonal', align: 'center' },
           c('label', new Label(), { font: 'sans', size: 25, text: 'i' }),
@@ -272,7 +272,7 @@ tape('spaced-line-horizontal-right', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 100
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
         c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'right' },
           c('label', new Label(), { font: 'sans', size: 25, text: 'i' }),
@@ -296,7 +296,7 @@ tape('spaced-line-vertical-center-with-margin', t => {
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'center' },
         c('button', new Button(), { onInput: log, onClick: log },
           c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
@@ -320,7 +320,7 @@ tape('complex-nested', t => {
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'center' },
         c('button', new Button(), { onInput: log, onClick: log },
           c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
@@ -371,7 +371,7 @@ tape('margin', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 10
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'left' },
         c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
           c('label', new Label(), { font: 'sans', size: 100, text: 'A', done: () => {} })
@@ -397,7 +397,7 @@ tape('horizontal layout', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 0
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'center' },
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
@@ -436,7 +436,7 @@ tape('diagonal layout', t => {
   const ctx = canvas.getContext('2d')
   const marginA = 20
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'diagonal', align: 'left' },
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
         c('label', new Label(), { font: 'sans', size: 20, text: 'Push Me', done: () => {} }),
@@ -477,7 +477,7 @@ tape('mixed layout, no margins', t => {
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'left' },
         c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'left' },
           c('label', new Label(), { font: 'sans', size: 100, text: 'A', done: () => {} }),
@@ -505,7 +505,7 @@ tape('viewport', t => {
   const shrink = 40
 
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'center' },
         c('margin', new Margin(), { top: 10, bottom: 10, left: 10, right: 10 },
           c('label', new Label(), { font: 'serif', size: 30, text: 'item 0' })
@@ -573,7 +573,7 @@ tape('components-line-215', t => {
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'horizontal', align: 'heft' },
         c('label', new Label(), { font: 'sans', size: 20, text: 'c' }),
         c('label', new Label(), { font: 'serif', size: 30, text: 'd' })
@@ -594,7 +594,7 @@ tape('components-line-228', t => {
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'heft' },
         c('label', new Label(), { font: 'sans', size: 20, text: 'c' }),
         c('label', new Label(), { font: 'serif', size: 30, text: 'd' })
@@ -615,7 +615,7 @@ tape('components-line-236', t => {
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'diagone', align: 'left' },
         c('label', new Label(), { font: 'sans', size: 20, text: 'c' }),
         c('label', new Label(), { font: 'serif', size: 30, text: 'd' })
@@ -636,7 +636,7 @@ tape('components-line-246', t => {
   const canvas = createCanvas(WIDTH, HEIGHT)
   const ctx = canvas.getContext('2d')
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'bertical', align: 'left' },
         c('label', new Label(), { font: 'sans', size: 20, text: 'c' }),
         c('label', new Label(), { font: 'serif', size: 30, text: 'd' })
@@ -677,7 +677,7 @@ tape('text', t => {
   const polygons = subjectPolygon.subtract(clipPolygon)
 
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'left' },
         c('label', new Label(), { font: 'sans', size: 100, text: 'Push Me', done: () => {} }),
         c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: 20 },
@@ -737,7 +737,7 @@ tape('text - concave cutout', t => {
   const polygons = subjectPolygon.subtract(clipPolygon)
 
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'left' },
         c('label', new Label(), { font: 'sans', size: 100, text: 'Push Me', done: () => {} }),
         c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: marginA },
@@ -805,7 +805,7 @@ tape('text - diamond bounding polygon', t => {
   const polygons = subjectPolygon.subtract(clipPolygon)
 
   const demo1 = ({ x, y, width, height }) => (
-    c('root', new Root(), { x, y, width, height },
+    c('root', new Root(), { x, y, width, height, color: 'black' },
       c('spacedLine', new SpacedLine(), { mode: 'vertical', align: 'left' },
         c('label', new Label(), { font: 'sans', size: 100, text: 'Push Me', done: () => {} }),
         c('margin', new Margin(), { top: marginA, bottom: marginA, left: marginA, right: 20 },
