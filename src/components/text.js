@@ -3,7 +3,6 @@
 const { Layout } = require('../components')
 const { insertSorted } = require('../geometry')
 const { fromPolygons } = require('../../lib/csg/src/csg')
-const Vector = require('../../lib/csg/src/vector')
 
 const createHyphenator = require('hyphen')
 const hyphenationPatternsEnUs = require('hyphen/patterns/en-us')
@@ -131,16 +130,18 @@ class Text extends Layout {
     return [updatedParentPosition]
   }
 
-  render (renderContext, { /* lineHeight = 19, scrollPosition = 1, */ style }) {
+  render (renderContext, { showBoxes = false, /* lineHeight = 19, scrollPosition = 1, */ style }) {
     const SPACE_WIDTH = 4
 
-    renderContext.strokeStyle = 'teal'
-    renderContext.strokeRect(
-      this.box.x,
-      this.box.y,
-      this.box.width,
-      this.box.height
-    )
+    if (showBoxes) {
+      renderContext.strokeStyle = 'teal'
+      renderContext.strokeRect(
+        this.box.x,
+        this.box.y,
+        this.box.width,
+        this.box.height
+      )
+    }
 
     renderContext.beginPath()
     renderContext.rect(
@@ -153,7 +154,6 @@ class Text extends Layout {
 
     Object.assign(renderContext, style) // we need to paint text with a particular style
 
-    renderContext.fillStyle = 'white'
     const dashWidth = renderContext.measureText('-').width
 
     let syllableCounter = 0
@@ -167,8 +167,10 @@ class Text extends Layout {
 
       let tempWidth = 0
 
-      renderContext.strokeStyle = 'teal'
-      renderContext.strokeRect(finalX, finalY, finalW, finalH)
+      if (showBoxes) {
+        renderContext.strokeStyle = 'teal'
+        renderContext.strokeRect(finalX, finalY, finalW, finalH)
+      }
 
       while (tempWidth < finalW) {
         const token2 = this.tokens[tokenCursor]
@@ -192,8 +194,10 @@ class Text extends Layout {
 
           renderContext.fillText(token2.token, finalX + tempWidth, finalY + 20)
 
-          // renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
-          // renderContext.strokeRect(finalX + tempWidth, finalY, token2.width, 20)
+          // if (showBoxes) {
+          //   renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
+          //   renderContext.strokeRect(finalX + tempWidth, finalY, token2.width, 20)
+          // }
 
           tempWidth += token2.width + SPACE_WIDTH
           tokenCursor++
@@ -203,8 +207,10 @@ class Text extends Layout {
             const meas = token2.measurements[syllableCounter].width
 
             if (tempWidth + meas + dashWidth <= finalW) {
-              renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
-              renderContext.strokeRect(finalX + tempWidth, finalY, meas, 20)
+              if (showBoxes) {
+                renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
+                renderContext.strokeRect(finalX + tempWidth, finalY, meas, 20)
+              }
 
               renderContext.fillText(syl, finalX + tempWidth, finalY + 20)
               tempWidth += meas

@@ -88,7 +88,9 @@ class Margin extends Layout {
     }))
   }
 
-  render (renderContext, { top, bottom, left, right }) {
+  render (renderContext, { top, bottom, left, right, showBoxes = false }) {
+    if (!showBoxes) { return }
+
     renderContext.setLineDash([4, 4])
     renderContext.strokeStyle = 'darkgray'
     renderContext.strokeRect(
