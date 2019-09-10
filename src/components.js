@@ -59,8 +59,8 @@ class Label extends Layout { // TODO: add check to ensure labels have NO childre
     // we want to give users an error if they're doing that!
   }
 
-  render (renderContext, { text, size, font }) {
-    renderContext.fillStyle = 'white'
+  render (renderContext, { text, size, font, color }) {
+    renderContext.fillStyle = color
     renderContext.font = `${size}px ${font}`
     renderContext.fillText(text, this.box.x, this.box.y + this.box.height)
   }

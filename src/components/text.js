@@ -9,7 +9,8 @@ const createHyphenator = require('hyphen')
 const hyphenationPatternsEnUs = require('hyphen/patterns/en-us')
 
 function split(input, ctx, style) {
-  const words = input.split(/[ [\]\r\n/\\]+/)
+  // first split by newlines, ensuring that the newlines make it through as tokens, then split on whitespace
+  const words = input.split(/(\n)/).reduce((accum, current) => accum.concat(current.split(/[ [\]/\\]+/)), [])
 
   Object.assign(ctx, style) // we need to measure text with a particular style
   
@@ -85,18 +86,17 @@ function textPolyCutup (polygons, stepHeight, width, height) {
       insertSorted(row, maxX)
     }
 
-    // TODO: this is not a great format. consider just sending x, y, width, height
     for (let j = 0; j < row.length - 1; j += 2) {
       const minX = row[j]
       const maxX = row[j + 1]
 
-      result.push([
-        new Vector([minX, y]), // 0, 0
-        new Vector([maxX, y]), // 1, 0
-        new Vector([maxX, maxY]), // 1, 1
-        new Vector([minX, maxY]), // 0, 1
-        new Vector([minX, y])  // 0, 0
-      ])
+      result.push({
+        startX: minX,
+        endX: maxX,
+        startY: y,
+        endY: maxY,
+        lineIndex: i
+      })
     }
   }
 
@@ -158,13 +158,8 @@ class Text extends Layout {
 
     let syllableCounter = 0
     let tokenCursor = 0
-    for (let tb of this.textBoxes) {
-      const startX = tb[0].x
-      const endX = tb[1].x
-
-      const startY = tb[0].y
-      const endY = tb[2].y
-      
+    let lastLineVisited = 0
+    for (const { startX, endX, startY, endY, lineIndex } of this.textBoxes) {
       const finalX = this.box.x + (startX)
       const finalY = this.box.y + (startY)
       const finalW = (endX - startX)
@@ -175,15 +170,25 @@ class Text extends Layout {
       renderContext.strokeStyle = 'teal'
       renderContext.strokeRect(finalX, finalY, finalW, finalH)
 
-      // continue
-
       while (tempWidth < finalW) {
         const token2 = this.tokens[tokenCursor]
-
         if (!token2) { break }
 
+        if (token2.token === '\n') {
+          tokenCursor++ // don't render the newline token
+          lastLineVisited = lineIndex + 1
+          break // skip to the next box
+        }
+
+        if (lineIndex < lastLineVisited) {
+          break
+        }
+
         if (token2.type === 'word') {
-          if (tempWidth > finalW - token2.width) { break }
+          if (tempWidth > finalW - token2.width) {
+            lastLineVisited = lineIndex
+            break
+          }
 
           renderContext.fillText(token2.token, finalX + tempWidth, finalY + 20)
 
@@ -206,8 +211,10 @@ class Text extends Layout {
               syllableCounter++
             } else if (syllableCounter > 0) {
               renderContext.fillText('-', finalX + tempWidth, finalY + 20)
+              lastLineVisited = lineIndex
               break
             } else {
+              lastLineVisited = lineIndex
               break
             }
           }
@@ -217,6 +224,7 @@ class Text extends Layout {
             tokenCursor++
             tempWidth += SPACE_WIDTH
           } else {
+            lastLineVisited = lineIndex
             break
           }
         } else {
