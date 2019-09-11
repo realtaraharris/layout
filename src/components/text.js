@@ -119,6 +119,9 @@ class Text extends Layout {
 
     this.textBoxes = textPolyCutup(polygons, lineHeight, width, height)
 
+    this.dashWidth = renderContext.measureText('-').width
+    this.spaceWidth = renderContext.measureText(' ').width
+
     this.box = Object.assign({}, { width, height })
     return { width, height }
   }
@@ -131,7 +134,7 @@ class Text extends Layout {
   }
 
   render (renderContext, { showBoxes = false, /* lineHeight = 19, scrollPosition = 1, */ style }) {
-    const SPACE_WIDTH = 4
+    const { dashWidth, spaceWidth } = this
 
     if (showBoxes) {
       renderContext.strokeStyle = 'teal'
@@ -153,8 +156,6 @@ class Text extends Layout {
     renderContext.clip()
 
     Object.assign(renderContext, style) // we need to paint text with a particular style
-
-    const dashWidth = renderContext.measureText('-').width
 
     let syllableCounter = 0
     let tokenCursor = 0
@@ -199,7 +200,7 @@ class Text extends Layout {
           //   renderContext.strokeRect(finalX + tempWidth, finalY, token2.width, 20)
           // }
 
-          tempWidth += token2.width + SPACE_WIDTH
+          tempWidth += token2.width + spaceWidth
           tokenCursor++
         } else if (token2.type === 'syllables') {
           while (token2.token[syllableCounter]) {
@@ -228,7 +229,7 @@ class Text extends Layout {
           if (syllableCounter >= token2.token.length) {
             syllableCounter = 0
             tokenCursor++
-            tempWidth += SPACE_WIDTH
+            tempWidth += spaceWidth
           } else {
             lastLineVisited = lineIndex
             break
