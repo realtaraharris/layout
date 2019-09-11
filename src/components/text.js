@@ -9,10 +9,12 @@ const hyphenationPatternsEnUs = require('hyphen/patterns/en-us')
 
 function split(input, ctx, style) {
   // first split by newlines, ensuring that the newlines make it through as tokens, then split on whitespace
-  const words = input.split(/(\n)/).reduce((accum, current) => accum.concat(current.split(/[ [\]/\\]+/)), [])
+  const words = input
+    .split(/(\n)/)
+    .reduce((accum, current) => accum.concat(current.split(/[ [\]/\\]+/)), [])
 
   Object.assign(ctx, style) // we need to measure text with a particular style
-  
+
   let result = []
   for (let i = 0; i < words.length; i++) {
     const word = words[i]
@@ -42,13 +44,13 @@ function split(input, ctx, style) {
         width: textMetrics.width,
         height: textMetrics.emHeightAscent
       })
-    }      
+    }
   }
 
   return result
 }
 
-function polyToBoundingBoxX (polygon) {
+function polyToBoundingBoxX(polygon) {
   let minX
   let maxX = 0
 
@@ -60,59 +62,78 @@ function polyToBoundingBoxX (polygon) {
     }
   }
 
-  return [ minX, maxX ]
+  return [minX, maxX]
 }
 
-function textPolyCutup (polygons, stepHeight, width, height) {
+function getRowBoxes(i, stepHeight, width, polygons) {
+  let boxes = []
+  const y = i * stepHeight
+  const maxY = y + stepHeight
+  const linePolygon = fromPolygons([
+    [[0, y], [width, y], [width, maxY], [0, maxY]]
+  ])
+  const splitPolys = polygons.intersect(linePolygon).toPolygons()
+
+  // as we get the horizontal boxes, get the bounding x coords
+  const row = []
+  for (const splitPolygon of splitPolys) {
+    if (splitPolygon.length < 3) {
+      continue
+    } // filter out points, lines
+
+    const [minX, maxX] = polyToBoundingBoxX(splitPolygon, y, maxY)
+
+    if (minX === maxX) {
+      continue
+    }
+
+    insertSorted(row, minX) // ensure that each box will be sorted by the x coord
+    insertSorted(row, maxX)
+  }
+
+  for (let j = 0; j < row.length - 1; j += 2) {
+    const minX = row[j]
+    const maxX = row[j + 1]
+
+    boxes.push({
+      startX: minX,
+      endX: maxX,
+      startY: y,
+      endY: maxY,
+      lineIndex: i
+    })
+  }
+
+  return boxes
+}
+
+function textPolyCutup(polygons, stepHeight, width, height) {
   let result = []
   const steps = Math.floor(height / stepHeight)
   for (let i = 0; i < steps - 1; i++) {
-    const y = i * stepHeight
-    const maxY = y + stepHeight
-    const linePolygon = fromPolygons([ [[0, y], [width, y], [width, maxY], [0, maxY]] ])
-    const splitPolys = polygons.intersect(linePolygon).toPolygons()
-
-    // as we get the horizontal boxes, get the bounding x coords
-    const row = []
-    for (const splitPolygon of splitPolys) { 
-      if (splitPolygon.length < 3) { continue } // filter out points, lines
-
-      const [ minX, maxX ] = polyToBoundingBoxX(splitPolygon, y, maxY)
-
-      if (minX === maxX) { continue }
-
-      insertSorted(row, minX) // ensure that each box will be sorted by the x coord
-      insertSorted(row, maxX)
-    }
-
-    for (let j = 0; j < row.length - 1; j += 2) {
-      const minX = row[j]
-      const maxX = row[j + 1]
-
-      result.push({
-        startX: minX,
-        endX: maxX,
-        startY: y,
-        endY: maxY,
-        lineIndex: i
-      })
-    }
+    result.push(...getRowBoxes(i, stepHeight, width, polygons))
   }
 
   return result
 }
 
 class Text extends Layout {
-  constructor () {
+  constructor() {
     super()
     this.childBoxes = []
     this.textBoxes = null
   }
 
-  size (renderContext, { width, height, text, style, polygons, lineHeight }, childBox) {
+  size(
+    renderContext,
+    { width, height, text, style, polygons, lineHeight },
+    childBox
+  ) {
     this.childBoxes.push(childBox)
 
-    const hyphen = createHyphenator(hyphenationPatternsEnUs, { hyphenChar: '*' })
+    const hyphen = createHyphenator(hyphenationPatternsEnUs, {
+      hyphenChar: '*'
+    })
     const syl = hyphen(text)
 
     this.tokens = split(syl, renderContext, style)
@@ -126,14 +147,14 @@ class Text extends Layout {
     return { width, height }
   }
 
-  position (renderContext, props, updatedParentPosition) {
+  position(renderContext, props, updatedParentPosition) {
     this.box.x = updatedParentPosition.x
     this.box.y = updatedParentPosition.y
 
     return [updatedParentPosition]
   }
 
-  render (renderContext, { showBoxes = false, lineHeight = 20, style }) {
+  render(renderContext, { showBoxes = false, lineHeight = 20, style }) {
     const { dashWidth, spaceWidth } = this
 
     if (showBoxes) {
@@ -147,12 +168,7 @@ class Text extends Layout {
     }
 
     renderContext.beginPath()
-    renderContext.rect(
-      this.box.x,
-      this.box.y,
-      this.box.width,
-      this.box.height
-    )
+    renderContext.rect(this.box.x, this.box.y, this.box.width, this.box.height)
     renderContext.clip()
 
     Object.assign(renderContext, style) // we need to paint text with a particular style
@@ -161,10 +177,10 @@ class Text extends Layout {
     let tokenCursor = 0
     let lastLineVisited = 0
     for (const { startX, endX, startY, endY, lineIndex } of this.textBoxes) {
-      const finalX = this.box.x + (startX)
-      const finalY = this.box.y + (startY)
-      const finalW = (endX - startX)
-      const finalH = (endY - startY)
+      const finalX = this.box.x + startX
+      const finalY = this.box.y + startY
+      const finalW = endX - startX
+      const finalH = endY - startY
 
       let tempWidth = 0
 
@@ -175,7 +191,9 @@ class Text extends Layout {
 
       while (tempWidth < finalW) {
         const token2 = this.tokens[tokenCursor]
-        if (!token2) { break }
+        if (!token2) {
+          break
+        }
 
         if (token2.token === '\n') {
           tokenCursor++ // don't render the newline token
@@ -193,7 +211,11 @@ class Text extends Layout {
             break
           }
 
-          renderContext.fillText(token2.token, finalX + tempWidth, finalY + lineHeight)
+          renderContext.fillText(
+            token2.token,
+            finalX + tempWidth,
+            finalY + lineHeight
+          )
 
           // if (showBoxes) {
           //   renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
@@ -210,14 +232,27 @@ class Text extends Layout {
             if (tempWidth + meas + dashWidth <= finalW) {
               if (showBoxes) {
                 renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
-                renderContext.strokeRect(finalX + tempWidth, finalY, meas, lineHeight)
+                renderContext.strokeRect(
+                  finalX + tempWidth,
+                  finalY,
+                  meas,
+                  lineHeight
+                )
               }
 
-              renderContext.fillText(syl, finalX + tempWidth, finalY + lineHeight)
+              renderContext.fillText(
+                syl,
+                finalX + tempWidth,
+                finalY + lineHeight
+              )
               tempWidth += meas
               syllableCounter++
             } else if (syllableCounter > 0) {
-              renderContext.fillText('-', finalX + tempWidth, finalY + lineHeight)
+              renderContext.fillText(
+                '-',
+                finalX + tempWidth,
+                finalY + lineHeight
+              )
               lastLineVisited = lineIndex
               break
             } else {
@@ -239,7 +274,7 @@ class Text extends Layout {
         }
       }
     }
-  }  
+  }
 }
 
 module.exports = { Text, textPolyCutup }
