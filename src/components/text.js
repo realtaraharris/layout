@@ -133,7 +133,7 @@ class Text extends Layout {
     return [updatedParentPosition]
   }
 
-  render (renderContext, { showBoxes = false, /* lineHeight = 19, scrollPosition = 1, */ style }) {
+  render (renderContext, { showBoxes = false, lineHeight = 20, style }) {
     const { dashWidth, spaceWidth } = this
 
     if (showBoxes) {
@@ -193,7 +193,7 @@ class Text extends Layout {
             break
           }
 
-          renderContext.fillText(token2.token, finalX + tempWidth, finalY + 20)
+          renderContext.fillText(token2.token, finalX + tempWidth, finalY + lineHeight)
 
           // if (showBoxes) {
           //   renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
@@ -210,14 +210,14 @@ class Text extends Layout {
             if (tempWidth + meas + dashWidth <= finalW) {
               if (showBoxes) {
                 renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
-                renderContext.strokeRect(finalX + tempWidth, finalY, meas, 20)
+                renderContext.strokeRect(finalX + tempWidth, finalY, meas, lineHeight)
               }
 
-              renderContext.fillText(syl, finalX + tempWidth, finalY + 20)
+              renderContext.fillText(syl, finalX + tempWidth, finalY + lineHeight)
               tempWidth += meas
               syllableCounter++
             } else if (syllableCounter > 0) {
-              renderContext.fillText('-', finalX + tempWidth, finalY + 20)
+              renderContext.fillText('-', finalX + tempWidth, finalY + lineHeight)
               lastLineVisited = lineIndex
               break
             } else {
