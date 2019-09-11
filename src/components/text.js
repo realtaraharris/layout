@@ -1,8 +1,8 @@
 'use strict'
 
-const { Layout } = require('../components')
-const { insertSorted } = require('../geometry')
-const { fromPolygons } = require('../../lib/csg/src/csg')
+const {Layout} = require('../components')
+const {insertSorted} = require('../geometry')
+const {fromPolygons} = require('../../lib/csg/src/csg')
 
 const createHyphenator = require('hyphen')
 const hyphenationPatternsEnUs = require('hyphen/patterns/en-us')
@@ -54,7 +54,7 @@ function polyToBoundingBoxX(polygon) {
   let minX
   let maxX = 0
 
-  for (let { x } of polygon) {
+  for (let {x} of polygon) {
     if (minX === undefined || x < minX) {
       minX = x
     } else if (x > maxX) {
@@ -126,7 +126,7 @@ class Text extends Layout {
 
   size(
     renderContext,
-    { width, height, text, style, polygons, lineHeight },
+    {width, height, text, style, polygons, lineHeight},
     childBox
   ) {
     this.childBoxes.push(childBox)
@@ -143,8 +143,8 @@ class Text extends Layout {
     this.dashWidth = renderContext.measureText('-').width
     this.spaceWidth = renderContext.measureText(' ').width
 
-    this.box = Object.assign({}, { width, height })
-    return { width, height }
+    this.box = Object.assign({}, {width, height})
+    return {width, height}
   }
 
   position(renderContext, props, updatedParentPosition) {
@@ -154,8 +154,8 @@ class Text extends Layout {
     return [updatedParentPosition]
   }
 
-  render(renderContext, { showBoxes = false, lineHeight = 20, style }) {
-    const { dashWidth, spaceWidth } = this
+  render(renderContext, {showBoxes = false, lineHeight = 20, style}) {
+    const {dashWidth, spaceWidth} = this
 
     if (showBoxes) {
       renderContext.strokeStyle = 'teal'
@@ -176,7 +176,7 @@ class Text extends Layout {
     let syllableCounter = 0
     let tokenCursor = 0
     let lastLineVisited = 0
-    for (const { startX, endX, startY, endY, lineIndex } of this.textBoxes) {
+    for (const {startX, endX, startY, endY, lineIndex} of this.textBoxes) {
       const finalX = this.box.x + startX
       const finalY = this.box.y + startY
       const finalW = endX - startX
@@ -277,4 +277,4 @@ class Text extends Layout {
   }
 }
 
-module.exports = { Text, textPolyCutup }
+module.exports = {Text, textPolyCutup}

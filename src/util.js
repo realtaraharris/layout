@@ -1,6 +1,6 @@
 'use strict'
 
-function *circularDoublingIterator(array) {
+function* circularDoublingIterator(array) {
   let firstIndex = -1
   let secondIndex = 0
   const elements = Array.isArray(array) ? array.slice() : []
@@ -9,12 +9,12 @@ function *circularDoublingIterator(array) {
   while (length) {
     firstIndex = (firstIndex + 1) % length
     secondIndex = (secondIndex + 1) % length
-    yield [ ...elements[firstIndex], ...elements[secondIndex] ]
+    yield [...elements[firstIndex], ...elements[secondIndex]]
   }
 }
 exports.circularDoublingIterator = circularDoublingIterator
 
-function *circularDoublingPeekingIterator(array) {
+function* circularDoublingPeekingIterator(array) {
   let zerothIndex = array.length - 2
   let firstIndex = -1
   let secondIndex = 0
@@ -30,9 +30,9 @@ function *circularDoublingPeekingIterator(array) {
     thirdIndex = (thirdIndex + 1) % length
 
     yield {
-      previousLine: [ ...elements[zerothIndex], ...elements[firstIndex] ],
-      currentLine: [ ...elements[firstIndex], ...elements[secondIndex] ],
-      nextLine: [ ...elements[secondIndex], ...elements[thirdIndex] ]
+      previousLine: [...elements[zerothIndex], ...elements[firstIndex]],
+      currentLine: [...elements[firstIndex], ...elements[secondIndex]],
+      nextLine: [...elements[secondIndex], ...elements[thirdIndex]]
     }
   }
 }

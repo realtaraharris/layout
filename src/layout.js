@@ -1,14 +1,14 @@
 'use strict'
 
-function c (name, methods, props, ...children) {
-  const a = { methods, name, props, children }
+function c(name, methods, props, ...children) {
+  const a = {methods, name, props, children}
   for (let child of children) {
     child.parent = a
   }
   return a
 }
 
-function down (renderContext, component) {
+function down(renderContext, component) {
   // if we are a leaf node, start the up phase
   if (component.children.length === 0) {
     up(renderContext, component)
@@ -19,22 +19,40 @@ function down (renderContext, component) {
   }
 }
 
-function up (renderContext, component, childBox) {
-  let box = component.methods.size(renderContext, component.props, childBox, component.children.length)
+function up(renderContext, component, childBox) {
+  let box = component.methods.size(
+    renderContext,
+    component.props,
+    childBox,
+    component.children.length
+  )
 
   // NB: if no box is returned, stop traversal per component API
-  if (!component.parent || !box) { return }
+  if (!component.parent || !box) {
+    return
+  }
 
   up(renderContext, component.parent, box)
 }
 
-function calcBoxPositions (renderContext, component, updatedParentPosition) {
-  const position = component.methods.position(renderContext, component.props, updatedParentPosition, component.children.length)
+function calcBoxPositions(renderContext, component, updatedParentPosition) {
+  const position = component.methods.position(
+    renderContext,
+    component.props,
+    updatedParentPosition,
+    component.children.length
+  )
 
-  if (component.children.length === 0) { return }
+  if (component.children.length === 0) {
+    return
+  }
 
   if (position.length !== component.children.length) {
-    console.error('scratch position count does not match child count', position.length, component.children.length)
+    console.error(
+      'scratch position count does not match child count',
+      position.length,
+      component.children.length
+    )
   }
 
   for (let i = 0; i < component.children.length; i++) {
@@ -45,7 +63,7 @@ function calcBoxPositions (renderContext, component, updatedParentPosition) {
   }
 }
 
-function r (renderContext, component) {
+function r(renderContext, component) {
   component.methods.render(renderContext, component.props)
 
   for (let i = 0; i < component.children.length; i++) {
@@ -53,7 +71,7 @@ function r (renderContext, component) {
   }
 }
 
-function renderRoot (renderContext, root) {
+function renderRoot(renderContext, root) {
   renderContext.fillStyle = 'indigo'
   renderContext.fillRect(0, 0, 800, 600)
 
@@ -61,11 +79,11 @@ function renderRoot (renderContext, root) {
   down(renderContext, root)
 
   // calls each position function. also fills in any missing boxes using size props
-  calcBoxPositions(renderContext, root, { x: 0, y: 0 })
+  calcBoxPositions(renderContext, root, {x: 0, y: 0})
 
   r(renderContext, root)
 
   // console.log(util.inspect(root, false, null, true))
 }
 
-module.exports = { c, renderRoot }
+module.exports = {c, renderRoot}

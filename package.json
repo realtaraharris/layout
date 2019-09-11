@@ -20,6 +20,13 @@
     "hyphen": "^1.1.1",
     "segseg": "^0.2.2"
   },
+  "prettier": {
+    "jsxSingleQuote": true,
+    "singleQuote": true,
+    "semi": false,
+    "bracketSpacing": false,
+    "endOfLine": "lf"
+  },
   "devDependencies": {
     "@stryker-mutator/core": "^2.0.0",
     "@stryker-mutator/html-reporter": "^2.0.0",

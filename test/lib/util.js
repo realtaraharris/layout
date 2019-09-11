@@ -10,7 +10,7 @@ function clearTerminal() {
   process.stdout.write('\x1Bc')
 }
 
-function screenshot (name, canvas, t) {
+function screenshot(name, canvas, t) {
   const base = `${__dirname}/../screenshots/${name}`
 
   const actualFull = `${base}-actual.png`
@@ -25,21 +25,23 @@ function screenshot (name, canvas, t) {
     fs.writeFileSync(expectedFull, actualBuffer)
   }
 
-  resemble(expectedFull).compareTo(actualFull).onComplete((result) => {
-    const exactMatch = result.misMatchPercentage === '0.00'
+  resemble(expectedFull)
+    .compareTo(actualFull)
+    .onComplete(result => {
+      const exactMatch = result.misMatchPercentage === '0.00'
 
-    t.ok(result.isSameDimensions)
-    t.ok(exactMatch)
+      t.ok(result.isSameDimensions)
+      t.ok(exactMatch)
 
-    if (!exactMatch) {
-      const diffImage = result.getDiffImage()
-      diffImage.pack().pipe(fs.createWriteStream(diffFull))
-    } else {
-      fs.existsSync(diffFull) && fs.unlinkSync(diffFull)
-    }
+      if (!exactMatch) {
+        const diffImage = result.getDiffImage()
+        diffImage.pack().pipe(fs.createWriteStream(diffFull))
+      } else {
+        fs.existsSync(diffFull) && fs.unlinkSync(diffFull)
+      }
 
-    t.end()
-  })
+      t.end()
+    })
 }
 
 module.exports = {
