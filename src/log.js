@@ -1,7 +1,7 @@
-'use strict'
+'use strict';
 
 function log(...args) {
-  console.log(...args)
+  console.log(...args);
 }
 
-module.exports = log
+module.exports = log;

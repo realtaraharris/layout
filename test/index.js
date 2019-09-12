@@ -1,5 +1,5 @@
-'use strict'
+'use strict';
 
-require('./layout')
-require('./geometry')
-require('../lib/csg/test/csg')
+require('./layout');
+require('./geometry');
+require('../lib/csg/test/csg');

@@ -23,7 +23,7 @@
   "prettier": {
     "jsxSingleQuote": true,
     "singleQuote": true,
-    "semi": false,
+    "semi": true,
     "bracketSpacing": false,
     "endOfLine": "lf"
   },

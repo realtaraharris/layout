@@ -1,26 +1,26 @@
-'use strict'
+'use strict';
 
-const {createCanvas} = require('canvas')
-const tape = require('tape-catch')
-const proxyquire = require('proxyquire')
+const {createCanvas} = require('canvas');
+const tape = require('tape-catch');
+const proxyquire = require('proxyquire');
 
-const log = require('../src/log')
-const {clearTerminal, screenshot} = require('./lib/util')
+const log = require('../src/log');
+const {clearTerminal, screenshot} = require('./lib/util');
 
-const WIDTH = 800
-const HEIGHT = 600
+const WIDTH = 800;
+const HEIGHT = 600;
 
-clearTerminal()
+clearTerminal();
 
 tape('spaced-line-horizontal-left-with-margin', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 0
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -57,21 +57,21 @@ tape('spaced-line-horizontal-left-with-margin', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('spaced-line-horizontal-left-with-margin', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('spaced-line-horizontal-left-with-margin', canvas, t);
+});
 
 tape('spaced-line-horizontal-right-with-margin', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 0
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -108,21 +108,21 @@ tape('spaced-line-horizontal-right-with-margin', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('spaced-line-horizontal-right-with-margin', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('spaced-line-horizontal-right-with-margin', canvas, t);
+});
 
 tape('spaced-line-vertical-left-with-margin', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 0
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -159,24 +159,24 @@ tape('spaced-line-vertical-left-with-margin', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('spaced-line-vertical-left-with-margin', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('spaced-line-vertical-left-with-margin', canvas, t);
+});
 
 tape('vertical layout', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
     '../src/components',
     {
       './log': t.fail
     }
-  )
+  );
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 0
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -277,24 +277,24 @@ tape('vertical layout', t => {
           )
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('vertical', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('vertical', canvas, t);
+});
 
 tape('vertical layout, right-aligned', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
     '../src/components',
     {
       './log': t.fail
     }
-  )
+  );
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 0
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -395,21 +395,21 @@ tape('vertical layout, right-aligned', t => {
           )
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('vertical-right', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('vertical-right', canvas, t);
+});
 
 tape('spaced-line vertical right', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 100
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -452,21 +452,21 @@ tape('spaced-line vertical right', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('spaced-line-vertical-right', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('spaced-line-vertical-right', canvas, t);
+});
 
 tape('spaced-line vertical center', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 100
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -509,21 +509,21 @@ tape('spaced-line vertical center', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('spaced-line-vertical-center', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('spaced-line-vertical-center', canvas, t);
+});
 
 tape('spaced-line horizontal center', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 100
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -566,21 +566,21 @@ tape('spaced-line horizontal center', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('spaced-line-horizontal-center', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('spaced-line-horizontal-center', canvas, t);
+});
 
 tape('spaced-line diagonal center', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 100
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -623,21 +623,21 @@ tape('spaced-line diagonal center', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('spaced-line-diagonal-center', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('spaced-line-diagonal-center', canvas, t);
+});
 
 tape('spaced-line-horizontal-right', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 100
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -680,23 +680,23 @@ tape('spaced-line-horizontal-right', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('spaced-line-horizontal-right', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('spaced-line-horizontal-right', canvas, t);
+});
 
 tape('spaced-line-vertical-center-with-margin', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
     '../src/components',
     {
       './log': t.fail
     }
-  )
+  );
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -724,23 +724,23 @@ tape('spaced-line-vertical-center-with-margin', t => {
           )
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('spaced-line-vertical-center-with-margin', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('spaced-line-vertical-center-with-margin', canvas, t);
+});
 
 tape('complex-nested', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
     '../src/components',
     {
       './log': t.fail
     }
-  )
+  );
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -860,21 +860,21 @@ tape('complex-nested', t => {
           )
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('complex-nested', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('complex-nested', canvas, t);
+});
 
 tape('margin', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 10
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 10;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -923,24 +923,24 @@ tape('margin', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('margin', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('margin', canvas, t);
+});
 
 tape('horizontal layout', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
     '../src/components',
     {
       './log': t.fail
     }
-  )
+  );
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 0
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -1041,24 +1041,24 @@ tape('horizontal layout', t => {
           )
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('horizontal', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('horizontal', canvas, t);
+});
 
 tape('diagonal layout', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
     '../src/components',
     {
       './log': t.fail
     }
-  )
+  );
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 20
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 20;
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -1180,20 +1180,20 @@ tape('diagonal layout', t => {
           )
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('diagonal', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('diagonal', canvas, t);
+});
 
 tape('mixed layout, no margins', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -1239,25 +1239,25 @@ tape('mixed layout, no margins', t => {
           showBoxes: true
         })
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('mixed', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('mixed', canvas, t);
+});
 
 tape('viewport', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Label, SpacedLine, Button, Margin, Viewport} = proxyquire(
     '../src/components',
     {
       './log': t.fail
     }
-  )
+  );
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
 
-  const shrink = 40
+  const shrink = 40;
 
   const demo1 = ({x, y, width, height}) =>
     c(
@@ -1466,21 +1466,21 @@ tape('viewport', t => {
           )
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('viewport', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('viewport', canvas, t);
+});
 
 tape('components-line-215', t => {
-  t.plan(2)
-  const {c, renderRoot} = require('../src/layout')
+  t.plan(2);
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -1493,20 +1493,20 @@ tape('components-line-215', t => {
         c('label', new Label(), {font: 'sans', size: 20, text: 'c'}),
         c('label', new Label(), {font: 'serif', size: 30, text: 'd'})
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+});
 
 tape('components-line-228', t => {
-  t.plan(2)
-  const {c, renderRoot} = require('../src/layout')
+  t.plan(2);
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -1519,20 +1519,20 @@ tape('components-line-228', t => {
         c('label', new Label(), {font: 'sans', size: 20, text: 'c'}),
         c('label', new Label(), {font: 'serif', size: 30, text: 'd'})
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+});
 
 tape('components-line-236', t => {
-  t.plan(6)
-  const {c, renderRoot} = require('../src/layout')
+  t.plan(6);
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -1555,20 +1555,20 @@ tape('components-line-236', t => {
           showBoxes: true
         })
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+});
 
 tape('components-line-246', t => {
-  t.plan(6)
-  const {c, renderRoot} = require('../src/layout')
+  t.plan(6);
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
-  })
+  });
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       'root',
@@ -1593,33 +1593,33 @@ tape('components-line-246', t => {
           showBoxes: true
         })
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+});
 
 tape('text', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const {Text} = require('../src/components/text')
+  const {Text} = require('../src/components/text');
 
-  const wordsToLiveBy = `When you grow up you tend to get told the world is the way it is and your job is just to live your life inside the world. Try not to bash into the walls too much. Try to have a nice family life, have fun, save a little money. That's a very limited life. Life can be much broader once you discover one simple fact, and that is: everything around you that you call life, was made up by people that were no smarter than you. And you can change it, you can influence it, you can build your own things that other people can use. The minute that you understand that you can poke life and actually something will, you know if you push in, something will pop out the other side, that you can change it, you can mold it. That's maybe the most important thing. It's to shake off this erroneous notion that life is there and you're just gonna live in it, versus embrace it, change it, improve it, make your mark upon it. I think that’s very important and however you learn that, once you learn it, you'll want to change life and make it better, cause it's kind of messed up, in a lot of ways. Once you learn that, you'll never be the same again.`
+  const wordsToLiveBy = `When you grow up you tend to get told the world is the way it is and your job is just to live your life inside the world. Try not to bash into the walls too much. Try to have a nice family life, have fun, save a little money. That's a very limited life. Life can be much broader once you discover one simple fact, and that is: everything around you that you call life, was made up by people that were no smarter than you. And you can change it, you can influence it, you can build your own things that other people can use. The minute that you understand that you can poke life and actually something will, you know if you push in, something will pop out the other side, that you can change it, you can mold it. That's maybe the most important thing. It's to shake off this erroneous notion that life is there and you're just gonna live in it, versus embrace it, change it, improve it, make your mark upon it. I think that’s very important and however you learn that, once you learn it, you'll want to change life and make it better, cause it's kind of messed up, in a lot of ways. Once you learn that, you'll never be the same again.`;
   // const wordsToLiveBy = `discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace`
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 20
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 20;
 
-  const textWidth = 520
-  const textHeight = 360
+  const textWidth = 520;
+  const textHeight = 360;
 
-  const {fromPolygons} = require('../lib/csg/src/csg')
+  const {fromPolygons} = require('../lib/csg/src/csg');
   const subjectPolygon = fromPolygons([
     [[0, 0], [textWidth, 0], [textWidth, textHeight], [0, textHeight]]
-  ])
+  ]);
 
   const clipPolygon = fromPolygons([
     [
@@ -1627,9 +1627,9 @@ tape('text', t => {
       [33, 5],
       [10, 0]
     ].map(([x, y]) => [x * 20 - 150, y * 20 + 40])
-  ])
+  ]);
 
-  const polygons = subjectPolygon.subtract(clipPolygon)
+  const polygons = subjectPolygon.subtract(clipPolygon);
 
   const demo1 = ({x, y, width, height}) =>
     c(
@@ -1672,33 +1672,33 @@ tape('text', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('text', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('text', canvas, t);
+});
 
 tape('text - concave cutout', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const {Text} = require('../src/components/text')
+  const {Text} = require('../src/components/text');
 
-  const wordsToLiveBy = `When you grow up you tend to get told the world is the way it is and your job is just to live your life inside the world. Try not to bash into the walls too much. Try to have a nice family life, have fun, save a little money. That's a very limited life. Life can be much broader once you discover one simple fact, and that is: everything around you that you call life, was made up by people that were no smarter than you. And you can change it, you can influence it, you can build your own things that other people can use. The minute that you understand that you can poke life and actually something will, you know if you push in, something will pop out the other side, that you can change it, you can mold it. That's maybe the most important thing. It's to shake off this erroneous notion that life is there and you're just gonna live in it, versus embrace it, change it, improve it, make your mark upon it. I think that’s very important and however you learn that, once you learn it, you'll want to change life and make it better, cause it's kind of messed up, in a lot of ways. Once you learn that, you'll never be the same again.`
+  const wordsToLiveBy = `When you grow up you tend to get told the world is the way it is and your job is just to live your life inside the world. Try not to bash into the walls too much. Try to have a nice family life, have fun, save a little money. That's a very limited life. Life can be much broader once you discover one simple fact, and that is: everything around you that you call life, was made up by people that were no smarter than you. And you can change it, you can influence it, you can build your own things that other people can use. The minute that you understand that you can poke life and actually something will, you know if you push in, something will pop out the other side, that you can change it, you can mold it. That's maybe the most important thing. It's to shake off this erroneous notion that life is there and you're just gonna live in it, versus embrace it, change it, improve it, make your mark upon it. I think that’s very important and however you learn that, once you learn it, you'll want to change life and make it better, cause it's kind of messed up, in a lot of ways. Once you learn that, you'll never be the same again.`;
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 10
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 10;
 
-  const textWidth = 550
-  const textHeight = 460 + 40
+  const textWidth = 550;
+  const textHeight = 460 + 40;
 
-  const {fromPolygons} = require('../lib/csg/src/csg')
+  const {fromPolygons} = require('../lib/csg/src/csg');
   const subjectPolygon = fromPolygons([
     [[0, 0], [textWidth, 0], [textWidth, textHeight], [0, textHeight]]
-  ])
+  ]);
 
   const clipPolygon = fromPolygons([
     [
@@ -1713,9 +1713,9 @@ tape('text - concave cutout', t => {
       [11.9573, 17.3906],
       [4.6, 22.8]
     ].map(([x, y]) => [x * 20 + 0, y * 20 + 0])
-  ])
+  ]);
 
-  const polygons = subjectPolygon.subtract(clipPolygon)
+  const polygons = subjectPolygon.subtract(clipPolygon);
 
   const demo1 = ({x, y, width, height}) =>
     c(
@@ -1758,31 +1758,31 @@ tape('text - concave cutout', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('text-concave-cutout', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('text-concave-cutout', canvas, t);
+});
 
 tape('text - diamond bounding polygon', t => {
-  const {c, renderRoot} = require('../src/layout')
+  const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
-  })
+  });
 
-  const {Text} = require('../src/components/text')
+  const {Text} = require('../src/components/text');
 
-  const wordsToLiveBy = `When you grow up you tend to get told the world is the way it is and your job is just to live your life inside the world. Try not to bash into the walls too much. Try to have a nice family life, have fun, save a little money. That's a very limited life.\n\n\nLife can be much broader once you discover one simple fact, and that is: everything around you that you call life, was made up by people that were no smarter than you. And you can change it, you can influence it, you can build your own things that other people can use. The minute that you understand that you can poke life and actually something will, you know if you push in, something will pop out the other side, that you can change it, you can mold it. That's maybe the most important thing. It's to shake off this erroneous notion that life is there and you're just gonna live in it, versus embrace it, change it, improve it, make your mark upon it. I think that’s very important and however you learn that, once you learn it, you'll want to change life and make it better, cause it's kind of messed up, in a lot of ways. Once you learn that, you'll never be the same again.`
+  const wordsToLiveBy = `When you grow up you tend to get told the world is the way it is and your job is just to live your life inside the world. Try not to bash into the walls too much. Try to have a nice family life, have fun, save a little money. That's a very limited life.\n\n\nLife can be much broader once you discover one simple fact, and that is: everything around you that you call life, was made up by people that were no smarter than you. And you can change it, you can influence it, you can build your own things that other people can use. The minute that you understand that you can poke life and actually something will, you know if you push in, something will pop out the other side, that you can change it, you can mold it. That's maybe the most important thing. It's to shake off this erroneous notion that life is there and you're just gonna live in it, versus embrace it, change it, improve it, make your mark upon it. I think that’s very important and however you learn that, once you learn it, you'll want to change life and make it better, cause it's kind of messed up, in a lot of ways. Once you learn that, you'll never be the same again.`;
   // const wordsToLiveBy = `discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace`
 
-  const canvas = createCanvas(WIDTH, HEIGHT)
-  const ctx = canvas.getContext('2d')
-  const marginA = 20
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const ctx = canvas.getContext('2d');
+  const marginA = 20;
 
-  const textWidth = 520
-  const textHeight = 560
+  const textWidth = 520;
+  const textHeight = 560;
 
-  const {fromPolygons} = require('../lib/csg/src/csg')
+  const {fromPolygons} = require('../lib/csg/src/csg');
   const subjectPolygon = fromPolygons([
     [
       [20, 0], // x, y
@@ -1792,7 +1792,7 @@ tape('text - diamond bounding polygon', t => {
       [6, 26],
       [6, 5]
     ].map(([x, y]) => [x * 15 - 60, y * 15 + 0])
-  ])
+  ]);
 
   const clipPolygon = fromPolygons([
     [
@@ -1807,9 +1807,9 @@ tape('text - diamond bounding polygon', t => {
       [11.9573, 17.3906],
       [4.6, 22.8]
     ].map(([x, y]) => [x * 20 + 0, y * 20 + 0])
-  ])
+  ]);
 
-  const polygons = subjectPolygon.subtract(clipPolygon)
+  const polygons = subjectPolygon.subtract(clipPolygon);
 
   const demo1 = ({x, y, width, height}) =>
     c(
@@ -1852,8 +1852,8 @@ tape('text - diamond bounding polygon', t => {
           })
         )
       )
-    )
+    );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}))
-  screenshot('text-diamond', canvas, t)
-})
+  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  screenshot('text-diamond', canvas, t);
+});
