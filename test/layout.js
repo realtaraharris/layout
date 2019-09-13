@@ -6,6 +6,7 @@ const proxyquire = require('proxyquire');
 
 const log = require('../src/log');
 const {clearTerminal, screenshot} = require('./lib/util');
+const {createCircle} = require('../src/geometry');
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -1779,19 +1780,12 @@ tape('text - diamond bounding polygon', t => {
   const ctx = canvas.getContext('2d');
   const marginA = 20;
 
-  const textWidth = 520;
-  const textHeight = 560;
+  const textWidth = 500;
+  const textHeight = 500;
 
   const {fromPolygons} = require('../lib/csg/src/csg');
   const subjectPolygon = fromPolygons([
-    [
-      [20, 0], // x, y
-      [34, 5],
-      [34, 26],
-      [20, 30],
-      [6, 26],
-      [6, 5]
-    ].map(([x, y]) => [x * 15 - 60, y * 15 + 0])
+    createCircle(250, 250, 130).map(([x, y]) => [x + 250, y + 250])
   ]);
 
   const clipPolygon = fromPolygons([
@@ -1806,7 +1800,7 @@ tape('text - diamond bounding polygon', t => {
       [19.4, 22.8],
       [11.9573, 17.3906],
       [4.6, 22.8]
-    ].map(([x, y]) => [x * 20 + 0, y * 20 + 0])
+    ].map(([x, y]) => [x * 20 + 10, y * 20 + 0])
   ]);
 
   const polygons = subjectPolygon.subtract(clipPolygon);

@@ -81,4 +81,15 @@ function intersectAabb(boxA, [xB, yB, widthB, heightB]) {
   );
 }
 
-module.exports = {intersect, intersectAabb, insertSorted};
+function createCircle(radX, radY, points) {
+  let result = [];
+
+  for (let i = 0; i < points; i++) {
+    const theta = Math.PI * (i / (points / 2));
+    result.push([radX * Math.cos(theta), radY * Math.sin(theta)]);
+  }
+
+  return result;
+}
+
+module.exports = {intersect, intersectAabb, insertSorted, createCircle};

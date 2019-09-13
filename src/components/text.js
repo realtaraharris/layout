@@ -133,7 +133,6 @@ function getRowBoxes(lineIndex, stepHeight, width, polygons) {
 }
 
 function processBox(
-  renderContext,
   box,
   {startX, endX, startY, endY, lineIndex},
   tokens,
@@ -150,9 +149,17 @@ function processBox(
 
   let tempWidth = 0;
 
+  let result = [];
+  let debugBoxes = [];
+
   if (showBoxes) {
-    renderContext.strokeStyle = 'teal';
-    renderContext.strokeRect(finalX, finalY, finalW, finalH);
+    debugBoxes.push({
+      color: 'teal',
+      x: finalX,
+      y: finalY,
+      width: finalW,
+      height: finalH
+    });
   }
 
   while (tempWidth < finalW) {
@@ -177,15 +184,20 @@ function processBox(
         break;
       }
 
-      renderContext.fillText(
-        token.token,
-        finalX + tempWidth,
-        finalY + lineHeight
-      );
+      result.push({
+        text: token.token,
+        x: finalX + tempWidth,
+        y: finalY + lineHeight
+      });
 
       // if (showBoxes) {
-      //   renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)'
-      //   renderContext.strokeRect(finalX + tempWidth, finalY, token2.width, 20)
+      //   debugBoxes.push({
+      //     color: 'rgba(127, 63, 195, 0.6)',
+      //     x: finalX + tempWidth,
+      //     y: finalY,
+      //     width: token.width,
+      //     height: lineHeight
+      //   });
       // }
 
       tempWidth += token.width + spaceWidth;
@@ -197,20 +209,30 @@ function processBox(
 
         if (tempWidth + meas + dashWidth <= finalW) {
           if (showBoxes) {
-            renderContext.strokeStyle = 'rgba(127, 63, 195, 0.6)';
-            renderContext.strokeRect(
-              finalX + tempWidth,
-              finalY,
-              meas,
-              lineHeight
-            );
+            debugBoxes.push({
+              color: 'rgba(127, 63, 195, 0.6)',
+              x: finalX + tempWidth,
+              y: finalY,
+              width: meas,
+              height: lineHeight
+            });
           }
 
-          renderContext.fillText(syl, finalX + tempWidth, finalY + lineHeight);
+          result.push({
+            text: syl,
+            x: finalX + tempWidth,
+            y: finalY + lineHeight
+          });
+
           tempWidth += meas;
           tracking.syllableCounter++;
         } else if (tracking.syllableCounter > 0) {
-          renderContext.fillText('-', finalX + tempWidth, finalY + lineHeight);
+          result.push({
+            text: '-',
+            x: finalX + tempWidth,
+            y: finalY + lineHeight
+          });
+
           tracking.lastLineVisited = lineIndex;
           break;
         } else {
@@ -231,6 +253,8 @@ function processBox(
       console.error('invalid type:', token.type);
     }
   }
+
+  return {result, debugBoxes};
 }
 
 class Text extends Layout {
@@ -239,7 +263,11 @@ class Text extends Layout {
     this.childBoxes = [];
   }
 
-  size(renderContext, {width, height, text, style}, childBox) {
+  size(
+    renderContext,
+    {width, text, style, polygons, lineHeight = 20, showBoxes},
+    childBox
+  ) {
     this.childBoxes.push(childBox);
 
     const hyphen = createHyphenator(hyphenationPatternsEnUs, {
@@ -249,43 +277,12 @@ class Text extends Layout {
 
     this.tokens = split(syl, renderContext, style);
 
-    this.dashWidth = renderContext.measureText('-').width;
-    this.spaceWidth = renderContext.measureText(' ').width;
-
-    this.box = Object.assign({}, {width, height});
-    return {width, height};
-  }
-
-  position(renderContext, props, updatedParentPosition) {
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
-
-    return [updatedParentPosition];
-  }
-
-  render(
-    renderContext,
-    {polygons, width, showBoxes = false, lineHeight = 20, style}
-  ) {
-    const {dashWidth, spaceWidth} = this;
-
-    const [, , , maxY] = polysToBoundingBox(polygons.toPolygons());
-
-    if (showBoxes) {
-      renderContext.strokeStyle = 'teal';
-      renderContext.strokeRect(
-        this.box.x,
-        this.box.y,
-        this.box.width,
-        this.box.height
-      );
-    }
-
-    renderContext.beginPath();
-    renderContext.rect(this.box.x, this.box.y, this.box.width, this.box.height);
-    renderContext.clip();
-
     Object.assign(renderContext, style); // we need to paint text with a particular style
+
+    const dashWidth = renderContext.measureText('-').width;
+    const spaceWidth = renderContext.measureText(' ').width;
+
+    let [, , , maxY] = polysToBoundingBox(polygons.toPolygons());
 
     const tracking = {
       syllableCounter: 0,
@@ -294,12 +291,13 @@ class Text extends Layout {
     };
 
     let lineIndex = 0;
+    this.finalBoxes = [];
+    this.debugBoxes = [];
     for (;;) {
       const rowBoxes = getRowBoxes(lineIndex, lineHeight, width, polygons);
 
       for (let x = 0; x < rowBoxes.length; x++) {
-        processBox(
-          renderContext,
+        const {result, debugBoxes} = processBox(
           this.box,
           rowBoxes[x],
           this.tokens,
@@ -309,6 +307,9 @@ class Text extends Layout {
           dashWidth,
           showBoxes
         );
+
+        this.finalBoxes.push(...result);
+        this.debugBoxes.push(...debugBoxes);
       }
 
       const currentY = lineIndex * lineHeight;
@@ -316,8 +317,40 @@ class Text extends Layout {
       if (currentY > maxY) {
         break;
       }
+      if (tracking.tokenCursor === this.tokens.length) {
+        maxY = currentY + lineHeight;
+        break;
+      }
 
       lineIndex++;
+    }
+
+    this.box = Object.assign({}, {width, height: maxY});
+    return {width, height: maxY};
+  }
+
+  position(renderContext, props, updatedParentPosition) {
+    this.box.x = updatedParentPosition.x;
+    this.box.y = updatedParentPosition.y;
+
+    return [updatedParentPosition];
+  }
+
+  render(renderContext, {lineHeight, showBoxes = false, style}) {
+    renderContext.beginPath();
+    renderContext.rect(this.box.x, this.box.y, this.box.width, this.box.height);
+    renderContext.clip();
+
+    if (showBoxes) {
+      for (let {color, x, y, width, height} of this.debugBoxes) {
+        renderContext.strokeStyle = color;
+        renderContext.strokeRect(this.box.x + x, this.box.y + y, width, height);
+      }
+    }
+    Object.assign(renderContext, style); // we need to paint text with a particular style
+    renderContext.textBaseline = 'top';
+    for (let {text, x, y} of this.finalBoxes) {
+      renderContext.fillText(text, this.box.x + x, this.box.y + y - lineHeight);
     }
   }
 }
