@@ -54,6 +54,7 @@ tape('spaced-line-horizontal-left-with-margin', t => {
             size: 100,
             text: 'A',
             showBoxes: true,
+            color: 'white',
             done: () => {}
           })
         )
@@ -104,6 +105,7 @@ tape('spaced-line-horizontal-right-with-margin', t => {
             font: 'sans',
             size: 100,
             text: 'A',
+            color: 'white',
             showBoxes: true,
             done: () => {}
           })
@@ -155,6 +157,7 @@ tape('spaced-line-vertical-left-with-margin', t => {
             font: 'sans',
             size: 100,
             text: 'A',
+            color: 'white',
             showBoxes: true,
             done: () => {}
           })

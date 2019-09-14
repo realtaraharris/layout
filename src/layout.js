@@ -67,7 +67,9 @@ function r(renderContext, component) {
   component.methods.render(renderContext, component.props);
 
   for (let i = 0; i < component.children.length; i++) {
+    renderContext.save();
     r(renderContext, component.children[i]);
+    renderContext.restore();
   }
 }
 
