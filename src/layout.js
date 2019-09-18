@@ -74,9 +74,6 @@ function r(renderContext, component) {
 }
 
 function renderRoot(renderContext, root) {
-  renderContext.fillStyle = 'indigo';
-  renderContext.fillRect(0, 0, 800, 600);
-
   // calls each size function, ensuring that each component has a box
   down(renderContext, root);
 
