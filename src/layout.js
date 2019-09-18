@@ -1,7 +1,7 @@
 'use strict';
 
-function c(name, methods, props, ...children) {
-  const a = {methods, name, props, children};
+function c(Methods, props, ...children) {
+  const a = {methods: new Methods(), props, children};
   for (let child of children) {
     child.parent = a;
   }

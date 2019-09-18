@@ -24,14 +24,12 @@ tape('spaced-line-horizontal-left-with-margin', t => {
   const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'horizontal', align: 'left'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 90,
@@ -40,8 +38,7 @@ tape('spaced-line-horizontal-left-with-margin', t => {
           done: () => {}
         }),
         c(
-          'margin',
-          new Margin(),
+          Margin,
           {
             top: marginA,
             bottom: marginA,
@@ -49,7 +46,7 @@ tape('spaced-line-horizontal-left-with-margin', t => {
             right: marginA,
             showBoxes: true
           },
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             size: 100,
             text: 'A',
@@ -76,14 +73,12 @@ tape('spaced-line-horizontal-right-with-margin', t => {
   const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'horizontal', align: 'right'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 90,
@@ -92,8 +87,7 @@ tape('spaced-line-horizontal-right-with-margin', t => {
           done: () => {}
         }),
         c(
-          'margin',
-          new Margin(),
+          Margin,
           {
             top: marginA,
             bottom: marginA,
@@ -101,7 +95,7 @@ tape('spaced-line-horizontal-right-with-margin', t => {
             right: marginA,
             showBoxes: true
           },
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             size: 100,
             text: 'A',
@@ -128,14 +122,12 @@ tape('spaced-line-vertical-left-with-margin', t => {
   const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'vertical', align: 'left'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 90,
@@ -144,8 +136,7 @@ tape('spaced-line-vertical-left-with-margin', t => {
           done: () => {}
         }),
         c(
-          'margin',
-          new Margin(),
+          Margin,
           {
             top: marginA,
             bottom: marginA,
@@ -153,7 +144,7 @@ tape('spaced-line-vertical-left-with-margin', t => {
             right: marginA,
             showBoxes: true
           },
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             size: 100,
             text: 'A',
@@ -183,14 +174,12 @@ tape('vertical layout', t => {
   const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'vertical', align: 'center'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -198,7 +187,7 @@ tape('vertical layout', t => {
           showBoxes: true,
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -206,7 +195,7 @@ tape('vertical layout', t => {
           showBoxes: true,
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -214,7 +203,7 @@ tape('vertical layout', t => {
           showBoxes: true,
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -223,12 +212,10 @@ tape('vertical layout', t => {
           done: () => {}
         }),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {
               top: marginA,
               bottom: marginA,
@@ -236,7 +223,7 @@ tape('vertical layout', t => {
               right: marginA,
               showBoxes: true
             },
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 100,
@@ -247,14 +234,12 @@ tape('vertical layout', t => {
           )
         ),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 200,
@@ -264,14 +249,12 @@ tape('vertical layout', t => {
           )
         ),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'serif',
               color: 'white',
               size: 30,
@@ -301,14 +284,12 @@ tape('vertical layout, right-aligned', t => {
   const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'vertical', align: 'right'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -316,7 +297,7 @@ tape('vertical layout, right-aligned', t => {
           showBoxes: true,
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -324,7 +305,7 @@ tape('vertical layout, right-aligned', t => {
           showBoxes: true,
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -332,7 +313,7 @@ tape('vertical layout, right-aligned', t => {
           showBoxes: true,
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -341,12 +322,10 @@ tape('vertical layout, right-aligned', t => {
           done: () => {}
         }),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {
               top: marginA,
               bottom: marginA,
@@ -354,7 +333,7 @@ tape('vertical layout, right-aligned', t => {
               right: marginA,
               showBoxes: true
             },
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 100,
@@ -365,14 +344,12 @@ tape('vertical layout, right-aligned', t => {
           )
         ),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 200,
@@ -382,14 +359,12 @@ tape('vertical layout, right-aligned', t => {
           )
         ),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'serif',
               color: 'white',
               size: 30,
@@ -416,12 +391,10 @@ tape('spaced-line vertical right', t => {
   const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'margin',
-        new Margin(),
+        Margin,
         {
           top: marginA,
           bottom: marginA,
@@ -430,24 +403,23 @@ tape('spaced-line vertical right', t => {
           showBoxes: true
         },
         c(
-          'spacedLine',
-          new SpacedLine(),
+          SpacedLine,
           {mode: 'vertical', align: 'right'},
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 100,
             text: 'i',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 100,
             text: 'Wide',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 100,
@@ -473,12 +445,10 @@ tape('spaced-line vertical center', t => {
   const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'margin',
-        new Margin(),
+        Margin,
         {
           top: marginA,
           bottom: marginA,
@@ -487,24 +457,23 @@ tape('spaced-line vertical center', t => {
           showBoxes: true
         },
         c(
-          'spacedLine',
-          new SpacedLine(),
+          SpacedLine,
           {mode: 'vertical', align: 'center'},
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
             text: 'i',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
             text: 'Wide',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
@@ -530,12 +499,10 @@ tape('spaced-line horizontal center', t => {
   const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'margin',
-        new Margin(),
+        Margin,
         {
           top: marginA,
           bottom: marginA,
@@ -544,24 +511,23 @@ tape('spaced-line horizontal center', t => {
           showBoxes: true
         },
         c(
-          'spacedLine',
-          new SpacedLine(),
+          SpacedLine,
           {mode: 'horizontal', align: 'center'},
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
             text: 'i',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
             text: 'Wide',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
@@ -587,12 +553,10 @@ tape('spaced-line diagonal center', t => {
   const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'margin',
-        new Margin(),
+        Margin,
         {
           top: marginA,
           bottom: marginA,
@@ -601,24 +565,23 @@ tape('spaced-line diagonal center', t => {
           showBoxes: true
         },
         c(
-          'spacedLine',
-          new SpacedLine(),
+          SpacedLine,
           {mode: 'diagonal', align: 'center'},
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
             text: 'i',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
             text: 'Wide',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
@@ -644,12 +607,10 @@ tape('spaced-line-horizontal-right', t => {
   const marginA = 100;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'margin',
-        new Margin(),
+        Margin,
         {
           top: marginA,
           bottom: marginA,
@@ -658,24 +619,23 @@ tape('spaced-line-horizontal-right', t => {
           showBoxes: true
         },
         c(
-          'spacedLine',
-          new SpacedLine(),
+          SpacedLine,
           {mode: 'horizontal', align: 'right'},
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
             text: 'i',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
             text: 'Wide',
             showBoxes: true
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 25,
@@ -703,22 +663,18 @@ tape('spaced-line-vertical-center-with-margin', t => {
   const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'vertical', align: 'center'},
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 70,
@@ -747,22 +703,18 @@ tape('complex-nested', t => {
   const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'vertical', align: 'center'},
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 70,
@@ -772,18 +724,15 @@ tape('complex-nested', t => {
           )
         ),
         c(
-          'spacedLine',
-          new SpacedLine(),
+          SpacedLine,
           {mode: 'horizontal', align: 'center'},
           c(
-            'button',
-            new Button(),
+            Button,
             {onInput: log, onClick: log},
             c(
-              'margin',
-              new Margin(),
+              Margin,
               {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-              c('label', new Label(), {
+              c(Label, {
                 font: 'sans',
                 color: 'white',
                 size: 70,
@@ -793,10 +742,9 @@ tape('complex-nested', t => {
             )
           ),
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 70,
@@ -805,10 +753,9 @@ tape('complex-nested', t => {
             })
           ),
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 70,
@@ -817,10 +764,9 @@ tape('complex-nested', t => {
             })
           ),
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 200, bottom: 10, left: 10, right: 100, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 150,
@@ -829,10 +775,9 @@ tape('complex-nested', t => {
             })
           ),
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 70,
@@ -842,18 +787,15 @@ tape('complex-nested', t => {
           )
         ),
         c(
-          'spacedLine',
-          new SpacedLine(),
+          SpacedLine,
           {mode: 'diagonal', align: 'center'},
           c(
-            'button',
-            new Button(),
+            Button,
             {onInput: log, onClick: log},
             c(
-              'margin',
-              new Margin(),
+              Margin,
               {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-              c('label', new Label(), {
+              c(Label, {
                 font: 'sans',
                 color: 'white',
                 size: 70,
@@ -870,7 +812,7 @@ tape('complex-nested', t => {
   screenshot('complex-nested', canvas, t);
 });
 
-tape('margin', t => {
+tape(t => {
   const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
@@ -881,16 +823,13 @@ tape('margin', t => {
   const marginA = 10;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'horizontal', align: 'left'},
         c(
-          'margin',
-          new Margin(),
+          Margin,
           {
             top: marginA,
             bottom: marginA,
@@ -898,7 +837,7 @@ tape('margin', t => {
             right: marginA,
             showBoxes: true
           },
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 100,
@@ -908,8 +847,7 @@ tape('margin', t => {
           })
         ),
         c(
-          'margin',
-          new Margin(),
+          Margin,
           {
             top: marginA,
             bottom: marginA,
@@ -917,7 +855,7 @@ tape('margin', t => {
             right: marginA,
             showBoxes: true
           },
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 100,
@@ -947,14 +885,12 @@ tape('horizontal layout', t => {
   const marginA = 0;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'horizontal', align: 'center'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -962,7 +898,7 @@ tape('horizontal layout', t => {
           showBoxes: true,
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -970,7 +906,7 @@ tape('horizontal layout', t => {
           showBoxes: true,
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -978,7 +914,7 @@ tape('horizontal layout', t => {
           showBoxes: true,
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -987,12 +923,10 @@ tape('horizontal layout', t => {
           done: () => {}
         }),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {
               top: marginA,
               bottom: marginA,
@@ -1000,7 +934,7 @@ tape('horizontal layout', t => {
               right: marginA,
               showBoxes: true
             },
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 100,
@@ -1011,14 +945,12 @@ tape('horizontal layout', t => {
           )
         ),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 20,
@@ -1028,14 +960,12 @@ tape('horizontal layout', t => {
           )
         ),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'serif',
               color: 'white',
               size: 30,
@@ -1065,35 +995,33 @@ tape('diagonal layout', t => {
   const marginA = 20;
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'diagonal', align: 'left'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
           text: 'Push Me',
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
           text: 'Push Me',
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
           text: 'Push Me',
           done: () => {}
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
@@ -1101,12 +1029,10 @@ tape('diagonal layout', t => {
           done: () => {}
         }),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {
               top: marginA,
               bottom: marginA,
@@ -1115,10 +1041,9 @@ tape('diagonal layout', t => {
               showBoxes: true
             },
             c(
-              'spacedLine',
-              new SpacedLine(),
+              SpacedLine,
               {mode: 'vertical', align: 'left'},
-              c('label', new Label(), {
+              c(Label, {
                 font: 'sans',
                 color: 'white',
                 size: 100,
@@ -1126,7 +1051,7 @@ tape('diagonal layout', t => {
                 showBoxes: true,
                 done: () => {}
               }),
-              c('label', new Label(), {
+              c(Label, {
                 font: 'sans',
                 color: 'white',
                 size: 100,
@@ -1138,12 +1063,10 @@ tape('diagonal layout', t => {
           )
         ),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {
               top: marginA,
               bottom: marginA,
@@ -1151,7 +1074,7 @@ tape('diagonal layout', t => {
               right: marginA,
               showBoxes: true
             },
-            c('label', new Label(), {
+            c(Label, {
               font: 'sans',
               color: 'white',
               size: 20,
@@ -1161,12 +1084,10 @@ tape('diagonal layout', t => {
           )
         ),
         c(
-          'button',
-          new Button(),
+          Button,
           {onInput: log, onClick: log},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {
               top: marginA,
               bottom: marginA,
@@ -1174,7 +1095,7 @@ tape('diagonal layout', t => {
               right: marginA,
               showBoxes: true
             },
-            c('label', new Label(), {
+            c(Label, {
               font: 'serif',
               color: 'white',
               size: 30,
@@ -1200,18 +1121,15 @@ tape('mixed layout, no margins', t => {
   const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'horizontal', align: 'left'},
         c(
-          'spacedLine',
-          new SpacedLine(),
+          SpacedLine,
           {mode: 'vertical', align: 'left'},
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 100,
@@ -1219,7 +1137,7 @@ tape('mixed layout, no margins', t => {
             showBoxes: true,
             done: () => {}
           }),
-          c('label', new Label(), {
+          c(Label, {
             font: 'sans',
             color: 'white',
             size: 100,
@@ -1228,14 +1146,14 @@ tape('mixed layout, no margins', t => {
             done: () => {}
           })
         ),
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
           text: 'c',
           showBoxes: true
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'serif',
           color: 'white',
           size: 30,
@@ -1249,7 +1167,7 @@ tape('mixed layout, no margins', t => {
   screenshot('mixed', canvas, t);
 });
 
-tape('viewport', t => {
+tape(t => {
   const {c, renderRoot} = require('../src/layout');
   const {Root, Label, SpacedLine, Button, Margin, Viewport} = proxyquire(
     '../src/components',
@@ -1265,18 +1183,15 @@ tape('viewport', t => {
 
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'horizontal', align: 'center'},
         c(
-          'margin',
-          new Margin(),
+          Margin,
           {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-          c('label', new Label(), {
+          c(Label, {
             font: 'serif',
             color: 'white',
             size: 30,
@@ -1285,14 +1200,12 @@ tape('viewport', t => {
           })
         ),
         c(
-          'spacedLine',
-          new SpacedLine(),
+          SpacedLine,
           {mode: 'vertical', align: 'center'},
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'serif',
               color: 'white',
               size: 30,
@@ -1301,10 +1214,9 @@ tape('viewport', t => {
             })
           ),
           c(
-            'margin',
-            new Margin(),
+            Margin,
             {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c('label', new Label(), {
+            c(Label, {
               font: 'serif',
               color: 'white',
               size: 30,
@@ -1313,8 +1225,7 @@ tape('viewport', t => {
             })
           ),
           c(
-            'viewport',
-            new Viewport(),
+            Viewport,
             {
               width: 500 - shrink,
               height: 284 - shrink,
@@ -1322,18 +1233,15 @@ tape('viewport', t => {
               offsetY: 1.0
             },
             c(
-              'spacedLine',
-              new SpacedLine(),
+              SpacedLine,
               {mode: 'vertical', align: 'center'},
               c(
-                'button',
-                new Button(),
+                Button,
                 {onInput: log, onClick: log},
                 c(
-                  'margin',
-                  new Margin(),
+                  Margin,
                   {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-                  c('label', new Label(), {
+                  c(Label, {
                     font: 'sans',
                     color: 'white',
                     size: 70,
@@ -1343,16 +1251,13 @@ tape('viewport', t => {
                 )
               ),
               c(
-                'spacedLine',
-                new SpacedLine(),
+                SpacedLine,
                 {mode: 'horizontal', align: 'center'},
                 c(
-                  'button',
-                  new Button(),
+                  Button,
                   {onInput: log, onClick: log},
                   c(
-                    'margin',
-                    new Margin(),
+                    Margin,
                     {
                       top: 10,
                       bottom: 10,
@@ -1360,7 +1265,7 @@ tape('viewport', t => {
                       right: 10,
                       showBoxes: true
                     },
-                    c('label', new Label(), {
+                    c(Label, {
                       font: 'sans',
                       color: 'white',
                       size: 70,
@@ -1370,10 +1275,9 @@ tape('viewport', t => {
                   )
                 ),
                 c(
-                  'margin',
-                  new Margin(),
+                  Margin,
                   {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-                  c('label', new Label(), {
+                  c(Label, {
                     font: 'sans',
                     color: 'white',
                     size: 70,
@@ -1382,10 +1286,9 @@ tape('viewport', t => {
                   })
                 ),
                 c(
-                  'margin',
-                  new Margin(),
+                  Margin,
                   {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-                  c('label', new Label(), {
+                  c(Label, {
                     font: 'sans',
                     color: 'white',
                     size: 70,
@@ -1394,8 +1297,7 @@ tape('viewport', t => {
                   })
                 ),
                 c(
-                  'margin',
-                  new Margin(),
+                  Margin,
                   {
                     top: 50,
                     bottom: 10,
@@ -1403,7 +1305,7 @@ tape('viewport', t => {
                     right: 100,
                     showBoxes: true
                   },
-                  c('label', new Label(), {
+                  c(Label, {
                     font: 'sans',
                     color: 'white',
                     size: 50,
@@ -1412,10 +1314,9 @@ tape('viewport', t => {
                   })
                 ),
                 c(
-                  'margin',
-                  new Margin(),
+                  Margin,
                   {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-                  c('label', new Label(), {
+                  c(Label, {
                     font: 'sans',
                     color: 'white',
                     size: 70,
@@ -1425,16 +1326,13 @@ tape('viewport', t => {
                 )
               ),
               c(
-                'spacedLine',
-                new SpacedLine(),
+                SpacedLine,
                 {mode: 'diagonal', align: 'center'},
                 c(
-                  'button',
-                  new Button(),
+                  Button,
                   {onInput: log, onClick: log},
                   c(
-                    'margin',
-                    new Margin(),
+                    Margin,
                     {
                       top: 10,
                       bottom: 10,
@@ -1442,7 +1340,7 @@ tape('viewport', t => {
                       right: 10,
                       showBoxes: true
                     },
-                    c('label', new Label(), {
+                    c(Label, {
                       font: 'sans',
                       color: 'white',
                       size: 70,
@@ -1452,14 +1350,14 @@ tape('viewport', t => {
                   )
                 )
               ),
-              c('label', new Label(), {
+              c(Label, {
                 font: 'sans',
                 color: 'white',
                 size: 20,
                 text: 'c',
                 showBoxes: true
               }),
-              c('label', new Label(), {
+              c(Label, {
                 font: 'serif',
                 color: 'white',
                 size: 30,
@@ -1487,15 +1385,13 @@ tape('components-line-215', t => {
   const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'horizontal', align: 'heft'},
-        c('label', new Label(), {font: 'sans', size: 20, text: 'c'}),
-        c('label', new Label(), {font: 'serif', size: 30, text: 'd'})
+        c(Label, {font: 'sans', size: 20, text: 'c'}),
+        c(Label, {font: 'serif', size: 30, text: 'd'})
       )
     );
 
@@ -1513,15 +1409,13 @@ tape('components-line-228', t => {
   const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'vertical', align: 'heft'},
-        c('label', new Label(), {font: 'sans', size: 20, text: 'c'}),
-        c('label', new Label(), {font: 'serif', size: 30, text: 'd'})
+        c(Label, {font: 'sans', size: 20, text: 'c'}),
+        c(Label, {font: 'serif', size: 30, text: 'd'})
       )
     );
 
@@ -1539,20 +1433,18 @@ tape('components-line-236', t => {
   const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'diagone', align: 'left'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           size: 20,
           text: 'c',
           showBoxes: true
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'serif',
           size: 30,
           text: 'd',
@@ -1575,21 +1467,19 @@ tape('components-line-246', t => {
   const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'bertical', align: 'left'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 20,
           text: 'c',
           showBoxes: true
         }),
-        c('label', new Label(), {
+        c(Label, {
           font: 'serif',
           color: 'white',
           size: 30,
@@ -1602,7 +1492,7 @@ tape('components-line-246', t => {
   renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });
 
-tape('text', t => {
+tape(t => {
   const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
@@ -1637,14 +1527,12 @@ tape('text', t => {
 
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'vertical', align: 'left'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 100,
@@ -1653,8 +1541,7 @@ tape('text', t => {
           done: () => {}
         }),
         c(
-          'margin',
-          new Margin(),
+          Margin,
           {
             top: marginA,
             bottom: marginA,
@@ -1662,7 +1549,7 @@ tape('text', t => {
             right: 20,
             showBoxes: true
           },
-          c('text', new Text(), {
+          c(Text, {
             width: textWidth,
             height: textHeight,
             lineHeight: 20,
@@ -1723,14 +1610,12 @@ tape('text - concave cutout', t => {
 
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'vertical', align: 'left'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 100,
@@ -1739,8 +1624,7 @@ tape('text - concave cutout', t => {
           done: () => {}
         }),
         c(
-          'margin',
-          new Margin(),
+          Margin,
           {
             top: marginA,
             bottom: marginA,
@@ -1748,7 +1632,7 @@ tape('text - concave cutout', t => {
             right: marginA,
             showBoxes: true
           },
-          c('text', new Text(), {
+          c(Text, {
             width: textWidth,
             height: textHeight,
             lineHeight: 20,
@@ -1810,14 +1694,12 @@ tape('text - diamond bounding polygon', t => {
 
   const demo1 = ({x, y, width, height}) =>
     c(
-      'root',
-      new Root(),
+      Root,
       {x, y, width, height, color: 'black'},
       c(
-        'spacedLine',
-        new SpacedLine(),
+        SpacedLine,
         {mode: 'vertical', align: 'left'},
-        c('label', new Label(), {
+        c(Label, {
           font: 'sans',
           color: 'white',
           size: 100,
@@ -1826,8 +1708,7 @@ tape('text - diamond bounding polygon', t => {
           done: () => {}
         }),
         c(
-          'margin',
-          new Margin(),
+          Margin,
           {
             top: marginA,
             bottom: marginA,
@@ -1835,7 +1716,7 @@ tape('text - diamond bounding polygon', t => {
             right: 20,
             showBoxes: true
           },
-          c('text', new Text(), {
+          c(Text, {
             width: textWidth,
             height: textHeight,
             lineHeight: 20,
