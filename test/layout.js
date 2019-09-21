@@ -812,7 +812,7 @@ tape('complex-nested', t => {
   screenshot('complex-nested', canvas, t);
 });
 
-tape(t => {
+tape('margin', t => {
   const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail
@@ -1167,208 +1167,12 @@ tape('mixed layout, no margins', t => {
   screenshot('mixed', canvas, t);
 });
 
-tape(t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Label, SpacedLine, Button, Margin, Viewport} = proxyquire(
-    '../src/components',
-    {
-      './log': t.fail
-    }
-  );
-
+tape('viewport', t => {
+  const {renderRoot} = require('../src/layout');
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
 
-  const shrink = 40;
-
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        SpacedLine,
-        {mode: 'horizontal', align: 'center'},
-        c(
-          Margin,
-          {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-          c(Label, {
-            font: 'serif',
-            color: 'white',
-            size: 30,
-            text: 'item 0',
-            showBoxes: true
-          })
-        ),
-        c(
-          SpacedLine,
-          {mode: 'vertical', align: 'center'},
-          c(
-            Margin,
-            {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c(Label, {
-              font: 'serif',
-              color: 'white',
-              size: 30,
-              text: 'item 1',
-              showBoxes: true
-            })
-          ),
-          c(
-            Margin,
-            {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c(Label, {
-              font: 'serif',
-              color: 'white',
-              size: 30,
-              text: 'item 2',
-              showBoxes: true
-            })
-          ),
-          c(
-            Viewport,
-            {
-              width: 500 - shrink,
-              height: 284 - shrink,
-              offsetX: 1.0,
-              offsetY: 1.0
-            },
-            c(
-              SpacedLine,
-              {mode: 'vertical', align: 'center'},
-              c(
-                Button,
-                {onInput: log, onClick: log},
-                c(
-                  Margin,
-                  {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-                  c(Label, {
-                    font: 'sans',
-                    color: 'white',
-                    size: 70,
-                    text: 'crazy 88s',
-                    showBoxes: true
-                  })
-                )
-              ),
-              c(
-                SpacedLine,
-                {mode: 'horizontal', align: 'center'},
-                c(
-                  Button,
-                  {onInput: log, onClick: log},
-                  c(
-                    Margin,
-                    {
-                      top: 10,
-                      bottom: 10,
-                      left: 10,
-                      right: 10,
-                      showBoxes: true
-                    },
-                    c(Label, {
-                      font: 'sans',
-                      color: 'white',
-                      size: 70,
-                      text: 'a',
-                      showBoxes: true
-                    })
-                  )
-                ),
-                c(
-                  Margin,
-                  {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-                  c(Label, {
-                    font: 'sans',
-                    color: 'white',
-                    size: 70,
-                    text: 'b',
-                    showBoxes: true
-                  })
-                ),
-                c(
-                  Margin,
-                  {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-                  c(Label, {
-                    font: 'sans',
-                    color: 'white',
-                    size: 70,
-                    text: 'c',
-                    showBoxes: true
-                  })
-                ),
-                c(
-                  Margin,
-                  {
-                    top: 50,
-                    bottom: 10,
-                    left: 10,
-                    right: 100,
-                    showBoxes: true
-                  },
-                  c(Label, {
-                    font: 'sans',
-                    color: 'white',
-                    size: 50,
-                    text: 'Il Caffe',
-                    showBoxes: true
-                  })
-                ),
-                c(
-                  Margin,
-                  {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-                  c(Label, {
-                    font: 'sans',
-                    color: 'white',
-                    size: 70,
-                    text: 'd',
-                    showBoxes: true
-                  })
-                )
-              ),
-              c(
-                SpacedLine,
-                {mode: 'diagonal', align: 'center'},
-                c(
-                  Button,
-                  {onInput: log, onClick: log},
-                  c(
-                    Margin,
-                    {
-                      top: 10,
-                      bottom: 10,
-                      left: 10,
-                      right: 10,
-                      showBoxes: true
-                    },
-                    c(Label, {
-                      font: 'sans',
-                      color: 'white',
-                      size: 70,
-                      text: 'B',
-                      showBoxes: true
-                    })
-                  )
-                )
-              ),
-              c(Label, {
-                font: 'sans',
-                color: 'white',
-                size: 20,
-                text: 'c',
-                showBoxes: true
-              }),
-              c(Label, {
-                font: 'serif',
-                color: 'white',
-                size: 30,
-                text: 'd',
-                showBoxes: true
-              })
-            )
-          )
-        )
-      )
-    );
+  const demo1 = require('./fixtures/viewport');
 
   renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
   screenshot('viewport', canvas, t);
@@ -1492,7 +1296,7 @@ tape('components-line-246', t => {
   renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });
 
-tape(t => {
+tape('text', t => {
   const {c, renderRoot} = require('../src/layout');
   const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.fail

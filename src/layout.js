@@ -8,18 +8,18 @@ function c(Methods, props, ...children) {
   return a;
 }
 
-function down(renderContext, component) {
+function sizeDown(renderContext, component) {
   // if we are a leaf node, start the up phase
   if (component.children.length === 0) {
-    up(renderContext, component);
+    sizeUp(renderContext, component);
   }
 
   for (let child of component.children) {
-    down(renderContext, child);
+    sizeDown(renderContext, child);
   }
 }
 
-function up(renderContext, component, childBox) {
+function sizeUp(renderContext, component, childBox) {
   let box = component.methods.size(
     renderContext,
     component.props,
@@ -32,7 +32,43 @@ function up(renderContext, component, childBox) {
     return;
   }
 
-  up(renderContext, component.parent, box);
+  sizeUp(renderContext, component.parent, box);
+}
+
+function pickDown(component, x, y) {
+  // if we are a leaf node, start the up phase
+  if (component.children.length === 0) {
+    const possibleComponent = pickUp(component, x, y);
+    if (possibleComponent) {
+      return possibleComponent;
+    }
+  }
+
+  for (let child of component.children) {
+    const possibleComponent = pickDown(child, x, y);
+    if (possibleComponent) {
+      return possibleComponent;
+    }
+  }
+}
+
+function pickUp(component, x, y) {
+  const {box, parent} = component.methods;
+  if (
+    x >= box.x &&
+    x <= box.x + box.width &&
+    y >= box.y &&
+    y <= box.y + box.height
+  ) {
+    return component;
+  }
+
+  // NB: if no box is returned, stop traversal per component API
+  if (!parent || !box) {
+    return;
+  }
+
+  return pickUp(parent, x, y);
 }
 
 function calcBoxPositions(renderContext, component, updatedParentPosition) {
@@ -73,16 +109,21 @@ function r(renderContext, component) {
   }
 }
 
-function renderRoot(renderContext, root) {
+function renderRoot(renderContext, treeRoot) {
   // calls each size function, ensuring that each component has a box
-  down(renderContext, root);
+  sizeDown(renderContext, treeRoot);
 
   // calls each position function. also fills in any missing boxes using size props
-  calcBoxPositions(renderContext, root, {x: 0, y: 0});
+  calcBoxPositions(renderContext, treeRoot, {x: 0, y: 0});
 
-  r(renderContext, root);
+  r(renderContext, treeRoot);
 
-  // console.log(util.inspect(root, false, null, true))
+  // console.log(util.inspect(treeRoot, false, null, true))
+  return treeRoot;
 }
 
-module.exports = {c, renderRoot};
+function pickComponent(treeRoot, x, y) {
+  return pickDown(treeRoot, x, y);
+}
+
+module.exports = {c, renderRoot, pickComponent};

@@ -276,22 +276,20 @@ class SpacedLine extends Layout {
 }
 
 class Button extends Layout {
-  // eslint-disable-next-line no-unused-vars
-  size(renderContext, {x, y, width, height}, childBox) {
-    // this.box = Object.assign({}, childBox)
+  size(renderContext, props, childBox) {
+    this.box.width = childBox.width;
+    this.box.height = childBox.height;
     return childBox; // sends a child box up
   }
 
-  // eslint-disable-next-line no-unused-vars
-  position(renderContext, {x, y, width, height}, updatedParentPosition) {
+  position(renderContext, props, updatedParentPosition) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
     return [updatedParentPosition];
   }
 
-  // eslint-disable-next-line no-unused-vars
-  render(renderContext, {x, y, width, height}) {}
+  render() {}
 }
 
 class Viewport extends Layout {

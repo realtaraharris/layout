@@ -336,7 +336,7 @@ class Text extends Layout {
     return [updatedParentPosition];
   }
 
-  render(renderContext, {text, lineHeight, showBoxes = false, style}) {
+  render(renderContext, {lineHeight, showBoxes = false, style}) {
     renderContext.beginPath();
     renderContext.rect(this.box.x, this.box.y, this.box.width, this.box.height);
     renderContext.clip();
