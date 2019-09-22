@@ -33,6 +33,8 @@ const spacedLineDiagonalCenter = require('./fixtures/spaced-line-diagonal-center
 
 const spacedLineHorizontalRight = require('./fixtures/spaced-line-horizontal-right');
 
+const spacedLineVerticalCenterWithMargin = require('./fixtures/spaced-line-vertical-center-with-margin');
+
 tape('spaced-line-horizontal-left-with-margin', t => {
   const {canvas} = setupComponentTest(spacedLineHorizontalLeftWithMargin);
   screenshot('spaced-line-horizontal-left-with-margin', canvas, t);
@@ -84,42 +86,7 @@ tape('spaced-line-horizontal-right', t => {
 });
 
 tape('spaced-line-vertical-center-with-margin', t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
-    '../src/components',
-    {
-      './log': t.fail
-    }
-  );
-
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        SpacedLine,
-        {mode: 'vertical', align: 'center'},
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c(Label, {
-              font: 'sans',
-              color: 'white',
-              size: 70,
-              text: 'B',
-              showBoxes: true
-            })
-          )
-        )
-      )
-    );
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  const {canvas} = setupComponentTest(spacedLineVerticalCenterWithMargin);
   screenshot('spaced-line-vertical-center-with-margin', canvas, t);
 });
 
