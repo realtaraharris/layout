@@ -44,6 +44,8 @@ const diagonalLayout = require('./fixtures/diagonal-layout');
 
 const mixedLayoutNoMargins = require('./fixtures/mixed-layout-no-margins');
 
+const viewport = require('./fixtures/viewport');
+
 tape('spaced-line-horizontal-left-with-margin', t => {
   const {canvas} = setupComponentTest(spacedLineHorizontalLeftWithMargin);
   screenshot('spaced-line-horizontal-left-with-margin', canvas, t);
@@ -125,13 +127,7 @@ tape('mixed layout, no margins', t => {
 });
 
 tape('viewport', t => {
-  const {renderRoot} = require('../src/layout');
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-
-  const demo1 = require('./fixtures/viewport');
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  const {canvas} = setupComponentTest(viewport);
   screenshot('viewport', canvas, t);
 });
 
