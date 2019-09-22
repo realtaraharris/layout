@@ -27,6 +27,8 @@ const spacedLineVerticalRight = require('./fixtures/spaced-line-vertical-right')
 
 const spacedLineVerticalCenter = require('./fixtures/spaced-line-vertical-center');
 
+const spacedLineHorizontalCenter = require('./fixtures/spaced-line-horizontal-center');
+
 tape('spaced-line-horizontal-left-with-margin', t => {
   const {canvas} = setupComponentTest(spacedLineHorizontalLeftWithMargin);
   screenshot('spaced-line-horizontal-left-with-margin', canvas, t);
@@ -63,56 +65,7 @@ tape('spaced-line vertical center', t => {
 });
 
 tape('spaced-line horizontal center', t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
-    './log': t.fail
-  });
-
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-  const marginA = 100;
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        Margin,
-        {
-          top: marginA,
-          bottom: marginA,
-          left: marginA,
-          right: marginA,
-          showBoxes: true
-        },
-        c(
-          SpacedLine,
-          {mode: 'horizontal', align: 'center'},
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 25,
-            text: 'i',
-            showBoxes: true
-          }),
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 25,
-            text: 'Wide',
-            showBoxes: true
-          }),
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 25,
-            text: '|',
-            showBoxes: true
-          })
-        )
-      )
-    );
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  const {canvas} = setupComponentTest(spacedLineHorizontalCenter);
   screenshot('spaced-line-horizontal-center', canvas, t);
 });
 
