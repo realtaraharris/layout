@@ -21,6 +21,10 @@ const spacedLineVerticalLeftWithMargin = require('./fixtures/spaced-line-vertica
 
 const verticalLayout = require('./fixtures/vertical-layout');
 
+const verticalLayoutRightAligned = require('./fixtures/vertical-layout-right-aligned');
+
+const spacedLineVerticalRight = require('./fixtures/spaced-line-vertical-right');
+
 tape('spaced-line-horizontal-left-with-margin', t => {
   const {canvas} = setupComponentTest(spacedLineHorizontalLeftWithMargin);
   screenshot('spaced-line-horizontal-left-with-margin', canvas, t);
@@ -42,166 +46,12 @@ tape('vertical layout', t => {
 });
 
 tape('vertical layout, right-aligned', t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
-    '../src/components',
-    {
-      './log': t.fail
-    }
-  );
-
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-  const marginA = 0;
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        SpacedLine,
-        {mode: 'vertical', align: 'right'},
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          showBoxes: true,
-          done: () => {}
-        }),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          showBoxes: true,
-          done: () => {}
-        }),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          showBoxes: true,
-          done: () => {}
-        }),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          showBoxes: true,
-          done: () => {}
-        }),
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {
-              top: marginA,
-              bottom: marginA,
-              left: marginA,
-              right: marginA,
-              showBoxes: true
-            },
-            c(Label, {
-              font: 'sans',
-              color: 'white',
-              size: 100,
-              text: 'A',
-              showBoxes: true,
-              done: () => {}
-            })
-          )
-        ),
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
-            c(Label, {
-              font: 'sans',
-              color: 'white',
-              size: 200,
-              text: 'B',
-              showBoxes: true
-            })
-          )
-        ),
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
-            c(Label, {
-              font: 'serif',
-              color: 'white',
-              size: 30,
-              text: 'C',
-              showBoxes: true
-            })
-          )
-        )
-      )
-    );
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  const {canvas} = setupComponentTest(verticalLayoutRightAligned);
   screenshot('vertical-right', canvas, t);
 });
 
 tape('spaced-line vertical right', t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
-    './log': t.fail
-  });
-
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-  const marginA = 100;
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        Margin,
-        {
-          top: marginA,
-          bottom: marginA,
-          left: marginA,
-          right: marginA,
-          showBoxes: true
-        },
-        c(
-          SpacedLine,
-          {mode: 'vertical', align: 'right'},
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 100,
-            text: 'i',
-            showBoxes: true
-          }),
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 100,
-            text: 'Wide',
-            showBoxes: true
-          }),
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 100,
-            text: '|',
-            showBoxes: true
-          })
-        )
-      )
-    );
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  const {canvas} = setupComponentTest(spacedLineVerticalRight);
   screenshot('spaced-line-vertical-right', canvas, t);
 });
 
