@@ -58,7 +58,7 @@ function pickDown(component, x, y, result) {
 }
 
 function pickUp(component, x, y, result) {
-  const {box, parent, intersect} = component.methods;
+  const {box, parent} = component.methods;
 
   if (!parent || !box) {
     return;

@@ -5,7 +5,7 @@ const tape = require('tape-catch');
 const proxyquire = require('proxyquire');
 
 const log = require('../src/log');
-const {clearTerminal, screenshot} = require('./lib/util');
+const {setupComponentTest, clearTerminal, screenshot} = require('./lib/util');
 const {createCircle} = require('../src/geometry');
 
 const WIDTH = 800;
@@ -13,52 +13,11 @@ const HEIGHT = 600;
 
 clearTerminal();
 
+const spacedLineHorizontalLeftWithMargin = require('./fixtures/spaced-line-horizontal-left-with-margin');
+
 tape('spaced-line-horizontal-left-with-margin', t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
-    './log': t.fail
-  });
+  const {canvas} = setupComponentTest(spacedLineHorizontalLeftWithMargin);
 
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-  const marginA = 0;
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        SpacedLine,
-        {mode: 'horizontal', align: 'left'},
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 90,
-          text: 'Push Me',
-          showBoxes: true,
-          done: () => {}
-        }),
-        c(
-          Margin,
-          {
-            top: marginA,
-            bottom: marginA,
-            left: marginA,
-            right: marginA,
-            showBoxes: true
-          },
-          c(Label, {
-            font: 'sans',
-            size: 100,
-            text: 'A',
-            showBoxes: true,
-            color: 'white',
-            done: () => {}
-          })
-        )
-      )
-    );
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
   screenshot('spaced-line-horizontal-left-with-margin', canvas, t);
 });
 
