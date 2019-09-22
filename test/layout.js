@@ -39,6 +39,8 @@ const complexNested = require('./fixtures/complex-nested');
 
 const margin = require('./fixtures/margin');
 
+const horizontalLayout = require('./fixtures/horizontal-layout');
+
 tape('spaced-line-horizontal-left-with-margin', t => {
   const {canvas} = setupComponentTest(spacedLineHorizontalLeftWithMargin);
   screenshot('spaced-line-horizontal-left-with-margin', canvas, t);
@@ -105,112 +107,7 @@ tape('margin', t => {
 });
 
 tape('horizontal layout', t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
-    '../src/components',
-    {
-      './log': t.fail
-    }
-  );
-
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-  const marginA = 0;
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        SpacedLine,
-        {mode: 'horizontal', align: 'center'},
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          showBoxes: true,
-          done: () => {}
-        }),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          showBoxes: true,
-          done: () => {}
-        }),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          showBoxes: true,
-          done: () => {}
-        }),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          showBoxes: true,
-          done: () => {}
-        }),
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {
-              top: marginA,
-              bottom: marginA,
-              left: marginA,
-              right: marginA,
-              showBoxes: true
-            },
-            c(Label, {
-              font: 'sans',
-              color: 'white',
-              size: 100,
-              text: 'A',
-              showBoxes: true,
-              done: () => {}
-            })
-          )
-        ),
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
-            c(Label, {
-              font: 'sans',
-              color: 'white',
-              size: 20,
-              text: 'B',
-              showBoxes: true
-            })
-          )
-        ),
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
-            c(Label, {
-              font: 'serif',
-              color: 'white',
-              size: 30,
-              text: 'C',
-              showBoxes: true
-            })
-          )
-        )
-      )
-    );
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  const {canvas} = setupComponentTest(horizontalLayout);
   screenshot('horizontal', canvas, t);
 });
 
