@@ -42,6 +42,8 @@ const horizontalLayout = require('./fixtures/horizontal-layout');
 
 const diagonalLayout = require('./fixtures/diagonal-layout');
 
+const mixedLayoutNoMargins = require('./fixtures/mixed-layout-no-margins');
+
 tape('spaced-line-horizontal-left-with-margin', t => {
   const {canvas} = setupComponentTest(spacedLineHorizontalLeftWithMargin);
   screenshot('spaced-line-horizontal-left-with-margin', canvas, t);
@@ -118,58 +120,7 @@ tape('diagonal layout', t => {
 });
 
 tape('mixed layout, no margins', t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Label, SpacedLine} = proxyquire('../src/components', {
-    './log': t.fail
-  });
-
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        SpacedLine,
-        {mode: 'horizontal', align: 'left'},
-        c(
-          SpacedLine,
-          {mode: 'vertical', align: 'left'},
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 100,
-            text: 'A',
-            showBoxes: true,
-            done: () => {}
-          }),
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 100,
-            text: 'B',
-            showBoxes: true,
-            done: () => {}
-          })
-        ),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'c',
-          showBoxes: true
-        }),
-        c(Label, {
-          font: 'serif',
-          color: 'white',
-          size: 30,
-          text: 'd',
-          showBoxes: true
-        })
-      )
-    );
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  const {canvas} = setupComponentTest(mixedLayoutNoMargins);
   screenshot('mixed', canvas, t);
 });
 
