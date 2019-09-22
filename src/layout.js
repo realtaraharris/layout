@@ -95,12 +95,12 @@ function calcBoxPositions(renderContext, component, updatedParentPosition) {
   }
 }
 
-function r(renderContext, component) {
+function render(renderContext, component) {
   component.methods.render(renderContext, component.props);
 
   for (let i = 0; i < component.children.length; i++) {
     renderContext.save();
-    r(renderContext, component.children[i]);
+    render(renderContext, component.children[i]);
     renderContext.restore();
   }
 }
@@ -112,7 +112,7 @@ function renderRoot(renderContext, treeRoot) {
   // calls each position function. also fills in any missing boxes using size props
   calcBoxPositions(renderContext, treeRoot, {x: 0, y: 0});
 
-  r(renderContext, treeRoot);
+  render(renderContext, treeRoot);
 
   // console.log(util.inspect(treeRoot, false, null, true))
   return treeRoot;
@@ -125,4 +125,4 @@ function pickComponent(treeRoot, x, y) {
   return result;
 }
 
-module.exports = {c, renderRoot, pickComponent};
+module.exports = {c, render, renderRoot, pickComponent};
