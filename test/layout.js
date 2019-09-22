@@ -4,7 +4,6 @@ const {createCanvas} = require('canvas');
 const tape = require('tape-catch');
 const proxyquire = require('proxyquire');
 
-const log = require('../src/log');
 const {setupComponentTest, clearTerminal, screenshot} = require('./lib/util');
 const {createCircle} = require('../src/geometry');
 
@@ -40,6 +39,8 @@ const complexNested = require('./fixtures/complex-nested');
 const margin = require('./fixtures/margin');
 
 const horizontalLayout = require('./fixtures/horizontal-layout');
+
+const diagonalLayout = require('./fixtures/diagonal-layout');
 
 tape('spaced-line-horizontal-left-with-margin', t => {
   const {canvas} = setupComponentTest(spacedLineHorizontalLeftWithMargin);
@@ -112,132 +113,7 @@ tape('horizontal layout', t => {
 });
 
 tape('diagonal layout', t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Margin, Button, Label, SpacedLine} = proxyquire(
-    '../src/components',
-    {
-      './log': t.fail
-    }
-  );
-
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-  const marginA = 20;
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        SpacedLine,
-        {mode: 'diagonal', align: 'left'},
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          done: () => {}
-        }),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          done: () => {}
-        }),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          done: () => {}
-        }),
-        c(Label, {
-          font: 'sans',
-          color: 'white',
-          size: 20,
-          text: 'Push Me',
-          done: () => {}
-        }),
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {
-              top: marginA,
-              bottom: marginA,
-              left: marginA,
-              right: marginA,
-              showBoxes: true
-            },
-            c(
-              SpacedLine,
-              {mode: 'vertical', align: 'left'},
-              c(Label, {
-                font: 'sans',
-                color: 'white',
-                size: 100,
-                text: 'A',
-                showBoxes: true,
-                done: () => {}
-              }),
-              c(Label, {
-                font: 'sans',
-                color: 'white',
-                size: 100,
-                text: 'A',
-                showBoxes: true,
-                done: () => {}
-              })
-            )
-          )
-        ),
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {
-              top: marginA,
-              bottom: marginA,
-              left: marginA,
-              right: marginA,
-              showBoxes: true
-            },
-            c(Label, {
-              font: 'sans',
-              color: 'white',
-              size: 20,
-              text: 'B',
-              showBoxes: true
-            })
-          )
-        ),
-        c(
-          Button,
-          {onInput: log, onClick: log},
-          c(
-            Margin,
-            {
-              top: marginA,
-              bottom: marginA,
-              left: marginA,
-              right: marginA,
-              showBoxes: true
-            },
-            c(Label, {
-              font: 'serif',
-              color: 'white',
-              size: 30,
-              text: 'C',
-              showBoxes: true
-            })
-          )
-        )
-      )
-    );
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  const {canvas} = setupComponentTest(diagonalLayout);
   screenshot('diagonal', canvas, t);
 });
 
