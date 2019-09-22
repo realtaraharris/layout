@@ -37,6 +37,8 @@ const spacedLineVerticalCenterWithMargin = require('./fixtures/spaced-line-verti
 
 const complexNested = require('./fixtures/complex-nested');
 
+const margin = require('./fixtures/margin');
+
 tape('spaced-line-horizontal-left-with-margin', t => {
   const {canvas} = setupComponentTest(spacedLineHorizontalLeftWithMargin);
   screenshot('spaced-line-horizontal-left-with-margin', canvas, t);
@@ -98,61 +100,7 @@ tape('complex-nested', t => {
 });
 
 tape('margin', t => {
-  const {c, renderRoot} = require('../src/layout');
-  const {Root, Margin, Label, SpacedLine} = proxyquire('../src/components', {
-    './log': t.fail
-  });
-
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
-  const marginA = 10;
-  const demo1 = ({x, y, width, height}) =>
-    c(
-      Root,
-      {x, y, width, height, color: 'black'},
-      c(
-        SpacedLine,
-        {mode: 'horizontal', align: 'left'},
-        c(
-          Margin,
-          {
-            top: marginA,
-            bottom: marginA,
-            left: marginA,
-            right: marginA,
-            showBoxes: true
-          },
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 100,
-            text: 'A',
-            showBoxes: true,
-            done: () => {}
-          })
-        ),
-        c(
-          Margin,
-          {
-            top: marginA,
-            bottom: marginA,
-            left: marginA,
-            right: marginA,
-            showBoxes: true
-          },
-          c(Label, {
-            font: 'sans',
-            color: 'white',
-            size: 100,
-            text: 'i',
-            showBoxes: true,
-            done: () => {}
-          })
-        )
-      )
-    );
-
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  const {canvas} = setupComponentTest(margin);
   screenshot('margin', canvas, t);
 });
 
