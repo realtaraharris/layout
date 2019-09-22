@@ -7,7 +7,7 @@ const {
   Button,
   Margin
 } = require('../../src/components');
-const log = console.log;
+const log = require('../../src/log');
 
 module.exports = ({x, y, width, height}) => {
   const marginA = 0;

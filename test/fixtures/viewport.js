@@ -1,5 +1,4 @@
 'use strict';
-const log = console.log;
 const {c} = require('../../src/layout');
 const {
   Root,
@@ -9,6 +8,7 @@ const {
   Margin,
   Viewport
 } = require('../../src/components');
+const log = require('../../src/log');
 
 module.exports = ({x, y, width, height}) => {
   const shrink = 40;
