@@ -35,40 +35,36 @@ function sizeUp(renderContext, component, childBox) {
   sizeUp(renderContext, component.parent, box);
 }
 
-function pickDown(component, x, y) {
+function pickDown(component, x, y, result) {
+  const {intersect} = component.methods;
+  const intersection = intersect(x, y);
+
+  if (intersection.hit) {
+    result.push(component);
+  }
+
+  if (!intersection.descend) {
+    return;
+  }
+
   // if we are a leaf node, start the up phase
   if (component.children.length === 0) {
-    const possibleComponent = pickUp(component, x, y);
-    if (possibleComponent) {
-      return possibleComponent;
-    }
+    pickUp(component, x, y, result);
   }
 
   for (let child of component.children) {
-    const possibleComponent = pickDown(child, x, y);
-    if (possibleComponent) {
-      return possibleComponent;
-    }
+    pickDown(child, x, y, result);
   }
 }
 
-function pickUp(component, x, y) {
-  const {box, parent} = component.methods;
-  if (
-    x >= box.x &&
-    x <= box.x + box.width &&
-    y >= box.y &&
-    y <= box.y + box.height
-  ) {
-    return component;
-  }
+function pickUp(component, x, y, result) {
+  const {box, parent, intersect} = component.methods;
 
-  // NB: if no box is returned, stop traversal per component API
   if (!parent || !box) {
     return;
   }
 
-  return pickUp(parent, x, y);
+  return pickUp(parent, x, y, result);
 }
 
 function calcBoxPositions(renderContext, component, updatedParentPosition) {
@@ -123,7 +119,10 @@ function renderRoot(renderContext, treeRoot) {
 }
 
 function pickComponent(treeRoot, x, y) {
-  return pickDown(treeRoot, x, y);
+  let result = [];
+  pickDown(treeRoot, x, y, result);
+
+  return result;
 }
 
 module.exports = {c, renderRoot, pickComponent};
