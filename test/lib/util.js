@@ -4,6 +4,8 @@ const fs = require('fs');
 const resemble = require('node-resemble-js');
 const {createCanvas} = require('canvas');
 const {renderRoot} = require('../../src/layout');
+const tape = require('tape-catch');
+
 const WIDTH = 800;
 const HEIGHT = 600;
 
@@ -65,9 +67,31 @@ function screenshot(name, canvas, t) {
     });
 }
 
+function executeTest(testName, testRunner) {
+  testRunner(testName, t => {
+    const {canvas} = setupComponentTest(require(`../fixtures/${testName}`));
+    screenshot(testName, canvas, t);
+  });
+}
+
+function test(testName) {
+  executeTest(testName, tape);
+}
+
+function only(testName) {
+  executeTest(testName, tape.only);
+}
+
+function skip(testName) {
+  executeTest(testName, tape.skip);
+}
+
 module.exports = {
   setupComponentTest,
   debugDot,
   clearTerminal,
-  screenshot
+  screenshot,
+  test,
+  only,
+  skip
 };
