@@ -1,15 +1,8 @@
 'use strict';
 
 const tape = require('tape-catch');
-const {
-  setupComponentTest,
-  debugDot,
-  clearTerminal,
-  screenshot
-} = require('./lib/util');
+const {setupComponentTest, debugDot, screenshot} = require('./lib/util');
 const {pickComponent} = require('../src/layout');
-
-clearTerminal();
 
 const labelButtonMarginLabel = require('./fixtures/button');
 const viewport = require('./fixtures/viewport');
