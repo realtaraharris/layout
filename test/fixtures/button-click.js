@@ -8,7 +8,7 @@ const {
   Margin
 } = require('../../src/components');
 
-module.exports = ({x, y, width, height}) => {
+module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
   const marginA = 20;
   return c(
     Root,
@@ -22,11 +22,11 @@ module.exports = ({x, y, width, height}) => {
         size: 90,
         text: 'Push Me',
         showBoxes: true,
-        done: () => {}
+        onClick: onLabelClick
       }),
       c(
         Button,
-        {width: 200, height: 40},
+        {width: 200, height: 40, onClick: onButtonClick},
         c(
           Margin,
           {
@@ -42,7 +42,7 @@ module.exports = ({x, y, width, height}) => {
             text: 'A',
             showBoxes: true,
             color: 'white',
-            done: () => {}
+            onClick: onLabelClick
           })
         )
       )

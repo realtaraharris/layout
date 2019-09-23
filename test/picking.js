@@ -2,53 +2,76 @@
 
 const tape = require('tape-catch');
 const {setupComponentTest, debugDot, screenshot} = require('./lib/util');
-const {pickComponent} = require('../src/layout');
-
-const labelButtonMarginLabel = require('./fixtures/button');
-const viewport = require('./fixtures/viewport');
+const {runAll, pickComponent} = require('../src/layout');
 
 tape('click a label', t => {
-  const {canvas, ctx, treeRoot} = setupComponentTest(labelButtonMarginLabel);
+  t.plan(3);
+  const onLabelClick = event => {
+    console.log(event); // TODO: decide what `event` contains
+    t.pass('label click'); // first assertion
+  };
+  const buttonClickingFixture = require('./fixtures/button-click');
+  const {canvas, ctx, treeRoot} = setupComponentTest(
+    buttonClickingFixture({onLabelClick})
+  );
 
   const target = {x: 12, y: 24};
-  const clickedComponents = pickComponent(treeRoot, target.x, target.y);
+  runAll(pickComponent(treeRoot, target.x, target.y));
   debugDot(ctx, target);
-  t.equals(clickedComponents.length, 1, 'found one component');
-  t.equals(clickedComponents[0].props.text, 'Push Me');
 
-  screenshot('click-a-label', canvas, t);
+  screenshot('click-a-label', canvas, t); // second, third assertions
 });
 
 tape('click a button', t => {
-  const {canvas, ctx, treeRoot} = setupComponentTest(labelButtonMarginLabel);
+  t.plan(3);
+  const onButtonClick = event => {
+    console.log(event); // TODO: decide what `event` contains
+    t.pass('button click'); // first assertion
+  };
+  const buttonClickingFixture = require('./fixtures/button-click');
+  const {canvas, ctx, treeRoot} = setupComponentTest(
+    buttonClickingFixture({onButtonClick})
+  );
 
   const target = {x: 170, y: 120};
-  const clickedComponents = pickComponent(treeRoot, target.x, target.y);
+  runAll(pickComponent(treeRoot, target.x, target.y));
   debugDot(ctx, target);
-  t.equals(clickedComponents.length, 1, 'found one component');
-  t.equals(clickedComponents[0].props.width, 200);
 
-  screenshot('click-a-button', canvas, t);
+  screenshot('click-a-button', canvas, t); // second, third assertions
 });
 
 tape('click a button inside a viewport', t => {
-  const {canvas, ctx, treeRoot} = setupComponentTest(viewport);
+  t.plan(3);
+  const onLabelClick = event => {
+    console.log(event); // TODO: decide what `event` contains
+    t.pass(); // first assertion
+  };
+  const viewport = require('./fixtures/viewport');
+  const {canvas, ctx, treeRoot} = setupComponentTest(viewport({onLabelClick}));
 
   const target = {x: 100, y: 190};
-  const clickedComponents = pickComponent(treeRoot, target.x, target.y);
+  runAll(pickComponent(treeRoot, target.x, target.y));
   debugDot(ctx, target);
-  t.equals(clickedComponents.length, 1);
 
-  screenshot('click-inside-viewport', canvas, t);
+  screenshot('click-inside-viewport', canvas, t); // second, third assertions
 });
 
 tape('click an occluded button inside a viewport', t => {
-  const {canvas, ctx, treeRoot} = setupComponentTest(viewport);
+  t.plan(2);
+  const onLabelClick = event => {
+    console.log(event); // TODO: decide what `event` contains
+    t.fail(); // first assertion
+  };
+  const viewport = require('./fixtures/viewport');
+  const {canvas, ctx, treeRoot} = setupComponentTest(
+    viewport({
+      onLabelClick
+    })
+  );
 
   const target = {x: 80, y: 190};
-  const clickedComponents = pickComponent(treeRoot, target.x, target.y);
+  runAll(pickComponent(treeRoot, target.x, target.y));
   debugDot(ctx, target);
-  t.equals(clickedComponents.length, 0);
 
-  screenshot('click-occluded-button-inside-viewport', canvas, t);
+  screenshot('click-occluded-button-inside-viewport', canvas, t); // second, third assertions
 });
