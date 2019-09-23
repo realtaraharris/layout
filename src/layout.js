@@ -105,14 +105,12 @@ function render(renderContext, component) {
   }
 }
 
-function renderRoot(renderContext, treeRoot) {
+function layout(renderContext, treeRoot) {
   // calls each size function, ensuring that each component has a box
   sizeDown(renderContext, treeRoot);
 
   // calls each position function. also fills in any missing boxes using size props
   calcBoxPositions(renderContext, treeRoot, {x: 0, y: 0});
-
-  render(renderContext, treeRoot);
 
   // console.log(util.inspect(treeRoot, false, null, true))
   return treeRoot;
@@ -125,4 +123,4 @@ function pickComponent(treeRoot, x, y) {
   return result;
 }
 
-module.exports = {c, render, renderRoot, pickComponent};
+module.exports = {c, render, layout, pickComponent};

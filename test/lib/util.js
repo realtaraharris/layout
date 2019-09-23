@@ -3,7 +3,7 @@
 const fs = require('fs');
 const resemble = require('node-resemble-js');
 const {createCanvas} = require('canvas');
-const {renderRoot} = require('../../src/layout');
+const {render, layout} = require('../../src/layout');
 const tape = require('tape-catch');
 
 const WIDTH = 800;
@@ -20,10 +20,12 @@ function setupComponentTest(fixture) {
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
 
-  const treeRoot = renderRoot(
+  const treeRoot = layout(
     ctx,
     fixture({x: 0, y: 0, width: WIDTH, height: HEIGHT})
   );
+
+  render(ctx, treeRoot);
 
   return {canvas, ctx, treeRoot};
 }

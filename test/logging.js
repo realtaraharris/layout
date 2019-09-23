@@ -11,7 +11,7 @@ const HEIGHT = 600;
 
 tape('components-line-215', t => {
   t.plan(2);
-  const {c, renderRoot} = require('../src/layout');
+  const {c, layout} = require('../src/layout');
   const {Root, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
   });
@@ -30,12 +30,12 @@ tape('components-line-215', t => {
       )
     );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  layout(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });
 
 tape('components-line-228', t => {
   t.plan(2);
-  const {c, renderRoot} = require('../src/layout');
+  const {c, layout} = require('../src/layout');
   const {Root, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
   });
@@ -54,12 +54,12 @@ tape('components-line-228', t => {
       )
     );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  layout(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });
 
 tape('components-line-236', t => {
   t.plan(6);
-  const {c, renderRoot} = require('../src/layout');
+  const {c, layout} = require('../src/layout');
   const {Root, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
   });
@@ -88,12 +88,12 @@ tape('components-line-236', t => {
       )
     );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  layout(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });
 
 tape('components-line-246', t => {
   t.plan(6);
-  const {c, renderRoot} = require('../src/layout');
+  const {c, layout} = require('../src/layout');
   const {Root, Label, SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
   });
@@ -124,5 +124,5 @@ tape('components-line-246', t => {
       )
     );
 
-  renderRoot(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  layout(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });
