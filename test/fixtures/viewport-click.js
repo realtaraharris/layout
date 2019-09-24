@@ -10,7 +10,7 @@ const {
 } = require('../../src/components');
 const log = require('../../src/log');
 
-module.exports = ({x, y, width, height}) => {
+module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
   const shrink = 40;
 
   return c(
@@ -86,7 +86,7 @@ module.exports = ({x, y, width, height}) => {
               {mode: 'horizontal', align: 'center'},
               c(
                 Button,
-                {onInput: log},
+                {onInput: log, onClick: onLabelClick},
                 c(
                   Margin,
                   {

@@ -46,8 +46,10 @@ tape('click a button inside a viewport', t => {
     console.log(event); // TODO: decide what `event` contains
     t.pass(); // first assertion
   };
-  const viewport = require('./fixtures/viewport');
-  const {canvas, ctx, treeRoot} = setupComponentTest(viewport({onLabelClick}));
+  const viewportClickingFixture = require('./fixtures/viewport-click');
+  const {canvas, ctx, treeRoot} = setupComponentTest(
+    viewportClickingFixture({onLabelClick})
+  );
 
   const target = {x: 100, y: 190};
   runAll(pickComponent(treeRoot, target.x, target.y));
@@ -62,9 +64,9 @@ tape('click an occluded button inside a viewport', t => {
     console.log(event); // TODO: decide what `event` contains
     t.fail(); // first assertion
   };
-  const viewport = require('./fixtures/viewport');
+  const viewportClickingFixture = require('./fixtures/viewport-click');
   const {canvas, ctx, treeRoot} = setupComponentTest(
-    viewport({
+    viewportClickingFixture({
       onLabelClick
     })
   );
