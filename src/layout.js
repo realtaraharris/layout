@@ -116,18 +116,12 @@ function layout(renderContext, treeRoot) {
   return treeRoot;
 }
 
-// TODO: rename this!
-function pickComponent(treeRoot, x, y) {
-  let result = [];
-  pickDown(treeRoot, x, y, result);
+function click(treeRoot, x, y) {
+  let results = [];
+  pickDown(treeRoot, x, y, results);
 
-  return result;
-}
-
-// TODO: rename this!
-function runAll(components) {
-  if (components && components.length > 0) {
-    for (let c of components) {
+  if (results && results.length > 0) {
+    for (let c of results) {
       if (c.props.onClick) {
         c.props.onClick();
       }
@@ -135,4 +129,4 @@ function runAll(components) {
   }
 }
 
-module.exports = {c, render, layout, runAll, pickComponent};
+module.exports = {c, render, layout, click};

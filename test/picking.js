@@ -2,7 +2,7 @@
 
 const tape = require('tape-catch');
 const {setupComponentTest, debugDot, screenshot} = require('./lib/util');
-const {runAll, pickComponent} = require('../src/layout');
+const {click} = require('../src/layout');
 
 tape('click a label', t => {
   t.plan(3);
@@ -16,7 +16,7 @@ tape('click a label', t => {
   );
 
   const target = {x: 12, y: 24};
-  runAll(pickComponent(treeRoot, target.x, target.y));
+  click(treeRoot, target.x, target.y);
   debugDot(ctx, target);
 
   screenshot('click-a-label', canvas, t); // second, third assertions
@@ -34,7 +34,7 @@ tape('click a button', t => {
   );
 
   const target = {x: 170, y: 120};
-  runAll(pickComponent(treeRoot, target.x, target.y));
+  click(treeRoot, target.x, target.y);
   debugDot(ctx, target);
 
   screenshot('click-a-button', canvas, t); // second, third assertions
@@ -52,7 +52,7 @@ tape('click a button inside a viewport', t => {
   );
 
   const target = {x: 100, y: 190};
-  runAll(pickComponent(treeRoot, target.x, target.y));
+  click(treeRoot, target.x, target.y);
   debugDot(ctx, target);
 
   screenshot('click-inside-viewport', canvas, t); // second, third assertions
@@ -72,7 +72,7 @@ tape('click an occluded button inside a viewport', t => {
   );
 
   const target = {x: 80, y: 190};
-  runAll(pickComponent(treeRoot, target.x, target.y));
+  click(treeRoot, target.x, target.y);
   debugDot(ctx, target);
 
   screenshot('click-occluded-button-inside-viewport', canvas, t); // second, third assertions
