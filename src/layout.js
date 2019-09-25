@@ -1,8 +1,9 @@
 'use strict';
 
 function c(Methods, props, ...children) {
-  const a = {methods: new Methods(), props, children};
-  for (let child of children) {
+  const filteredChildren = children.filter(Boolean);
+  const a = {methods: new Methods(), props, children: filteredChildren};
+  for (let child of filteredChildren) {
     child.parent = a;
   }
   return a;

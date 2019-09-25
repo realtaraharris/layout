@@ -4,6 +4,7 @@ const {clearTerminal} = require('./lib/util');
 
 clearTerminal();
 
+require('./core');
 require('./layout');
 require('./geometry');
 require('../lib/csg/test/csg');
