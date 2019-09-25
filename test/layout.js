@@ -22,3 +22,5 @@ util.test('viewport');
 util.test('text');
 util.test('text-concave-cutout');
 util.test('text-diamond'); // TODO: rename to text-diamond-bounding-polygon
+util.test('checkbox-checked');
+util.test('checkbox-unchecked');
