@@ -15,12 +15,13 @@ function* circularDoublingIterator(array) {
 exports.circularDoublingIterator = circularDoublingIterator;
 
 function* circularDoublingPeekingIterator(array) {
-  let zerothIndex = array.length - 2;
+  const elements = Array.isArray(array) ? array.slice() : [];
+
+  let zerothIndex = elements.length - 2;
   let firstIndex = -1;
   let secondIndex = 0;
   let thirdIndex = 1;
 
-  const elements = Array.isArray(array) ? array.slice() : [];
   const length = elements.length;
 
   while (length) {
