@@ -2,7 +2,7 @@
 
 const {c} = require('../../src/layout');
 const {Checkbox} = require('../../src/components/checkbox');
-const {Root} = require('../../src/components');
+const {Root} = require('../../src/components/root');
 
 module.exports = ({x, y, width, height}) => {
   return c(

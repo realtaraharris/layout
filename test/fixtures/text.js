@@ -1,6 +1,7 @@
 'use strict';
 const {c} = require('../../src/layout');
-const {Root, Label, SpacedLine, Margin} = require('../../src/components');
+const {Label, SpacedLine, Margin} = require('../../src/components');
+const {Root} = require('../../src/components/root');
 const {Text} = require('../../src/components/text');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 

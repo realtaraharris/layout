@@ -1,13 +1,13 @@
 'use strict';
 const {c} = require('../../src/layout');
 const {
-  Root,
   Label,
   SpacedLine,
   Button,
   Margin,
   Viewport
 } = require('../../src/components');
+const {Root} = require('../../src/components/root');
 const log = require('../../src/log');
 
 module.exports = ({x, y, width, height}) => {

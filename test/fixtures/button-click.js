@@ -1,12 +1,7 @@
 'use strict';
 const {c} = require('../../src/layout');
-const {
-  Root,
-  Label,
-  SpacedLine,
-  Button,
-  Margin
-} = require('../../src/components');
+const {Label, SpacedLine, Button, Margin} = require('../../src/components');
+const {Root} = require('../../src/components/root');
 
 module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
   const marginA = 20;

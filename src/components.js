@@ -29,46 +29,6 @@ class Layout {
   }
 }
 
-class Root extends Layout {
-  // eslint-disable-next-line no-unused-vars
-  size(renderContext, {x, y, width, height}, childBox) {
-    this.box.width = childBox.width;
-    this.box.height = childBox.height;
-
-    // no need to return anything here because the root node has no parent
-  }
-
-  position(
-    renderContext, // eslint-disable-line no-unused-vars
-    {x, y, width, height}, // eslint-disable-line no-unused-vars
-    updatedParentPosition,
-    childCount
-  ) {
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
-
-    return Array(childCount).fill(Object.assign({}, updatedParentPosition));
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  render(renderContext, {x, y, width, height, color}) {
-    renderContext.fillStyle = color;
-    renderContext.fillRect(
-      this.box.x,
-      this.box.y,
-      this.box.width,
-      this.box.height
-    );
-  }
-
-  intersect() {
-    return {
-      hit: false,
-      descend: true
-    };
-  }
-}
-
 class Label extends Layout {
   // TODO: add check to ensure labels have NO children
   // sends a child box up
@@ -405,7 +365,6 @@ class Viewport extends Layout {
 
 module.exports = {
   Layout,
-  Root,
   Label,
   Margin,
   SpacedLine,
