@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "browserify": "^16.2.3",
+    "clone-deep": "^4.0.1",
     "hyphen": "^1.1.1",
     "segseg": "^0.2.2"
   },

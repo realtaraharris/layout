@@ -7,6 +7,30 @@ class Layout {
     this.box = {x: 0, y: 0, width: 0, height: 0};
 
     this.intersect = this.intersect.bind(this);
+    this.checkMemo = this.checkMemo.bind(this);
+
+    // each of these holds memoized args
+    this.memos = {
+      size: undefined,
+      position: undefined,
+      render: undefined,
+      intersect: undefined
+    };
+  }
+
+  /**
+   * Tell the caller if we've seen identical `args` for a given `phase` before. If no memo is found, record it
+   * @param {object} args
+   * @param {string} phase - 'size', 'position', 'render', 'intersect'
+   */
+  checkMemo(args, phase) {
+    const memo = this.memos[phase];
+    const memoizedArgs = JSON.stringify(args);
+    if (!memo) {
+      this.memos[phase] = memoizedArgs;
+      return false;
+    }
+    return memo === memoizedArgs;
   }
 
   intersect(x, y) {
@@ -167,10 +191,12 @@ class SpacedLine extends Layout {
   }
 
   size(renderContext, {mode}, childBox, childCount) {
+    // console.log('in SpacedLine, size: this.childBoxes:', this.childBoxes);
     this.childBoxes.push(childBox);
 
     // if we have all the child boxes, process!
     if (this.childBoxes.length === childCount) {
+      // console.log('in SpacedLine.size(), this.childBoxes = ', this.childBoxes);
       // go through each child and assign a final { x, y } coord pair
       let _w = 0;
       let _h = 0;
@@ -214,6 +240,7 @@ class SpacedLine extends Layout {
 
   // eslint-disable-next-line no-unused-vars
   position(renderContext, {mode, align}, updatedParentPosition, childCount) {
+    // console.log('in SpacedLine.position(), this.childBoxes:', this.childBoxes);
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
@@ -311,6 +338,7 @@ class Button extends Layout {
   }
 
   position(renderContext, props, updatedParentPosition) {
+    console.log({updatedParentPosition});
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 

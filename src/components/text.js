@@ -263,11 +263,26 @@ class Text extends Layout {
     this.childBoxes = [];
   }
 
-  size(
-    renderContext,
-    {width, text, style, polygons, lineHeight = 20, showBoxes},
-    childBox
-  ) {
+  size(renderContext, props, childBox, childCount, cache) {
+    console.log('cache:', cache);
+    const {width, text, style, polygons, lineHeight = 20, showBoxes} = props;
+
+    const key = JSON.stringify({props, childBox, type: 'size'});
+    if (cache.get(key)) {
+      const x = cache.get(key);
+      this.box = x.box;
+      this.childBoxes = x.childBoxes;
+      this.finalBoxes = x.finalBoxes;
+      this.debugBoxes = x.debugBoxes;
+      this.tokens = x.tokens;
+      return x.retval;
+    }
+    // if (this.checkMemo({props, childBox}, 'size')) {
+    //   // console.log('found memo! skipping work!');
+    //   return {width: this.box.width, height: this.box.height};
+    // }
+    // console.log('in text size method');
+
     this.childBoxes.push(childBox);
 
     const hyphen = createHyphenator(hyphenationPatternsEnUs, {
@@ -326,6 +341,17 @@ class Text extends Layout {
     }
 
     this.box = Object.assign({}, {width, height: maxY});
+
+    if (!cache.get(key)) {
+      cache.set(key, {
+        box: this.box,
+        childBoxes: this.childBoxes,
+        finalBoxes: this.finalBoxes,
+        debugBoxes: this.debugBoxes,
+        tokens: this.tokens,
+        retval: {width, height: maxY}
+      });
+    }
     return {width, height: maxY};
   }
 
