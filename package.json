@@ -17,7 +17,6 @@
   "license": "MIT",
   "dependencies": {
     "browserify": "^16.2.3",
-    "hyphen": "^1.1.1",
     "segseg": "^0.2.2"
   },
   "prettier": {
@@ -34,6 +33,7 @@
     "browserify-istanbul": "^3.0.1",
     "canvas": "^2.5.0",
     "eslint": "^6.3.0",
+    "hyphen": "^1.1.1",
     "node-resemble-js": "^0.2.0",
     "nodemon": "^1.19.1",
     "nyc": "^13.3.0",

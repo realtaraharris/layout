@@ -4,10 +4,7 @@ const {Layout} = require('../components');
 const {insertSorted} = require('../geometry');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 
-const createHyphenator = require('hyphen');
-const hyphenationPatternsEnUs = require('hyphen/patterns/en-us');
-
-function split(input, ctx, style) {
+function split(input, ctx, style, hyphenChar) {
   // first split by newlines, ensuring that the newlines make it through as tokens, then split on whitespace
   const words = input
     .split(/(\n)/)
@@ -19,7 +16,7 @@ function split(input, ctx, style) {
   for (let i = 0; i < words.length; i++) {
     const word = words[i];
 
-    const syllables = word.split('*');
+    const syllables = word.split(hyphenChar);
 
     if (syllables.length > 1) {
       const measurements = syllables.map(syl => {
@@ -265,17 +262,12 @@ class Text extends Layout {
 
   size(
     renderContext,
-    {width, text, style, polygons, lineHeight = 20, showBoxes},
+    {width, text, hyphenChar, style, polygons, lineHeight = 20, showBoxes},
     childBox
   ) {
     this.childBoxes.push(childBox);
 
-    const hyphen = createHyphenator(hyphenationPatternsEnUs, {
-      hyphenChar: '*'
-    });
-    const syl = hyphen(text);
-
-    this.tokens = split(syl, renderContext, style);
+    this.tokens = split(text, renderContext, style, hyphenChar);
 
     Object.assign(renderContext, style); // we need to paint text with a particular style
 
