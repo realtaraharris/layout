@@ -1,9 +1,10 @@
 'use strict';
 const {c} = require('../../src/layout');
-const {SpacedLine, Button, Viewport} = require('../../src/components');
+const {Button, Viewport} = require('../../src/components');
 const {Root} = require('../../src/components/root');
 const {Label} = require('../../src/components/label');
 const {Margin} = require('../../src/components/margin');
+const {SpacedLine} = require('../../src/components/spaced-line');
 const log = require('../../src/log');
 
 module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
