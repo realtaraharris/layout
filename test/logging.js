@@ -12,10 +12,11 @@ const HEIGHT = 600;
 tape('components-line-215', t => {
   t.plan(2);
   const {c, layout} = require('../src/layout');
-  const {Label, SpacedLine} = proxyquire('../src/components', {
+  const {SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
   });
   const {Root} = require('../src/components/root');
+  const {Label} = require('../src/components/label');
 
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
@@ -37,10 +38,11 @@ tape('components-line-215', t => {
 tape('components-line-228', t => {
   t.plan(2);
   const {c, layout} = require('../src/layout');
-  const {Label, SpacedLine} = proxyquire('../src/components', {
+  const {SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
   });
   const {Root} = require('../src/components/root');
+  const {Label} = require('../src/components/label');
 
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
@@ -62,10 +64,11 @@ tape('components-line-228', t => {
 tape('components-line-236', t => {
   t.plan(6);
   const {c, layout} = require('../src/layout');
-  const {Label, SpacedLine} = proxyquire('../src/components', {
+  const {SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
   });
   const {Root} = require('../src/components/root');
+  const {Label} = require('../src/components/label');
 
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
@@ -97,10 +100,11 @@ tape('components-line-236', t => {
 tape('components-line-246', t => {
   t.plan(6);
   const {c, layout} = require('../src/layout');
-  const {Label, SpacedLine} = proxyquire('../src/components', {
+  const {SpacedLine} = proxyquire('../src/components', {
     './log': t.ok // the test passes only if we trigger the error
   });
   const {Root} = require('../src/components/root');
+  const {Label} = require('../src/components/label');
 
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
