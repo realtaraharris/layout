@@ -1,6 +1,6 @@
 'use strict';
 
-const {Layout} = require('../components');
+const Layout = require('../components');
 const {insertSorted} = require('../geometry');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 
@@ -347,4 +347,4 @@ class Text extends Layout {
   }
 }
 
-module.exports = {Text};
+module.exports = Text;

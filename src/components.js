@@ -27,9 +27,7 @@ class Layout {
   }
 }
 
-module.exports = {
-  Layout
-};
+module.exports = Layout;
 
 /**
  * given an existing line + offset vector, returns an offset line

@@ -1,6 +1,6 @@
 'use strict';
 
-const {Layout} = require('../components');
+const Layout = require('../components');
 const {roundRect} = require('../draw');
 
 class Checkbox extends Layout {
@@ -46,4 +46,4 @@ class Checkbox extends Layout {
   }
 }
 
-module.exports = {Checkbox};
+module.exports = Checkbox;

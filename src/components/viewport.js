@@ -1,6 +1,6 @@
 'use strict';
 
-const {Layout} = require('../components');
+const Layout = require('../components');
 
 class Viewport extends Layout {
   constructor() {
@@ -66,4 +66,4 @@ class Viewport extends Layout {
   }
 }
 
-module.exports = {Viewport};
+module.exports = Viewport;

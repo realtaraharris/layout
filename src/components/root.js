@@ -1,6 +1,6 @@
 'use strict';
 
-const {Layout} = require('../components');
+const Layout = require('../components');
 
 class Root extends Layout {
   // eslint-disable-next-line no-unused-vars
@@ -42,4 +42,4 @@ class Root extends Layout {
   }
 }
 
-module.exports = {Root};
+module.exports = Root;

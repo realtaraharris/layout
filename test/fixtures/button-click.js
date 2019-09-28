@@ -1,10 +1,10 @@
 'use strict';
 const {c} = require('../../src/layout');
-const {Root} = require('../../src/components/root');
-const {Label} = require('../../src/components/label');
-const {Margin} = require('../../src/components/margin');
-const {SpacedLine} = require('../../src/components/spaced-line');
-const {Button} = require('../../src/components/button');
+const Root = require('../../src/components/root');
+const Label = require('../../src/components/label');
+const Margin = require('../../src/components/margin');
+const SpacedLine = require('../../src/components/spaced-line');
+const Button = require('../../src/components/button');
 
 module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
   const marginA = 20;

@@ -1,9 +1,9 @@
 'use strict';
 
 const {c} = require('../../src/layout');
-const {Root} = require('../../src/components/root');
-const {Label} = require('../../src/components/label');
-const {SpacedLine} = require('../../src/components/spaced-line');
+const Root = require('../../src/components/root');
+const Label = require('../../src/components/label');
+const SpacedLine = require('../../src/components/spaced-line');
 
 module.exports = ({x, y, width, height}) => {
   const showChild = false;

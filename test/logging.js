@@ -14,9 +14,9 @@ tape('components-line-215', t => {
   const {c, layout} = require('../src/layout');
 
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
-  const {Root} = require('../src/components/root');
-  const {Label} = require('../src/components/label');
-  const {SpacedLine} = proxyquire('../src/components/spaced-line', logTest);
+  const Root = require('../src/components/root');
+  const Label = require('../src/components/label');
+  const SpacedLine = proxyquire('../src/components/spaced-line', logTest);
 
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
@@ -40,9 +40,9 @@ tape('components-line-228', t => {
   const {c, layout} = require('../src/layout');
 
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
-  const {Root} = require('../src/components/root');
-  const {Label} = require('../src/components/label');
-  const {SpacedLine} = proxyquire('../src/components/spaced-line', logTest);
+  const Root = require('../src/components/root');
+  const Label = require('../src/components/label');
+  const SpacedLine = proxyquire('../src/components/spaced-line', logTest);
 
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
@@ -65,9 +65,9 @@ tape('components-line-236', t => {
   t.plan(6);
   const {c, layout} = require('../src/layout');
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
-  const {Root} = require('../src/components/root');
-  const {Label} = require('../src/components/label');
-  const {SpacedLine} = proxyquire('../src/components/spaced-line', logTest);
+  const Root = require('../src/components/root');
+  const Label = require('../src/components/label');
+  const SpacedLine = proxyquire('../src/components/spaced-line', logTest);
 
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
@@ -100,9 +100,9 @@ tape('components-line-246', t => {
   t.plan(6);
   const {c, layout} = require('../src/layout');
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
-  const {Root} = require('../src/components/root');
-  const {Label} = require('../src/components/label');
-  const {SpacedLine} = proxyquire('../src/components/spaced-line', logTest);
+  const Root = require('../src/components/root');
+  const Label = require('../src/components/label');
+  const SpacedLine = proxyquire('../src/components/spaced-line', logTest);
 
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');

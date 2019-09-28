@@ -1,6 +1,6 @@
 'use strict';
 
-const {Layout} = require('../components');
+const Layout = require('../components');
 
 class Margin extends Layout {
   size(renderContext, {top, right, bottom, left}, childBox) {
@@ -59,4 +59,4 @@ class Margin extends Layout {
   }
 }
 
-module.exports = {Margin};
+module.exports = Margin;

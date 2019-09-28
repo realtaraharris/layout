@@ -1,6 +1,6 @@
 'use strict';
 
-const {Layout} = require('../components');
+const Layout = require('../components');
 const log = require('../log');
 
 class SpacedLine extends Layout {
@@ -146,4 +146,4 @@ class SpacedLine extends Layout {
   render() {}
 }
 
-module.exports = {SpacedLine};
+module.exports = SpacedLine;

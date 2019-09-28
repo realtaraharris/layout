@@ -1,6 +1,6 @@
 'use strict';
 
-const {Layout} = require('../components');
+const Layout = require('../components');
 
 class Label extends Layout {
   // TODO: add check to ensure labels have NO children
@@ -36,4 +36,4 @@ class Label extends Layout {
   }
 }
 
-module.exports = {Label};
+module.exports = Label;

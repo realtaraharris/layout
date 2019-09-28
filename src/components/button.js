@@ -1,6 +1,6 @@
 'use strict';
 
-const {Layout} = require('../components');
+const Layout = require('../components');
 
 class Button extends Layout {
   size(renderContext, props, childBox) {
@@ -38,4 +38,4 @@ class Button extends Layout {
   }
 }
 
-module.exports = {Button};
+module.exports = Button;

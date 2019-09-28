@@ -1,10 +1,10 @@
 'use strict';
 const {c} = require('../../src/layout');
-const {Root} = require('../../src/components/root');
-const {Text} = require('../../src/components/text');
-const {Label} = require('../../src/components/label');
-const {Margin} = require('../../src/components/margin');
-const {SpacedLine} = require('../../src/components/spaced-line');
+const Root = require('../../src/components/root');
+const Text = require('../../src/components/text');
+const Label = require('../../src/components/label');
+const Margin = require('../../src/components/margin');
+const SpacedLine = require('../../src/components/spaced-line');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 const createHyphenator = require('hyphen');
 const hyphenationPatternsEnUs = require('hyphen/patterns/en-us');
