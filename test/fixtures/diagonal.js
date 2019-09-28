@@ -1,8 +1,9 @@
 'use strict';
 const {c} = require('../../src/layout');
-const {SpacedLine, Button, Margin} = require('../../src/components');
+const {SpacedLine, Button} = require('../../src/components');
 const {Root} = require('../../src/components/root');
 const {Label} = require('../../src/components/label');
+const {Margin} = require('../../src/components/margin');
 const log = require('../../src/log');
 
 module.exports = ({x, y, width, height}) => {
