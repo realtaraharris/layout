@@ -32,7 +32,7 @@ function setupComponentTest(fixture) {
 
 function debugDot(ctx, target) {
   ctx.fillStyle = 'green';
-  ctx.fillRect(target.x, target.y, 10, 10);
+  ctx.fillRect(target.clientX, target.clientY, 10, 10);
 }
 
 function screenshot(name, canvas, t) {

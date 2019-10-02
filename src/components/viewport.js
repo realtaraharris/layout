@@ -46,17 +46,27 @@ class Viewport extends Layout {
     renderContext.clip();
   }
 
-  intersect(x, y) {
+  intersect({clientX, clientY, deltaX, deltaY}, eventName) {
     const {box} = this;
-    if (
-      x >= box.x &&
-      x <= box.x + box.width &&
-      y >= box.y &&
-      y <= box.y + box.height
-    ) {
+    const childBox = this.childBoxes[0];
+    const insideBox =
+      clientX >= box.x &&
+      clientX <= box.x + box.width &&
+      clientY >= box.y &&
+      clientY <= box.y + box.height;
+
+    if (insideBox && eventName === 'click') {
       return {
         hit: false,
         descend: true
+      };
+    } else if (insideBox && eventName === 'scroll') {
+      return {
+        hit: true,
+        descend: false,
+        box,
+        childBox,
+        event: {clientX, clientY, deltaX, deltaY}
       };
     }
     return {

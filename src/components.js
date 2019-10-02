@@ -7,17 +7,19 @@ class Layout {
     this.intersect = this.intersect.bind(this);
   }
 
-  intersect(x, y) {
+  intersect({clientX, clientY, deltaX, deltaY}) {
     const {box} = this;
     if (
-      x >= box.x &&
-      x <= box.x + box.width &&
-      y >= box.y &&
-      y <= box.y + box.height
+      clientX >= box.x &&
+      clientX <= box.x + box.width &&
+      clientY >= box.y &&
+      clientY <= box.y + box.height
     ) {
       return {
         hit: true,
-        descend: true
+        descend: true,
+        box,
+        event: {clientX, clientY, deltaX, deltaY}
       };
     }
     return {

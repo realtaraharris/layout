@@ -36,12 +36,17 @@ function sizeUp(renderContext, component, childBox) {
   sizeUp(renderContext, component.parent, box);
 }
 
-function pickDown(component, x, y, result) {
+function pickDown(component, rawEvent, eventName, result) {
   const {intersect} = component.methods;
-  const intersection = intersect(x, y);
+  const intersection = intersect(rawEvent, eventName);
 
   if (intersection.hit) {
-    result.push(component);
+    result.push({
+      component,
+      box: intersection.box,
+      childBox: intersection.childBox,
+      event: intersection.event
+    });
   }
 
   if (!intersection.descend) {
@@ -50,22 +55,22 @@ function pickDown(component, x, y, result) {
 
   // if we are a leaf node, start the up phase
   if (component.children.length === 0) {
-    pickUp(component, x, y, result);
+    pickUp(component, rawEvent, eventName, result);
   }
 
   for (let child of component.children) {
-    pickDown(child, x, y, result);
+    pickDown(child, rawEvent, eventName, result);
   }
 }
 
-function pickUp(component, x, y, result) {
+function pickUp(component, rawEvent, eventName, result) {
   const {box, parent} = component.methods;
 
   if (!parent || !box) {
     return;
   }
 
-  return pickUp(parent, x, y, result);
+  return pickUp(parent, rawEvent, eventName, result);
 }
 
 function calcBoxPositions(renderContext, component, updatedParentPosition) {
@@ -117,14 +122,17 @@ function layout(renderContext, treeRoot) {
   return treeRoot;
 }
 
-function click(treeRoot, x, y) {
+function click(treeRoot, rawEvent, eventName) {
   let results = [];
-  pickDown(treeRoot, x, y, results);
+  pickDown(treeRoot, rawEvent, eventName, results);
 
   if (results && results.length > 0) {
-    for (let c of results) {
-      if (c.props.onClick) {
-        c.props.onClick();
+    for (let {component, box, childBox, event} of results) {
+      if (component.props.onClick) {
+        component.props.onClick({box, childBox, event});
+      }
+      if (component.props.onScroll) {
+        component.props.onScroll({box, childBox, event});
       }
     }
   }
