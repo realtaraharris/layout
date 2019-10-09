@@ -1,59 +1,21 @@
 'use strict';
 
 const Layout = require('../components');
-
-// const POINTS_PER_INCH = 72;
-// const UNITS_PER_EM = 2048;
-
-// https://stackoverflow.com/a/26047748
-// the canvas default resolution is 96dpi (CSS inches, not based on the actual screen). a scaleFactor of 2 gives 192dpi, 3 is 288dpi
-// const fUnitsToPixels = (fUnitValue, pointSize, resolution) =>
-//   (fUnitValue * pointSize * resolution) / (POINTS_PER_INCH * UNITS_PER_EM);
-const fUnitsToPixels = (value, size) => ((value / -10) * size) / 100;
-const getSideBearings = (f, size, character) => {
-  const glyph = f.charToGlyph(character);
-  const {xMax, xMin, advanceWidth, leftSideBearing} = glyph;
-  const rightSideBearing = advanceWidth - (leftSideBearing + xMax - xMin);
-
-  return {
-    left: fUnitsToPixels(leftSideBearing, size),
-    right: fUnitsToPixels(rightSideBearing, size)
-  };
-};
+const {fUnitsToPixels, measureText, fillText} = require('../font');
 
 class Label extends Layout {
   // TODO: add check to ensure labels have NO children
   // sends a child box up
   size(renderContext, {text, size, font, sizeMode = 'xHeight'}) {
-    // renderContext.font = `${size}px ${font}`;
-
-    const f = renderContext.fonts[font];
-    const textMetrics = {
-      ascender: f.tables.hhea.ascender,
-      descender: f.tables.hhea.descender,
-      xHeight: f.tables.os2.sxHeight,
-      capHeight: f.tables.os2.sCapHeight
-    };
-    this.textMetrics = textMetrics;
-
-    if (text.length > 0) {
-      const firstLabelChar = text[0];
-      const lastLabelChar = text[text.length - 1];
-
-      this.xOffsetStart = getSideBearings(f, size, firstLabelChar).left;
-      this.xOffsetEnd = getSideBearings(f, size, lastLabelChar).right;
-    }
-
-    const w =
-      f.getAdvanceWidth(text, size) + this.xOffsetStart + this.xOffsetEnd;
-
-    const newBox = {
-      x: 0,
-      y: 0,
-      width: w,
-      height: fUnitsToPixels(textMetrics[sizeMode], size) * -1
-    };
+    const {textMetrics, width, height} = measureText(
+      renderContext.fonts[font],
+      text,
+      size,
+      sizeMode
+    );
+    const newBox = {x: 0, y: 0, width, height};
     this.box = newBox;
+    this.textMetrics = textMetrics;
 
     return Object.assign({}, newBox);
   }
@@ -68,33 +30,26 @@ class Label extends Layout {
   }
 
   render(renderContext, {text, size, font, color, showBoxes}) {
-    renderContext.fillStyle = color;
-    // renderContext.font = `${size}px ${font}`;
-    // renderContext.fillText(text, this.box.x, this.box.y + this.box.height);
-
-    const horizontalLine = (y, color) => {
-      const yyy = this.box.y + this.box.height + y;
-      renderContext.beginPath();
-      renderContext.moveTo(this.box.x + 0, yyy);
-      renderContext.lineTo(this.box.x + this.box.width, yyy);
-      renderContext.strokeStyle = color;
-      renderContext.setLineDash([1, 1]);
-      renderContext.stroke();
-    };
-
-    const f = renderContext.fonts[font];
-
-    // NB: opentype.js has f.draw(), but you can't set the color if you use it!
-    const outlines = f.getPath(
+    fillText(renderContext, {
+      font: renderContext.fonts[font],
       text,
-      this.box.x + this.xOffsetStart,
-      this.box.y + this.box.height,
-      size
-    );
-    outlines.fill = color;
-    outlines.draw(renderContext);
+      box: this.box,
+      textMetrics: this.textMetrics,
+      size,
+      color
+    });
 
     if (showBoxes) {
+      const horizontalLine = (y, color) => {
+        const bottomLine = this.box.y + this.box.height + y;
+        renderContext.beginPath();
+        renderContext.moveTo(this.box.x + 0, bottomLine);
+        renderContext.lineTo(this.box.x + this.box.width, bottomLine);
+        renderContext.strokeStyle = color;
+        renderContext.setLineDash([1, 1]);
+        renderContext.stroke();
+      };
+
       horizontalLine(0, 'gray');
       horizontalLine(fUnitsToPixels(this.textMetrics.ascender, size), 'blue');
       horizontalLine(fUnitsToPixels(this.textMetrics.descender, size), 'green');

@@ -19,6 +19,7 @@ class Viewport extends Layout {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
+    // TODO: this should only accept a SINGLE child, not an array!
     const absX = (this.box.width - this.childBoxes[0].width) * offsetX;
     const absY = (this.box.height - this.childBoxes[0].height) * offsetY;
 
