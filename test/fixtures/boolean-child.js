@@ -14,19 +14,21 @@ module.exports = ({x, y, width, height}) => {
       SpacedLine,
       {mode: 'horizontal', align: 'center'},
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
         size: 20,
+        sizeMode: 'capHeight',
         text: 'You can see this',
-        showBoxes: true
+        showBoxes: false
       }),
       showChild &&
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           color: 'white',
           size: 20,
+          sizeMode: 'capHeight',
           text: `but if you see this, that's a paddlin'`,
-          showBoxes: true
+          showBoxes: false
         })
     )
   );

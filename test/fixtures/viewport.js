@@ -21,11 +21,12 @@ module.exports = ({x, y, width, height}) => {
         Margin,
         {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
         c(Label, {
-          font: 'serif',
+          font: 'SourceSerifPro-Regular',
           color: 'white',
           size: 30,
+          sizeMode: 'capHeight',
           text: 'item 0',
-          showBoxes: true
+          showBoxes: false
         })
       ),
       c(
@@ -35,22 +36,24 @@ module.exports = ({x, y, width, height}) => {
           Margin,
           {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
           c(Label, {
-            font: 'serif',
+            font: 'SourceSerifPro-Regular',
             color: 'white',
             size: 30,
+            sizeMode: 'capHeight',
             text: 'item 1',
-            showBoxes: true
+            showBoxes: false
           })
         ),
         c(
           Margin,
           {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
           c(Label, {
-            font: 'serif',
+            font: 'SourceSerifPro-Regular',
             color: 'white',
             size: 30,
+            sizeMode: 'capHeight',
             text: 'item 2',
-            showBoxes: true
+            showBoxes: false
           })
         ),
         c(
@@ -71,11 +74,12 @@ module.exports = ({x, y, width, height}) => {
                 Margin,
                 {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
                 c(Label, {
-                  font: 'sans',
+                  font: 'SourceSansPro-Regular',
                   color: 'white',
                   size: 70,
+                  sizeMode: 'capHeight',
                   text: 'crazy 88s',
-                  showBoxes: true
+                  showBoxes: false
                 })
               )
             ),
@@ -95,11 +99,12 @@ module.exports = ({x, y, width, height}) => {
                     showBoxes: true
                   },
                   c(Label, {
-                    font: 'sans',
+                    font: 'SourceSansPro-Regular',
                     color: 'white',
                     size: 70,
+                    sizeMode: 'capHeight',
                     text: 'a',
-                    showBoxes: true
+                    showBoxes: false
                   })
                 )
               ),
@@ -107,22 +112,24 @@ module.exports = ({x, y, width, height}) => {
                 Margin,
                 {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
                 c(Label, {
-                  font: 'sans',
+                  font: 'SourceSansPro-Regular',
                   color: 'white',
                   size: 70,
+                  sizeMode: 'capHeight',
                   text: 'b',
-                  showBoxes: true
+                  showBoxes: false
                 })
               ),
               c(
                 Margin,
                 {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
                 c(Label, {
-                  font: 'sans',
+                  font: 'SourceSansPro-Regular',
                   color: 'white',
                   size: 70,
+                  sizeMode: 'capHeight',
                   text: 'c',
-                  showBoxes: true
+                  showBoxes: false
                 })
               ),
               c(
@@ -135,22 +142,24 @@ module.exports = ({x, y, width, height}) => {
                   showBoxes: true
                 },
                 c(Label, {
-                  font: 'sans',
+                  font: 'SourceSansPro-Regular',
                   color: 'white',
                   size: 50,
+                  sizeMode: 'capHeight',
                   text: 'Il Caffe',
-                  showBoxes: true
+                  showBoxes: false
                 })
               ),
               c(
                 Margin,
                 {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
                 c(Label, {
-                  font: 'sans',
+                  font: 'SourceSansPro-Regular',
                   color: 'white',
                   size: 70,
+                  sizeMode: 'capHeight',
                   text: 'd',
-                  showBoxes: true
+                  showBoxes: false
                 })
               )
             ),
@@ -170,28 +179,31 @@ module.exports = ({x, y, width, height}) => {
                     showBoxes: true
                   },
                   c(Label, {
-                    font: 'sans',
+                    font: 'SourceSansPro-Regular',
                     color: 'white',
                     size: 70,
+                    sizeMode: 'capHeight',
                     text: 'B',
-                    showBoxes: true
+                    showBoxes: false
                   })
                 )
               )
             ),
             c(Label, {
-              font: 'sans',
+              font: 'SourceSansPro-Regular',
               color: 'white',
               size: 20,
+              sizeMode: 'capHeight',
               text: 'c',
-              showBoxes: true
+              showBoxes: false
             }),
             c(Label, {
-              font: 'serif',
+              font: 'SourceSerifPro-Regular',
               color: 'white',
               size: 30,
+              sizeMode: 'capHeight',
               text: 'd',
-              showBoxes: true
+              showBoxes: false
             })
           )
         )

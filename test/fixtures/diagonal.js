@@ -16,31 +16,39 @@ module.exports = ({x, y, width, height}) => {
       SpacedLine,
       {mode: 'diagonal', align: 'left'},
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
         size: 20,
+        sizeMode: 'capHeight',
         text: 'Push Me',
+        showBoxes: false,
         done: () => {}
       }),
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
         size: 20,
+        sizeMode: 'capHeight',
         text: 'Push Me',
+        showBoxes: false,
         done: () => {}
       }),
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
         size: 20,
+        sizeMode: 'capHeight',
         text: 'Push Me',
+        showBoxes: false,
         done: () => {}
       }),
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
         size: 20,
+        sizeMode: 'capHeight',
         text: 'Push Me',
+        showBoxes: false,
         done: () => {}
       }),
       c(
@@ -59,19 +67,21 @@ module.exports = ({x, y, width, height}) => {
             SpacedLine,
             {mode: 'vertical', align: 'left'},
             c(Label, {
-              font: 'sans',
+              font: 'SourceSansPro-Regular',
               color: 'white',
               size: 100,
+              sizeMode: 'capHeight',
               text: 'A',
-              showBoxes: true,
+              showBoxes: false,
               done: () => {}
             }),
             c(Label, {
-              font: 'sans',
+              font: 'SourceSansPro-Regular',
               color: 'white',
               size: 100,
+              sizeMode: 'capHeight',
               text: 'A',
-              showBoxes: true,
+              showBoxes: false,
               done: () => {}
             })
           )
@@ -90,11 +100,12 @@ module.exports = ({x, y, width, height}) => {
             showBoxes: true
           },
           c(Label, {
-            font: 'sans',
+            font: 'SourceSansPro-Regular',
             color: 'white',
             size: 20,
+            sizeMode: 'capHeight',
             text: 'B',
-            showBoxes: true
+            showBoxes: false
           })
         )
       ),
@@ -111,11 +122,12 @@ module.exports = ({x, y, width, height}) => {
             showBoxes: true
           },
           c(Label, {
-            font: 'serif',
+            font: 'SourceSerifPro-Regular',
             color: 'white',
             size: 30,
+            sizeMode: 'capHeight',
             text: 'C',
-            showBoxes: true
+            showBoxes: false
           })
         )
       )

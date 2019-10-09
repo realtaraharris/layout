@@ -15,35 +15,39 @@ module.exports = ({x, y, width, height}) => {
         SpacedLine,
         {mode: 'vertical', align: 'left'},
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           color: 'white',
           size: 100,
+          sizeMode: 'capHeight',
           text: 'A',
-          showBoxes: true,
+          showBoxes: false,
           done: () => {}
         }),
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           color: 'white',
           size: 100,
+          sizeMode: 'capHeight',
           text: 'B',
-          showBoxes: true,
+          showBoxes: false,
           done: () => {}
         })
       ),
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
         size: 20,
+        sizeMode: 'capHeight',
         text: 'c',
-        showBoxes: true
+        showBoxes: false
       }),
       c(Label, {
-        font: 'serif',
+        font: 'SourceSerifPro-Regular',
         color: 'white',
         size: 30,
+        sizeMode: 'capHeight',
         text: 'd',
-        showBoxes: true
+        showBoxes: false
       })
     )
   );

@@ -14,11 +14,12 @@ module.exports = ({x, y, width, height}) => {
       SpacedLine,
       {mode: 'horizontal', align: 'right'},
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
         size: 90,
+        sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: true,
+        showBoxes: false,
         done: () => {}
       }),
       c(
@@ -31,11 +32,12 @@ module.exports = ({x, y, width, height}) => {
           showBoxes: true
         },
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           size: 100,
+          sizeMode: 'capHeight',
           text: 'A',
           color: 'white',
-          showBoxes: true,
+          showBoxes: false,
           done: () => {}
         })
       )

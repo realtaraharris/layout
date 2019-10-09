@@ -44,11 +44,12 @@ module.exports = ({x, y, width, height}) => {
       SpacedLine,
       {mode: 'vertical', align: 'left'},
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
         size: 100,
+        sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: true,
+        showBoxes: false,
         done: () => {}
       }),
       c(

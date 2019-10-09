@@ -15,11 +15,12 @@ module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
       SpacedLine,
       {mode: 'vertical', align: 'center'},
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
         size: 90,
+        sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: true,
+        showBoxes: false,
         onClick: onLabelClick
       }),
       c(
@@ -35,10 +36,11 @@ module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
             showBoxes: true
           },
           c(Label, {
-            font: 'sans',
+            font: 'SourceSansPro-Regular',
             size: 100,
+            sizeMode: 'capHeight',
             text: 'A',
-            showBoxes: true,
+            showBoxes: false,
             color: 'white',
             onClick: onLabelClick
           })

@@ -16,35 +16,39 @@ module.exports = ({x, y, width, height}) => {
       SpacedLine,
       {mode: 'vertical', align: 'right'},
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
+        sizeMode: 'capHeight',
         size: 20,
         text: 'Push Me',
-        showBoxes: true,
+        showBoxes: false,
         done: () => {}
       }),
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
+        sizeMode: 'capHeight',
         size: 20,
         text: 'Push Me',
-        showBoxes: true,
+        showBoxes: false,
         done: () => {}
       }),
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
+        sizeMode: 'capHeight',
         size: 20,
         text: 'Push Me',
-        showBoxes: true,
+        showBoxes: false,
         done: () => {}
       }),
       c(Label, {
-        font: 'sans',
+        font: 'SourceSansPro-Regular',
         color: 'white',
+        sizeMode: 'capHeight',
         size: 20,
         text: 'Push Me',
-        showBoxes: true,
+        showBoxes: false,
         done: () => {}
       }),
       c(
@@ -60,11 +64,12 @@ module.exports = ({x, y, width, height}) => {
             showBoxes: true
           },
           c(Label, {
-            font: 'sans',
+            font: 'SourceSansPro-Regular',
             color: 'white',
+            sizeMode: 'capHeight',
             size: 100,
             text: 'A',
-            showBoxes: true,
+            showBoxes: false,
             done: () => {}
           })
         )
@@ -76,11 +81,12 @@ module.exports = ({x, y, width, height}) => {
           Margin,
           {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
           c(Label, {
-            font: 'sans',
+            font: 'SourceSansPro-Regular',
             color: 'white',
+            sizeMode: 'capHeight',
             size: 200,
             text: 'B',
-            showBoxes: true
+            showBoxes: false
           })
         )
       ),
@@ -91,11 +97,12 @@ module.exports = ({x, y, width, height}) => {
           Margin,
           {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
           c(Label, {
-            font: 'serif',
+            font: 'SourceSerifPro-Regular',
             color: 'white',
+            sizeMode: 'capHeight',
             size: 30,
             text: 'C',
-            showBoxes: true
+            showBoxes: false
           })
         )
       )

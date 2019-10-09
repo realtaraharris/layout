@@ -21,11 +21,12 @@ module.exports = ({x, y, width, height}) => {
           Margin,
           {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
           c(Label, {
-            font: 'sans',
+            font: 'SourceSansPro-Regular',
             color: 'white',
             size: 70,
+            sizeMode: 'capHeight',
             text: 'B',
-            showBoxes: true
+            showBoxes: false
           })
         )
       )

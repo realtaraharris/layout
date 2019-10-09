@@ -5,6 +5,16 @@ const resemble = require('node-resemble-js');
 const {createCanvas} = require('canvas');
 const {render, layout} = require('../../src/layout');
 const tape = require('tape-catch');
+const opentype = require('opentype.js');
+
+const fonts = {
+  'SourceSansPro-Regular': opentype.loadSync(
+    'test/fixtures/SourceSansPro/SourceSansPro-Regular.ttf'
+  ),
+  'SourceSerifPro-Regular': opentype.loadSync(
+    'test/fixtures/SourceSerifPro/SourceSerifPro-Regular.ttf'
+  )
+};
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -18,16 +28,17 @@ function clearTerminal() {
 
 function setupComponentTest(fixture) {
   const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
+  const renderContext = canvas.getContext('2d');
+  renderContext.fonts = fonts;
 
   const treeRoot = layout(
-    ctx,
+    renderContext,
     fixture({x: 0, y: 0, width: WIDTH, height: HEIGHT})
   );
 
-  render(ctx, treeRoot);
+  render(renderContext, treeRoot);
 
-  return {canvas, ctx, treeRoot};
+  return {canvas, ctx: renderContext, treeRoot};
 }
 
 function debugDot(ctx, target) {

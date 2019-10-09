@@ -8,7 +8,7 @@ tape('click a label', t => {
   t.plan(3);
   const onLabelClick = event => {
     const expectedEvent = {
-      box: {x: 0, y: 0, width: 355.166015625, height: 69.3017578125},
+      box: {x: 0, y: 0, width: 302.4, height: 59.4},
       childBox: undefined,
       event: {clientX: 12, clientY: 24, deltaX: undefined, deltaY: undefined}
     };
@@ -32,10 +32,10 @@ tape('click a button', t => {
   const onButtonClick = event => {
     const expectedEvent = {
       box: {
-        x: 124.2333984375,
-        y: 69.3017578125,
-        width: 106.69921875,
-        height: 117.001953125
+        x: 104.29999999999998,
+        y: 59.4,
+        width: 93.80000000000001,
+        height: 106
       },
       childBox: undefined,
       event: undefined
@@ -47,7 +47,7 @@ tape('click a button', t => {
     buttonClickingFixture({onButtonClick})
   );
 
-  const rawEvent = {clientX: 170, clientY: 120};
+  const rawEvent = {clientX: 146, clientY: 110};
   click(treeRoot, rawEvent, 'click');
 
   debugDot(ctx, rawEvent);
@@ -59,10 +59,10 @@ tape('click a button inside a viewport', t => {
   const onLabelClick = event => {
     const expectedEvent = {
       box: {
-        x: 55.6298828125,
-        y: 130.9970703125,
-        width: 58.9306640625,
-        height: 73.9013671875
+        x: 83.57000000000006,
+        y: 145.10000000000002,
+        width: 48,
+        height: 66.2
       },
       childBox: undefined,
       event: undefined
@@ -74,7 +74,7 @@ tape('click a button inside a viewport', t => {
     viewportClickingFixture({onLabelClick})
   );
 
-  const rawEvent = {clientX: 100, clientY: 190};
+  const rawEvent = {clientX: 105, clientY: 190};
   click(treeRoot, rawEvent, 'click');
 
   debugDot(ctx, rawEvent);
@@ -83,7 +83,7 @@ tape('click a button inside a viewport', t => {
 
 tape('click an occluded button inside a viewport', t => {
   t.plan(2);
-  const onLabelClick = event => {
+  const onLabelClick = () => {
     t.fail(); // first assertion
   };
   const viewportClickingFixture = require('./fixtures/viewport-click');

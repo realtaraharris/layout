@@ -3,11 +3,28 @@
 const {createCanvas} = require('canvas');
 const tape = require('tape-catch');
 const proxyquire = require('proxyquire');
+const opentype = require('opentype.js');
 
 // const {setupComponentTest, clearTerminal, screenshot} = require('./lib/util');
 
+const fonts = {
+  'SourceSansPro-Regular': opentype.loadSync(
+    'test/fixtures/SourceSansPro/SourceSansPro-Regular.ttf'
+  ),
+  'SourceSerifPro-Regular': opentype.loadSync(
+    'test/fixtures/SourceSerifPro/SourceSerifPro-Regular.ttf'
+  )
+};
+
 const WIDTH = 800;
 const HEIGHT = 600;
+
+function getRenderContext() {
+  const canvas = createCanvas(WIDTH, HEIGHT);
+  const renderContext = canvas.getContext('2d');
+  renderContext.fonts = fonts;
+  return renderContext;
+}
 
 tape('components-line-215', t => {
   t.plan(2);
@@ -18,8 +35,6 @@ tape('components-line-215', t => {
   const Label = require('../src/components/label');
   const SpacedLine = proxyquire('../src/components/spaced-line', logTest);
 
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       Root,
@@ -27,12 +42,12 @@ tape('components-line-215', t => {
       c(
         SpacedLine,
         {mode: 'horizontal', align: 'heft'},
-        c(Label, {font: 'sans', size: 20, text: 'c'}),
-        c(Label, {font: 'serif', size: 30, text: 'd'})
+        c(Label, {font: 'SourceSansPro-Regular', size: 20, text: 'c'}),
+        c(Label, {font: 'SourceSerifPro-Regular', size: 30, text: 'd'})
       )
     );
 
-  layout(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  layout(getRenderContext(), demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });
 
 tape('components-line-228', t => {
@@ -44,8 +59,6 @@ tape('components-line-228', t => {
   const Label = require('../src/components/label');
   const SpacedLine = proxyquire('../src/components/spaced-line', logTest);
 
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       Root,
@@ -53,12 +66,12 @@ tape('components-line-228', t => {
       c(
         SpacedLine,
         {mode: 'vertical', align: 'heft'},
-        c(Label, {font: 'sans', size: 20, text: 'c'}),
-        c(Label, {font: 'serif', size: 30, text: 'd'})
+        c(Label, {font: 'SourceSansPro-Regular', size: 20, text: 'c'}),
+        c(Label, {font: 'SourceSerifPro-Regular', size: 30, text: 'd'})
       )
     );
 
-  layout(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  layout(getRenderContext(), demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });
 
 tape('components-line-236', t => {
@@ -69,8 +82,6 @@ tape('components-line-236', t => {
   const Label = require('../src/components/label');
   const SpacedLine = proxyquire('../src/components/spaced-line', logTest);
 
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       Root,
@@ -79,13 +90,13 @@ tape('components-line-236', t => {
         SpacedLine,
         {mode: 'diagone', align: 'left'},
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           size: 20,
           text: 'c',
           showBoxes: true
         }),
         c(Label, {
-          font: 'serif',
+          font: 'SourceSerifPro-Regular',
           size: 30,
           text: 'd',
           showBoxes: true
@@ -93,7 +104,7 @@ tape('components-line-236', t => {
       )
     );
 
-  layout(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  layout(getRenderContext(), demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });
 
 tape('components-line-246', t => {
@@ -104,8 +115,6 @@ tape('components-line-246', t => {
   const Label = require('../src/components/label');
   const SpacedLine = proxyquire('../src/components/spaced-line', logTest);
 
-  const canvas = createCanvas(WIDTH, HEIGHT);
-  const ctx = canvas.getContext('2d');
   const demo1 = ({x, y, width, height}) =>
     c(
       Root,
@@ -114,14 +123,14 @@ tape('components-line-246', t => {
         SpacedLine,
         {mode: 'invalid-mode', align: 'left'},
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           color: 'white',
           size: 20,
           text: 'c',
           showBoxes: true
         }),
         c(Label, {
-          font: 'serif',
+          font: 'SourceSerifPro-Regular',
           color: 'white',
           size: 30,
           text: 'd',
@@ -130,5 +139,5 @@ tape('components-line-246', t => {
       )
     );
 
-  layout(ctx, demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  layout(getRenderContext(), demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
 });

@@ -23,11 +23,12 @@ module.exports = ({x, y, width, height}) => {
           showBoxes: true
         },
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           color: 'white',
           size: 100,
+          sizeMode: 'capHeight',
           text: 'A',
-          showBoxes: true,
+          showBoxes: false,
           done: () => {}
         })
       ),
@@ -41,11 +42,12 @@ module.exports = ({x, y, width, height}) => {
           showBoxes: true
         },
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           color: 'white',
           size: 100,
+          sizeMode: 'capHeight',
           text: 'i',
-          showBoxes: true,
+          showBoxes: false,
           done: () => {}
         })
       )

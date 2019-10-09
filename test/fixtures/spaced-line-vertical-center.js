@@ -23,25 +23,28 @@ module.exports = ({x, y, width, height}) => {
         SpacedLine,
         {mode: 'vertical', align: 'center'},
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           color: 'white',
           size: 25,
+          sizeMode: 'capHeight',
           text: 'i',
-          showBoxes: true
+          showBoxes: false
         }),
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           color: 'white',
           size: 25,
+          sizeMode: 'capHeight',
           text: 'Wide',
-          showBoxes: true
+          showBoxes: false
         }),
         c(Label, {
-          font: 'sans',
+          font: 'SourceSansPro-Regular',
           color: 'white',
           size: 25,
+          sizeMode: 'capHeight',
           text: '|',
-          showBoxes: true
+          showBoxes: false
         })
       )
     )
