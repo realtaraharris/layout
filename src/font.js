@@ -9,7 +9,6 @@
 //   (fUnitValue * pointSize * resolution) / (POINTS_PER_INCH * UNITS_PER_EM);
 
 const fUnitsToPixels = (value, size) => ((value / -10) * size) / 100;
-exports.fUnitsToPixels = fUnitsToPixels;
 
 const getSideBearings = (font, size, character) => {
   const {xMax, xMin, advanceWidth, leftSideBearing} = font.charToGlyph(
@@ -21,7 +20,6 @@ const getSideBearings = (font, size, character) => {
     right: fUnitsToPixels(rightSideBearing, size)
   };
 };
-exports.getSideBearings = getSideBearings;
 
 function getHorizontalTextMetrics(font, text, size) {
   if (text.length <= 0) {
@@ -32,35 +30,32 @@ function getHorizontalTextMetrics(font, text, size) {
   const lastLabelChar = text[text.length - 1];
 
   return {
-    ascender: font.tables.hhea.ascender,
-    descender: font.tables.hhea.descender,
-    xHeight: font.tables.os2.sxHeight,
-    capHeight: font.tables.os2.sCapHeight,
+    ascender: fUnitsToPixels(font.tables.hhea.ascender, size),
+    descender: fUnitsToPixels(font.tables.hhea.descender, size),
+    xHeight: fUnitsToPixels(font.tables.os2.sxHeight, size),
+    capHeight: fUnitsToPixels(font.tables.os2.sCapHeight, size),
     advanceWidth: font.getAdvanceWidth(text, size),
     xOffsetStart: getSideBearings(font, size, firstLabelChar).left,
     xOffsetEnd: getSideBearings(font, size, lastLabelChar).right
   };
 }
-exports.getHorizontalTextMetrics = getHorizontalTextMetrics;
 
 function getTextWidth(textMetrics) {
   return (
     textMetrics.advanceWidth + textMetrics.xOffsetStart + textMetrics.xOffsetEnd
   );
 }
-exports.getTextWidth = getTextWidth;
 
-function getTextHeight(textMetrics, sizeMode, size) {
-  return fUnitsToPixels(textMetrics[sizeMode], size) * -1;
+function getTextHeight(textMetrics, sizeMode) {
+  return textMetrics[sizeMode] * -1;
 }
-exports.getTextHeight = getTextHeight;
 
 function measureText(font, text, size, sizeMode) {
   const textMetrics = getHorizontalTextMetrics(font, text, size);
   return {
     textMetrics,
     width: getTextWidth(textMetrics),
-    height: getTextHeight(textMetrics, sizeMode, size)
+    height: getTextHeight(textMetrics, sizeMode)
   };
 }
 exports.measureText = measureText;

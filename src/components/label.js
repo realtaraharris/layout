@@ -1,7 +1,7 @@
 'use strict';
 
 const Layout = require('../components');
-const {fUnitsToPixels, measureText, fillText} = require('../font');
+const {measureText, fillText} = require('../font');
 
 class Label extends Layout {
   // TODO: add check to ensure labels have NO children
@@ -51,10 +51,10 @@ class Label extends Layout {
       };
 
       horizontalLine(0, 'gray');
-      horizontalLine(fUnitsToPixels(this.textMetrics.ascender, size), 'blue');
-      horizontalLine(fUnitsToPixels(this.textMetrics.descender, size), 'green');
-      horizontalLine(fUnitsToPixels(this.textMetrics.xHeight, size), 'orange');
-      horizontalLine(fUnitsToPixels(this.textMetrics.capHeight, size), 'red');
+      horizontalLine(this.textMetrics.ascender, 'blue');
+      horizontalLine(this.textMetrics.descender, 'green');
+      horizontalLine(this.textMetrics.xHeight, 'orange');
+      horizontalLine(this.textMetrics.capHeight, 'red');
     }
   }
 }
