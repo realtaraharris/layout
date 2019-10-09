@@ -10,9 +10,15 @@ const Layout = require('../components');
 // const fUnitsToPixels = (fUnitValue, pointSize, resolution) =>
 //   (fUnitValue * pointSize * resolution) / (POINTS_PER_INCH * UNITS_PER_EM);
 const fUnitsToPixels = (value, size) => ((value / -10) * size) / 100;
-const getXOffset = (f, size, character) => {
-  const {leftSideBearing} = f.charToGlyph(character);
-  return fUnitsToPixels(leftSideBearing, size);
+const getSideBearings = (f, size, character) => {
+  const glyph = f.charToGlyph(character);
+  const {xMax, xMin, advanceWidth, leftSideBearing} = glyph;
+  const rightSideBearing = advanceWidth - (leftSideBearing + xMax - xMin);
+
+  return {
+    left: fUnitsToPixels(leftSideBearing, size),
+    right: fUnitsToPixels(rightSideBearing, size)
+  };
 };
 
 class Label extends Layout {
@@ -34,8 +40,8 @@ class Label extends Layout {
       const firstLabelChar = text[0];
       const lastLabelChar = text[text.length - 1];
 
-      this.xOffsetStart = getXOffset(f, size, firstLabelChar);
-      this.xOffsetEnd = getXOffset(f, size, lastLabelChar);
+      this.xOffsetStart = getSideBearings(f, size, firstLabelChar).left;
+      this.xOffsetEnd = getSideBearings(f, size, lastLabelChar).right;
     }
 
     const w =
@@ -72,7 +78,7 @@ class Label extends Layout {
       renderContext.moveTo(this.box.x + 0, yyy);
       renderContext.lineTo(this.box.x + this.box.width, yyy);
       renderContext.strokeStyle = color;
-      renderContext.setLineDash([5, 5]);
+      renderContext.setLineDash([1, 1]);
       renderContext.stroke();
     };
 
