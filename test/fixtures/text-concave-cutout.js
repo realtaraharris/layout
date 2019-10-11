@@ -55,8 +55,7 @@ module.exports = ({x, y, width, height}) => {
         size: 100,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(
         Margin,
@@ -71,14 +70,14 @@ module.exports = ({x, y, width, height}) => {
           width: textWidth,
           height: textHeight,
           lineHeight: 20,
-          font: 'sans',
-          size: 100,
+          font: 'SourceSansPro-Regular',
+          size: 17,
+          sizeMode: 'capHeight',
           text: wordsToLiveBy,
           hyphenChar: hyphenChar,
-          style: {font: `${20}px serif`, fillStyle: 'white'},
           polygons,
-          showBoxes: true,
-          done: () => {}
+          color: 'white',
+          showBoxes: true
         })
       )
     )

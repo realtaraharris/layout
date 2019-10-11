@@ -15,7 +15,7 @@ module.exports = ({x, y, width, height}) => {
   const hyphen = createHyphenator(hyphenationPatternsEnUs, {hyphenChar});
 
   const wordsToLiveBy = hyphen(
-    `When you grow up you tend to get told the world is the way it is and your job is just to live your life inside the world. Try not to bash into the walls too much. Try to have a nice family life, have fun, save a little money. That's a very limited life.\n\n\nLife can be much broader once you discover one simple fact, and that is: everything around you that you call life, was made up by people that were no smarter than you. And you can change it, you can influence it, you can build your own things that other people can use. The minute that you understand that you can poke life and actually something will, you know if you push in, something will pop out the other side, that you can change it, you can mold it. That's maybe the most important thing. It's to shake off this erroneous notion that life is there and you're just gonna live in it, versus embrace it, change it, improve it, make your mark upon it. I think that’s very important and however you learn that, once you learn it, you'll want to change life and make it better, cause it's kind of messed up, in a lot of ways. Once you learn that, you'll never be the same again.`
+    `When you grow up you tend to get told the world is the way it is and your job is just to live your life inside the world. Try not to bash into the walls too much. Try to have a nice family life, have fun, save a little money. That's a very limited life. Life can be much broader once you discover one simple fact, and that is: everything around you that you call life, was made up by people that were no smarter than you. And you can change it, you can influence it, you can build your own things that other people can use. The minute that you understand that you can poke life and actually something will, you know if you push in, something will pop out the other side, that you can change it, you can mold it. That's maybe the most important thing. It's to shake off this erroneous notion that life is there and you're just gonna live in it, versus embrace it, change it, improve it, make your mark upon it. I think that’s very important and however you learn that, once you learn it, you'll want to change life and make it better, cause it's kind of messed up, in a lot of ways. Once you learn that, you'll never be the same again.`
   );
   // const wordsToLiveBy = hyphen(`discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace discover embrace`)
 
@@ -57,8 +57,7 @@ module.exports = ({x, y, width, height}) => {
         size: 100,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(
         Margin,
@@ -73,14 +72,14 @@ module.exports = ({x, y, width, height}) => {
           width: textWidth,
           height: textHeight,
           lineHeight: 20,
-          font: 'sans',
-          size: 100,
+          font: 'SourceSerifPro-Regular',
+          size: 17,
+          sizeMode: 'capHeight',
           text: wordsToLiveBy,
           hyphenChar: hyphenChar,
-          style: {font: `${17}px serif`, fillStyle: 'white'},
           polygons,
-          showBoxes: true,
-          done: () => {}
+          color: 'white',
+          showBoxes: true
         })
       )
     )

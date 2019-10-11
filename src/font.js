@@ -11,15 +11,32 @@
 const fUnitsToPixels = (value, size) => ((value / -10) * size) / 100;
 
 const getSideBearings = (font, size, character) => {
+  // glyph xMax, xMin not defined for spaces
+  if (character === ' ' || character === '\n') {
+    return {
+      left: 0,
+      right: 0
+    };
+  }
+
   const {xMax, xMin, advanceWidth, leftSideBearing} = font.charToGlyph(
     character
   );
+
   const rightSideBearing = advanceWidth - (leftSideBearing + xMax - xMin);
   return {
     left: fUnitsToPixels(leftSideBearing, size),
     right: fUnitsToPixels(rightSideBearing, size)
   };
 };
+
+function getAdvanceWidth(font, text, size) {
+  if (text === '\n') {
+    return 0;
+  }
+
+  return font.getAdvanceWidth(text, size);
+}
 
 function getHorizontalTextMetrics(font, text, size) {
   if (text.length <= 0) {
@@ -34,7 +51,7 @@ function getHorizontalTextMetrics(font, text, size) {
     descender: fUnitsToPixels(font.tables.hhea.descender, size),
     xHeight: fUnitsToPixels(font.tables.os2.sxHeight, size),
     capHeight: fUnitsToPixels(font.tables.os2.sCapHeight, size),
-    advanceWidth: font.getAdvanceWidth(text, size),
+    advanceWidth: getAdvanceWidth(font, text, size),
     xOffsetStart: getSideBearings(font, size, firstLabelChar).left,
     xOffsetEnd: getSideBearings(font, size, lastLabelChar).right
   };
@@ -61,10 +78,10 @@ function measureText(font, text, size, sizeMode) {
 exports.measureText = measureText;
 
 // NB: opentype.js has font.draw(), but you can't set the color if you use it!
-function fillText(renderContext, {font, text, box, textMetrics, size, color}) {
+function fillText(renderContext, {font, text, box, xOffsetStart, size, color}) {
   const outlines = font.getPath(
     text,
-    box.x + textMetrics.xOffsetStart,
+    box.x + xOffsetStart,
     box.y + box.height,
     size
   );

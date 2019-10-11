@@ -34,7 +34,7 @@ class Label extends Layout {
       font: renderContext.fonts[font],
       text,
       box: this.box,
-      textMetrics: this.textMetrics,
+      xOffsetStart: this.textMetrics.xOffsetStart,
       size,
       color
     });
