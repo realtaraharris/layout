@@ -10,3 +10,4 @@ require('./geometry');
 require('../lib/csg/test/csg');
 require('./picking');
 require('./logging');
+require('./text');

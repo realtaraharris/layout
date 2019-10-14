@@ -19,8 +19,5 @@ util.test('horizontal');
 util.test('diagonal');
 util.test('mixed'); // TODO: rename to mixed-layout-no-margins
 util.test('viewport');
-util.test('text');
-util.test('text-concave-cutout');
-util.test('text-diamond'); // TODO: rename to text-diamond-bounding-polygon
 util.test('checkbox-checked');
 util.test('checkbox-unchecked');
