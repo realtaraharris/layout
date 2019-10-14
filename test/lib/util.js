@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const resemble = require('node-resemble-js');
-const {createCanvas} = require('canvas');
+const {createCanvas, registerFont} = require('canvas');
 const {render, layout} = require('../../src/layout');
 const tape = require('tape-catch');
 const opentype = require('opentype.js');
@@ -27,6 +27,14 @@ function clearTerminal() {
 }
 
 function setupComponentTest(fixture) {
+  registerFont('test/fixtures/SourceSansPro/SourceSansPro-Regular.ttf', {
+    family: 'SourceSansPro-Regular'
+  });
+  registerFont('test/fixtures/SourceSerifPro/SourceSerifPro-Regular.ttf', {
+    family: 'SourceSerifPro-Regular'
+  });
+
+  // NB: per the opentype.js docs, call this *after* registering fonts
   const canvas = createCanvas(WIDTH, HEIGHT);
   const renderContext = canvas.getContext('2d');
   renderContext.fonts = fonts;

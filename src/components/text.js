@@ -5,7 +5,15 @@ const {insertSorted} = require('../geometry');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 const {measureText, fillText} = require('../font');
 
-function split(input, font, size, sizeMode, hyphenChar) {
+function split(
+  renderContext,
+  input,
+  font,
+  fontName,
+  size,
+  sizeMode,
+  hyphenChar
+) {
   // first split by newlines, ensuring that the newlines make it through as tokens, then split on whitespace
   const words = input
     .split(/(\n)/)
@@ -22,7 +30,9 @@ function split(input, font, size, sizeMode, hyphenChar) {
     if (syllables.length > 1) {
       const measurements = syllables.map(syl => {
         const {textMetrics, width, height} = measureText(
+          renderContext,
           font,
+          fontName,
           syl,
           size,
           sizeMode
@@ -36,7 +46,9 @@ function split(input, font, size, sizeMode, hyphenChar) {
       result.push({token: syllables, type: 'syllables', measurements});
     } else {
       const {textMetrics, width, height} = measureText(
+        renderContext,
         font,
+        fontName,
         word,
         size,
         sizeMode
@@ -185,7 +197,10 @@ function processBox(
       result.push({
         text: token.token,
         x: finalX + tempWidth,
-        y: finalY - token.textMetrics[sizeMode]
+        y: finalY,
+        xOffsetStart: token.textMetrics.xOffsetStart,
+        xOffsetEnd: token.textMetrics.xOffsetEnd,
+        height: token.height
       });
 
       if (showBoxes) {
@@ -204,8 +219,7 @@ function processBox(
       while (token.token[tracking.syllableCounter]) {
         const syl = token.token[tracking.syllableCounter];
         const meas = token.measurements[tracking.syllableCounter];
-
-        const yyy = finalY - meas.textMetrics[sizeMode];
+        const yyy = finalY;
 
         if (tempWidth + meas.width + dashWidth <= finalW) {
           if (showBoxes) {
@@ -221,7 +235,10 @@ function processBox(
           result.push({
             text: syl,
             x: finalX + tempWidth,
-            y: yyy
+            y: yyy,
+            xOffsetStart: meas.textMetrics.xOffsetStart,
+            xOffsetEnd: meas.textMetrics.xOffsetEnd,
+            height: token.measurements[tracking.syllableCounter].height
           });
 
           tempWidth += meas.width;
@@ -230,7 +247,10 @@ function processBox(
           result.push({
             text: '-',
             x: finalX + tempWidth,
-            y: yyy
+            y: yyy,
+            xOffsetStart: meas.textMetrics.xOffsetStart,
+            xOffsetEnd: meas.textMetrics.xOffsetEnd,
+            height: token.measurements[tracking.syllableCounter].height
           });
 
           tracking.lastLineVisited = lineIndex;
@@ -281,20 +301,30 @@ class Text extends Layout {
     this.childBoxes.push(childBox);
 
     this.tokens = split(
+      renderContext,
       text,
       renderContext.fonts[font],
+      font,
       size,
       sizeMode,
       hyphenChar
     );
 
     const f = renderContext.fonts[font];
-    const dashWidth = measureText(f, '-', size, sizeMode).width;
+    const dashMeasurements = measureText(
+      renderContext,
+      f,
+      font,
+      '-',
+      size,
+      sizeMode
+    );
+    const dashWidth = dashMeasurements.width;
 
-    const spaceWidth = measureText(f, ' ', size, sizeMode).width;
+    const spaceWidth = measureText(renderContext, f, font, ' ', size, sizeMode)
+      .width;
 
     let [, , , maxY] = polysToBoundingBox(polygons.toPolygons());
-
     const tracking = {
       syllableCounter: 0,
       tokenCursor: 0,
@@ -333,12 +363,12 @@ class Text extends Layout {
         maxY = currentY + lineHeight;
         break;
       }
-
       lineIndex++;
     }
 
-    this.box = Object.assign({}, {width, height: maxY});
-    return {width, height: maxY};
+    const finalHeight = maxY - lineHeight + dashMeasurements.height;
+    this.box = Object.assign({}, {width, height: finalHeight});
+    return {width, height: finalHeight};
   }
 
   position(renderContext, props, updatedParentPosition) {
@@ -350,35 +380,40 @@ class Text extends Layout {
 
   render(renderContext, {font, size, color, showBoxes = false}) {
     renderContext.beginPath();
-    // renderContext.rect(this.box.x, this.box.y, this.box.width, this.box.height);
-    // renderContext.clip();
-    // renderContext.fillStyle = 'red';
-
     if (showBoxes) {
       for (let {color, x, y, width, height} of this.debugBoxes) {
         renderContext.strokeStyle = color;
         renderContext.strokeRect(this.box.x + x, this.box.y + y, width, height);
       }
     }
-    // Object.assign(renderContext, style); // we need to paint text with a particular style
-    renderContext.textBaseline = 'top';
-    // console.log('color:', color, 'box:', this.box, 'lineHeight:', lineHeight);
-    for (let {text, x, y} of this.finalBoxes) {
+
+    for (let tempy of this.finalBoxes) {
+      const {text, x, y, xOffsetStart, height} = tempy;
       const box = {
         x: this.box.x + x,
         y: this.box.y + y,
-        height: 0 // crucial
+        height
       };
 
       fillText(renderContext, {
+        fontName: font,
         font: renderContext.fonts[font],
         text,
         box,
-        xOffsetStart: 0,
+        xOffsetStart,
         size,
         color
       });
     }
+
+    renderContext.setLineDash([10, 10]);
+    renderContext.strokeStyle = 'orange';
+    renderContext.strokeRect(
+      this.box.x,
+      this.box.y,
+      this.box.width,
+      this.box.height
+    );
   }
 }
 

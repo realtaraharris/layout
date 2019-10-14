@@ -8,7 +8,9 @@ class Label extends Layout {
   // sends a child box up
   size(renderContext, {text, size, font, sizeMode = 'xHeight'}) {
     const {textMetrics, width, height} = measureText(
+      renderContext,
       renderContext.fonts[font],
+      font, // TODO: rename to fontName
       text,
       size,
       sizeMode
@@ -31,6 +33,7 @@ class Label extends Layout {
 
   render(renderContext, {text, size, font, color, showBoxes}) {
     fillText(renderContext, {
+      fontName: font,
       font: renderContext.fonts[font],
       text,
       box: this.box,

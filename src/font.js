@@ -57,35 +57,40 @@ function getHorizontalTextMetrics(font, text, size) {
   };
 }
 
-function getTextWidth(textMetrics) {
-  return (
-    textMetrics.advanceWidth + textMetrics.xOffsetStart + textMetrics.xOffsetEnd
-  );
-}
-
 function getTextHeight(textMetrics, sizeMode) {
   return textMetrics[sizeMode] * -1;
 }
 
-function measureText(font, text, size, sizeMode) {
+function measureText(renderContext, font, fontName, text, size, sizeMode) {
+  renderContext.font = `${size}px ${fontName}`;
+  const width = renderContext.measureText(text).width;
   const textMetrics = getHorizontalTextMetrics(font, text, size);
+  const {xOffsetStart, xOffsetEnd} = textMetrics;
   return {
     textMetrics,
-    width: getTextWidth(textMetrics),
+    width: width + xOffsetStart + xOffsetEnd,
     height: getTextHeight(textMetrics, sizeMode)
   };
 }
 exports.measureText = measureText;
 
 // NB: opentype.js has font.draw(), but you can't set the color if you use it!
-function fillText(renderContext, {font, text, box, xOffsetStart, size, color}) {
-  const outlines = font.getPath(
-    text,
-    box.x + xOffsetStart,
-    box.y + box.height,
-    size
-  );
-  outlines.fill = color;
-  outlines.draw(renderContext);
+function fillText(
+  renderContext,
+  {fontName, font, text, box, xOffsetStart, size, color}
+) {
+  // renderContext.textBaseline = 'top';
+  renderContext.font = `${size}px ${fontName}`;
+  renderContext.fillStyle = color;
+  renderContext.fillText(text, box.x + xOffsetStart, box.y + box.height);
+
+  // const outlines = font.getPath(
+  //   text,
+  //   box.x + xOffsetStart,
+  //   box.y + box.height,
+  //   size
+  // );
+  // outlines.fill = color;
+  // outlines.draw(renderContext);
 }
 exports.fillText = fillText;

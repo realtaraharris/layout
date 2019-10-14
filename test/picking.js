@@ -8,7 +8,7 @@ tape('click a label', t => {
   t.plan(3);
   const onLabelClick = event => {
     const expectedEvent = {
-      box: {x: 0, y: 0, width: 303.11999999999995, height: 59.4},
+      box: {x: 0, y: 0, width: 303.11964843749996, height: 59.4},
       childBox: undefined,
       event: {clientX: 12, clientY: 24, deltaX: undefined, deltaY: undefined}
     };
@@ -32,9 +32,9 @@ tape('click a button', t => {
   const onButtonClick = event => {
     const expectedEvent = {
       box: {
-        x: 104.65999999999997,
+        x: 104.65962890624998,
         y: 59.4,
-        width: 93.80000000000001,
+        width: 93.800390625,
         height: 106
       },
       childBox: undefined,
@@ -59,9 +59,9 @@ tape('click a button inside a viewport', t => {
   const onLabelClick = event => {
     const expectedEvent = {
       box: {
-        x: 80.57000000000001,
+        x: 80.42003906249998,
         y: 145.10000000000002,
-        width: 46.67,
+        width: 46.6702734375,
         height: 66.2
       },
       childBox: undefined,
