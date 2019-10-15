@@ -99,7 +99,7 @@ function polysToBoundingBox(polygons) {
   return [minX, minY, maxX, maxY];
 }
 
-function getRowBoxes(lineIndex, stepHeight, width, polygons) {
+function getLineBoxes(lineIndex, stepHeight, width, polygons) {
   let boxes = [];
   const y = lineIndex * stepHeight;
   const maxY = y + stepHeight;
@@ -141,13 +141,23 @@ function getRowBoxes(lineIndex, stepHeight, width, polygons) {
   return boxes;
 }
 
-function processBox(
+function getLineBox(lineIndex, stepHeight, width) {
+  const startY = lineIndex * stepHeight;
+  return {
+    startX: 0,
+    endX: width,
+    startY,
+    endY: startY + stepHeight,
+    lineIndex: lineIndex
+  };
+}
+
+function typesetLine(
   box,
   {startX, endX, startY, endY, lineIndex},
   tokens,
   tracking,
   lineHeight,
-  sizeMode,
   spaceWidth,
   dashWidth,
   showBoxes
@@ -319,8 +329,8 @@ class Text extends Layout {
       size,
       sizeMode
     );
-    const dashWidth = dashMeasurements.width;
 
+    const dashWidth = dashMeasurements.width;
     const spaceWidth = measureText(renderContext, f, font, ' ', size, sizeMode)
       .width;
 
@@ -335,30 +345,54 @@ class Text extends Layout {
     this.finalBoxes = [];
     this.debugBoxes = [];
     for (;;) {
-      const rowBoxes = getRowBoxes(lineIndex, lineHeight, width, polygons);
-
-      for (let x = 0; x < rowBoxes.length; x++) {
-        const {result, debugBoxes} = processBox(
-          this.box,
-          rowBoxes[x],
+      const lineBoxes = getLineBoxes(lineIndex, lineHeight, width, polygons);
+      for (let x = 0; x < lineBoxes.length; x++) {
+        const {result, debugBoxes} = typesetLine(
+          this.box, // why?
+          lineBoxes[x],
           this.tokens,
           tracking,
           lineHeight,
-          sizeMode,
           spaceWidth,
           dashWidth,
           showBoxes
         );
 
+        // keep these next two things seprate from each other. finalBoxes are
+        // used to lay the words out, so if these two were stored together, the
+        // debug layout view would would have jumbled words
         this.finalBoxes.push(...result);
         this.debugBoxes.push(...debugBoxes);
       }
 
       const currentY = lineIndex * lineHeight;
-
       if (currentY > maxY) {
         break;
       }
+      if (tracking.tokenCursor === this.tokens.length) {
+        maxY = currentY + lineHeight;
+        break;
+      }
+      lineIndex++;
+    }
+
+    for (;;) {
+      const subLineBox = getLineBox(lineIndex, lineHeight, width);
+      console.log({subLineBox});
+      const {result, debugBoxes} = typesetLine(
+        this.box,
+        subLineBox,
+        this.tokens,
+        tracking,
+        lineHeight,
+        spaceWidth,
+        dashWidth,
+        showBoxes
+      );
+      this.finalBoxes.push(...result);
+      this.debugBoxes.push(...debugBoxes);
+
+      const currentY = lineIndex * lineHeight;
       if (tracking.tokenCursor === this.tokens.length) {
         maxY = currentY + lineHeight;
         break;
@@ -397,7 +431,6 @@ class Text extends Layout {
 
       fillText(renderContext, {
         fontName: font,
-        font: renderContext.fonts[font],
         text,
         box,
         xOffsetStart,

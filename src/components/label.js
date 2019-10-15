@@ -34,7 +34,6 @@ class Label extends Layout {
   render(renderContext, {text, size, font, color, showBoxes}) {
     fillText(renderContext, {
       fontName: font,
-      font: renderContext.fonts[font],
       text,
       box: this.box,
       xOffsetStart: this.textMetrics.xOffsetStart,

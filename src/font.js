@@ -77,7 +77,7 @@ exports.measureText = measureText;
 // NB: opentype.js has font.draw(), but you can't set the color if you use it!
 function fillText(
   renderContext,
-  {fontName, font, text, box, xOffsetStart, size, color}
+  {fontName, text, box, xOffsetStart, size, color}
 ) {
   // renderContext.textBaseline = 'top';
   renderContext.font = `${size}px ${fontName}`;
