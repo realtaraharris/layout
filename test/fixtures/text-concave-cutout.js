@@ -22,10 +22,6 @@ module.exports = ({x, y, width, height}) => {
   const textWidth = 550;
   const textHeight = 460 + 40;
 
-  const subjectPolygon = fromPolygons([
-    [[0, 0], [textWidth, 0], [textWidth, textHeight], [0, textHeight]]
-  ]);
-
   const clipPolygon = fromPolygons([
     [
       [7.4806, 14.0654],
@@ -40,8 +36,6 @@ module.exports = ({x, y, width, height}) => {
       [4.6, 22.8]
     ].map(([x, y]) => [x * 20 + 0, y * 20 + 0])
   ]);
-
-  const polygons = subjectPolygon.subtract(clipPolygon);
 
   return c(
     Root,
@@ -75,7 +69,11 @@ module.exports = ({x, y, width, height}) => {
           sizeMode: 'capHeight',
           text: wordsToLiveBy,
           hyphenChar: hyphenChar,
-          polygons,
+
+          operation: 'subtract',
+          overflow: 'clip', // ignores any words that don't fit in the polygon
+          polygons: clipPolygon,
+
           color: 'white',
           showBoxes: true
         })

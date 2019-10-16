@@ -302,6 +302,7 @@ class Text extends Layout {
       size,
       sizeMode,
       polygons,
+      overflow,
       font,
       lineHeight = 20,
       showBoxes
@@ -334,7 +335,7 @@ class Text extends Layout {
     const spaceWidth = measureText(renderContext, f, font, ' ', size, sizeMode)
       .width;
 
-    let [, , , maxY] = polysToBoundingBox(polygons.toPolygons());
+    let maxY = 0;
     const tracking = {
       syllableCounter: 0,
       tokenCursor: 0,
@@ -344,12 +345,55 @@ class Text extends Layout {
     let lineIndex = 0;
     this.finalBoxes = [];
     this.debugBoxes = [];
-    for (;;) {
-      const lineBoxes = getLineBoxes(lineIndex, lineHeight, width, polygons);
-      for (let x = 0; x < lineBoxes.length; x++) {
+
+    if (polygons) {
+      const textHeight = 1e6; // TODO: get rid of this?!
+      const framePolygons = fromPolygons([
+        [[0, 0], [width, 0], [width, textHeight], [0, textHeight]]
+      ]);
+      let foo = framePolygons['subtract'](polygons);
+
+      let [, , , maxYY] = polysToBoundingBox(foo.toPolygons());
+      maxY = maxYY;
+      for (;;) {
+        const lineBoxes = getLineBoxes(lineIndex, lineHeight, width, foo);
+        for (let x = 0; x < lineBoxes.length; x++) {
+          const {result, debugBoxes} = typesetLine(
+            this.box, // why?
+            lineBoxes[x],
+            this.tokens,
+            tracking,
+            lineHeight,
+            spaceWidth,
+            dashWidth,
+            showBoxes
+          );
+
+          // keep these next two things seprate from each other. finalBoxes are
+          // used to lay the words out, so if these two were stored together, the
+          // debug layout view would would have jumbled words
+          this.finalBoxes.push(...result);
+          this.debugBoxes.push(...debugBoxes);
+        }
+
+        const currentY = lineIndex * lineHeight;
+        if (currentY > maxY) {
+          break;
+        }
+        if (tracking.tokenCursor === this.tokens.length) {
+          maxY = currentY + lineHeight;
+          break;
+        }
+        lineIndex++;
+      }
+    }
+
+    if (overflow !== 'clip') {
+      for (;;) {
+        const subLineBox = getLineBox(lineIndex, lineHeight, width);
         const {result, debugBoxes} = typesetLine(
-          this.box, // why?
-          lineBoxes[x],
+          this.box,
+          subLineBox,
           this.tokens,
           tracking,
           lineHeight,
@@ -357,47 +401,16 @@ class Text extends Layout {
           dashWidth,
           showBoxes
         );
-
-        // keep these next two things seprate from each other. finalBoxes are
-        // used to lay the words out, so if these two were stored together, the
-        // debug layout view would would have jumbled words
         this.finalBoxes.push(...result);
         this.debugBoxes.push(...debugBoxes);
-      }
 
-      const currentY = lineIndex * lineHeight;
-      if (currentY > maxY) {
-        break;
+        const currentY = lineIndex * lineHeight;
+        if (tracking.tokenCursor === this.tokens.length) {
+          maxY = currentY + lineHeight;
+          break;
+        }
+        lineIndex++;
       }
-      if (tracking.tokenCursor === this.tokens.length) {
-        maxY = currentY + lineHeight;
-        break;
-      }
-      lineIndex++;
-    }
-
-    for (;;) {
-      const subLineBox = getLineBox(lineIndex, lineHeight, width);
-      console.log({subLineBox});
-      const {result, debugBoxes} = typesetLine(
-        this.box,
-        subLineBox,
-        this.tokens,
-        tracking,
-        lineHeight,
-        spaceWidth,
-        dashWidth,
-        showBoxes
-      );
-      this.finalBoxes.push(...result);
-      this.debugBoxes.push(...debugBoxes);
-
-      const currentY = lineIndex * lineHeight;
-      if (tracking.tokenCursor === this.tokens.length) {
-        maxY = currentY + lineHeight;
-        break;
-      }
-      lineIndex++;
     }
 
     const finalHeight = maxY - lineHeight + dashMeasurements.height;

@@ -77,7 +77,11 @@ module.exports = ({x, y, width, height}) => {
           sizeMode: 'capHeight',
           text: wordsToLiveBy,
           hyphenChar: hyphenChar,
-          polygons,
+
+          polygons: polygons.inverse(),
+          operation: 'intersect',
+          overflow: 'clip', // ignores any words that don't fit in the polygon
+
           color: 'white',
           showBoxes: true
         })
