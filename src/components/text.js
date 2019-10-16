@@ -452,14 +452,16 @@ class Text extends Layout {
       });
     }
 
-    renderContext.setLineDash([10, 10]);
-    renderContext.strokeStyle = 'orange';
-    renderContext.strokeRect(
-      this.box.x,
-      this.box.y,
-      this.box.width,
-      this.box.height
-    );
+    if (showBoxes) {
+      renderContext.setLineDash([10, 10]);
+      renderContext.strokeStyle = 'orange';
+      renderContext.strokeRect(
+        this.box.x,
+        this.box.y,
+        this.box.width,
+        this.box.height
+      );
+    }
   }
 }
 
