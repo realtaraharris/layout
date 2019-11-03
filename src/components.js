@@ -1,5 +1,7 @@
 'use strict';
 
+const {shallowCompare} = require('./layout');
+
 class Layout {
   constructor() {
     this.box = {x: 0, y: 0, width: 0, height: 0};
@@ -26,6 +28,10 @@ class Layout {
       hit: false,
       descend: true
     };
+  }
+
+  invalidate(nextProps) {
+    return shallowCompare(nextProps, this.props); // TODO: copy the props into this.props somehow
   }
 }
 

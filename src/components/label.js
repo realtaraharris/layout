@@ -2,8 +2,29 @@
 
 const Layout = require('../components');
 const {measureText, fillText} = require('../font');
+const {modes} = require('../layout');
 
 class Label extends Layout {
+  serialize() {
+    return {
+      box: Object.assign({}, this.box),
+      parentBox: Object.assign({}, this.parentBox),
+      textMetrics: Object.assign({}, this.textMetrics)
+    };
+  }
+  deserialize(state) {
+    this.box = state.box;
+    this.parentBox = state.parentBox;
+    this.textMetrics = state.textMetrics;
+  }
+
+  getLayoutModes() {
+    return {
+      sizeMode: modes.SELF, // size depends entirely on self
+      positionMode: modes.PARENTS // position depends entirely on parent
+    };
+  }
+
   // TODO: add check to ensure labels have NO children
   // sends a child box up
   size(renderContext, {text, size, font, sizeMode = 'xHeight'}) {
@@ -17,9 +38,10 @@ class Label extends Layout {
     );
     const newBox = {x: 0, y: 0, width, height};
     this.box = newBox;
+    this.parentBox = Object.assign({}, newBox);
     this.textMetrics = textMetrics;
 
-    return Object.assign({}, newBox);
+    // return Object.assign({}, newBox);
   }
 
   position(renderContext, props, updatedParentPosition) {

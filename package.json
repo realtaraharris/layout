@@ -4,21 +4,23 @@
   "description": "layout",
   "main": "index.js",
   "scripts": {
-    "test": "node test/",
+    "test": "echo $$; node test/ | tap-bail",
     "test:lint": "eslint lib/ src/ test/",
     "test:unit": "npm run test:lint && npm run test:unit:cover",
-    "test:unit:cover": "nyc node test/; nyc report --reporter=lcov",
+    "test:unit:cover": "nyc node test/ | tap-bail; nyc report --reporter=lcov",
     "test:unit:cleanup": "rm -f test/screenshots/*-diff.png; exit 0",
     "test:unit:stryker": "stryker run",
     "test:unit:watch": "nodemon node test/index.js",
-    "test:unit:watch:complete": "nodemon --exec npm run test:unit"
+    "test:unit:watch:complete": "nodemon --exec npm run test:unit | tap-bail"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "browserify": "^16.2.3",
+    "dependency-graph": "^0.8.0",
+    "hashcode": "^1.0.3",
     "opentype.js": "^1.1.0",
-    "segseg": "^0.2.2"
+    "segseg": "^0.2.2",
+    "tree-walk": "^0.4.0"
   },
   "prettier": {
     "jsxSingleQuote": true,
@@ -28,6 +30,7 @@
     "endOfLine": "lf"
   },
   "devDependencies": {
+    "browserify": "^16.2.3",
     "@stryker-mutator/core": "^2.0.0",
     "@stryker-mutator/html-reporter": "^2.0.0",
     "@stryker-mutator/javascript-mutator": "^2.0.0",
@@ -35,11 +38,13 @@
     "canvas": "^2.5.0",
     "eslint": "^6.3.0",
     "hyphen": "^1.1.1",
+    "jsinspect": "^0.12.7",
     "node-resemble-js": "^0.2.0",
     "nodemon": "^1.19.1",
     "nyc": "^13.3.0",
     "proxyquire": "^2.1.0",
     "resemblejs": "^3.1.0",
+    "tap-bail": "^1.0.0",
     "tape": "^4.10.1",
     "tape-catch": "^1.0.6"
   }

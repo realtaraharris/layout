@@ -2,8 +2,31 @@
 
 const Layout = require('../components');
 const log = require('../log');
+const {modes} = require('../layout');
 
 class SpacedLine extends Layout {
+  serialize() {
+    return {
+      box: Object.assign({}, this.box),
+      parentBox: Object.assign({}, this.parentBox),
+      childBoxes: Object.assign({}, this.childBoxes),
+      positionInfo: Object.assign({}, this.positionInfo)
+    };
+  }
+  deserialize(state) {
+    this.box = state.box;
+    this.parentBox = state.parentBox;
+    this.childBoxes = state.childBoxes;
+    this.positionInfo = state.positionInfo;
+  }
+
+  getLayoutModes() {
+    return {
+      sizeMode: modes.SELF_AND_CHILDREN, // size depends entirely on self AND children
+      positionMode: modes.PARENTS // position depends entirely on parent
+    };
+  }
+
   constructor() {
     super();
     this.childBoxes = [];
@@ -49,10 +72,12 @@ class SpacedLine extends Layout {
         }
       }
 
-      return {x: 0, y: 0, width: _w, height: _h}; // send a size up to the parent
+      this.parentBox = {x: 0, y: 0, width: _w, height: _h}; // send a size up to the parent
+      return;
     }
 
-    return false; // stops the traversal here
+    //return false; // stops the traversal here
+    this.parentBox = undefined;
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -140,7 +165,7 @@ class SpacedLine extends Layout {
       }
     }
 
-    return positionedChildren;
+    this.positionInfo = positionedChildren;
   }
 
   render() {}

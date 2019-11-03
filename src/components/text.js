@@ -4,6 +4,7 @@ const Layout = require('../components');
 const {insertSorted} = require('../geometry');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 const {measureText, fillText} = require('../font');
+const {modes} = require('../layout');
 
 function split(
   renderContext,
@@ -288,6 +289,26 @@ function typesetLine(
 }
 
 class Text extends Layout {
+  serialize() {
+    return {
+      box: Object.assign({}, this.box),
+      parentBox: Object.assign({}, this.parentBox),
+      positionInfo: Object.assign({}, this.positionInfo)
+    };
+  }
+  deserialize(state) {
+    this.box = state.box;
+    this.parentBox = state.parentBox;
+    this.positionInfo = state.positionInfo;
+  }
+
+  getLayoutModes() {
+    return {
+      sizeMode: modes.SELF, // size depends entirely on self
+      positionMode: modes.PARENT // position depends entirely on parent
+    };
+  }
+
   constructor() {
     super();
     this.childBoxes = [];
@@ -415,14 +436,15 @@ class Text extends Layout {
 
     const finalHeight = maxY - lineHeight + dashMeasurements.height;
     this.box = Object.assign({}, {width, height: finalHeight});
-    return {width, height: finalHeight};
+    this.parentBox = Object.assign({}, {width, height: finalHeight});
+    // return {width, height: finalHeight};
   }
 
   position(renderContext, props, updatedParentPosition) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
-    return [updatedParentPosition];
+    this.positionInfo = [updatedParentPosition];
   }
 
   render(renderContext, {font, size, color, showBoxes = false}) {

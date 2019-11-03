@@ -1,8 +1,27 @@
 'use strict';
 
 const Layout = require('../components');
+const {modes} = require('../layout');
 
 class Root extends Layout {
+  serialize() {
+    return {
+      box: Object.assign({}, this.box),
+      positionInfo: Object.assign({}, this.positionInfo)
+    };
+  }
+  deserialize(state) {
+    this.box = state.box;
+    this.positionInfo = state.positionInfo;
+  }
+
+  getLayoutModes() {
+    return {
+      sizeMode: modes.PARENTS, // size depends entirely on parent (in this case props passed in!)
+      positionMode: modes.PARENTS // position depends entirely on parent
+    };
+  }
+
   size(renderContext, props, childBox) {
     this.box.x = props.x;
     this.box.y = props.y;
@@ -17,6 +36,12 @@ class Root extends Layout {
     }
 
     // no need to return anything here because the root node has no parent
+    // this.parentBox = {
+    //   x: props.x,
+    //   y: props.y,
+    //   width: props.width,
+    //   height: props.height
+    // };
   }
 
   position(
@@ -33,7 +58,7 @@ class Root extends Layout {
       this.box.y = updatedParentPosition.y;
     }
 
-    return Array(childCount).fill(Object.assign({}, this.box));
+    this.positionInfo = Array(childCount).fill(Object.assign({}, this.box));
   }
 
   render(renderContext, {color}) {
