@@ -2,11 +2,15 @@
 
 function c(Methods, props, ...children) {
   const filteredChildren = children.filter(Boolean);
-  const a = {methods: new Methods(), props, children: filteredChildren};
+  const component = {
+    instance: new Methods(),
+    props,
+    children: filteredChildren
+  };
   for (let child of filteredChildren) {
-    child.parent = a;
+    child.parent = component;
   }
-  return a;
+  return component;
 }
 
 function sizeDown(renderContext, component) {
@@ -21,7 +25,7 @@ function sizeDown(renderContext, component) {
 }
 
 function sizeUp(renderContext, component, childBox) {
-  let box = component.methods.size(
+  let box = component.instance.size(
     renderContext,
     component.props,
     childBox,
@@ -37,7 +41,7 @@ function sizeUp(renderContext, component, childBox) {
 }
 
 function pickDown(component, rawEvent, eventName, result) {
-  const {intersect} = component.methods;
+  const {intersect} = component.instance;
   const intersection = intersect(rawEvent, eventName);
 
   if (intersection.hit) {
@@ -64,7 +68,7 @@ function pickDown(component, rawEvent, eventName, result) {
 }
 
 function pickUp(component, rawEvent, eventName, result) {
-  const {box, parent} = component.methods;
+  const {box, parent} = component.instance;
 
   if (!parent || !box) {
     return;
@@ -74,7 +78,7 @@ function pickUp(component, rawEvent, eventName, result) {
 }
 
 function calcBoxPositions(renderContext, component, updatedParentPosition) {
-  const position = component.methods.position(
+  const position = component.instance.position(
     renderContext,
     component.props,
     updatedParentPosition,
@@ -102,7 +106,7 @@ function calcBoxPositions(renderContext, component, updatedParentPosition) {
 }
 
 function render(renderContext, component) {
-  component.methods.render(renderContext, component.props);
+  component.instance.render(renderContext, component.props);
 
   for (let i = 0; i < component.children.length; i++) {
     renderContext.save();
