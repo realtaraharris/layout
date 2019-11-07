@@ -1,17 +1,92 @@
 'use strict';
 
-function c(Methods, props, ...children) {
-  const filteredChildren = children.filter(Boolean);
+const encode = require('hashcode').hashCode;
+const util = require('util');
+// const walk = require('tree-walk');
+// const {DepGraph} = require('dependency-graph');
+
+const modes = Object.freeze({
+  SELF: Symbol('self'), // size depends entirely on self
+  SELF_AND_CHILDREN: Symbol('self-and-children'), // size depends on self and child(ren)
+  CHILDREN: Symbol('children'), // size depends entirely on child(ren)
+  SELF_AND_PARENTS: Symbol('self-and-parents'), // size depends on self and parent(s)
+  PARENTS: Symbol('parents') // size depends entirely on parent(s)
+  // ... parent-children doesn't make sense
+});
+
+function c(Component, props, ...allChildren) {
+  const children = allChildren.filter(Boolean);
+  const instance = new Component();
+
   const component = {
-    instance: new Methods(),
+    instance,
     props,
-    children: filteredChildren
+    children
   };
-  for (let child of filteredChildren) {
+
+  for (let child of children) {
     child.parent = component;
   }
   return component;
 }
+
+/*
+function hashesDown(component) {
+  const selfHash = encode().value(component.props);
+
+  // if we are a leaf node, start the up phase
+  if (component.children.length === 0) {
+    hashesUp(component);
+  }
+
+  for (let child of component.children) {
+    const {sizeMode, positionMode} = child.instance.getLayoutModes();
+
+    if (sizeMode === modes.SELF_AND_PARENTS) {
+      component.sizeHashDown = encode().value(
+        Object.assign({}, selfHash, component.props)
+      );
+    } else if (sizeMode === modes.PARENTS) {
+      component.sizeHashDown = encode().value(component.props);
+    }
+
+    if (positionMode === modes.SELF_AND_PARENTS) {
+      component.positionHashDown = encode().value(
+        Object.assign({}, selfHash, component.props)
+      );
+    } else if (positionMode === modes.PARENTS) {
+      component.positionHashDown = encode().value(component.props);
+    }
+
+    hashesDown(child);
+  }
+}
+
+function hashesUp(component) {
+  if (!component) {
+    return;
+  }
+  const selfHash = encode().value(component.props);
+  const {sizeMode, positionMode} = component.instance.getLayoutModes();
+
+  if (sizeMode === modes.SELF_AND_CHILDREN) {
+    component.sizeHashUp = encode().value(
+      Object.assign({}, selfHash, component.props)
+    );
+  } else if (sizeMode === modes.CHILDREN) {
+    component.sizeHashUp = encode().value(component.props);
+  }
+
+  if (positionMode === modes.SELF_AND_CHILDREN) {
+    component.positionHashUp = encode().value(
+      Object.assign({}, selfHash, component.props)
+    );
+  } else if (positionMode === modes.CHILDREN) {
+    component.positionHashUp = encode().value(component.props);
+  }
+
+  hashesUp(component.parent);
+}*/
 
 function sizeDown(renderContext, component) {
   // if we are a leaf node, start the up phase
@@ -142,4 +217,4 @@ function click(treeRoot, rawEvent, eventName) {
   }
 }
 
-module.exports = {c, render, layout, click};
+module.exports = {c, render, layout, click, modes, hashesDown};

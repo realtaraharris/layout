@@ -4,6 +4,7 @@ const Layout = require('../components');
 const {insertSorted} = require('../geometry');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 const {measureText, fillText} = require('../font');
+const {modes} = require('../layout');
 
 function split(
   renderContext,
@@ -291,6 +292,13 @@ class Text extends Layout {
   constructor() {
     super();
     this.childBoxes = [];
+  }
+
+  getLayoutModes() {
+    return {
+      sizeMode: modes.SELF, // size depends entirely on self AND children
+      positionMode: modes.PARENTS // position depends entirely on parents
+    };
   }
 
   size(

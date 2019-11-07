@@ -1,8 +1,16 @@
 'use strict';
 
 const Layout = require('../components');
+const {modes} = require('../layout');
 
 class Root extends Layout {
+  getLayoutModes() {
+    return {
+      sizeMode: modes.PARENTS, // size depends entirely on parent (in this case props passed in!)
+      positionMode: modes.PARENTS // position depends entirely on parents
+    };
+  }
+
   size(renderContext, props, childBox) {
     this.box.x = props.x;
     this.box.y = props.y;

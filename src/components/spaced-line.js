@@ -2,11 +2,19 @@
 
 const Layout = require('../components');
 const log = require('../log');
+const {modes} = require('../layout');
 
 class SpacedLine extends Layout {
   constructor() {
     super();
     this.childBoxes = [];
+  }
+
+  getLayoutModes() {
+    return {
+      sizeMode: modes.SELF_AND_CHILDREN, // size depends entirely on self AND children
+      positionMode: modes.PARENTS // position depends entirely on parents
+    };
   }
 
   size(renderContext, {mode}, childBox, childCount) {

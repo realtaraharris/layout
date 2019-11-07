@@ -2,8 +2,16 @@
 
 const Layout = require('../components');
 const {measureText, fillText} = require('../font');
+const {modes} = require('../layout');
 
 class Label extends Layout {
+  getLayoutModes() {
+    return {
+      sizeMode: modes.SELF, // size depends entirely on self
+      positionMode: modes.PARENTS // position depends entirely on parents
+    };
+  }
+
   // TODO: add check to ensure labels have NO children
   // sends a child box up
   size(renderContext, {text, size, font, sizeMode = 'xHeight'}) {

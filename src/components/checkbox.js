@@ -2,8 +2,16 @@
 
 const Layout = require('../components');
 const {roundRect} = require('../draw');
+const {modes} = require('../layout');
 
 class Checkbox extends Layout {
+  getLayoutModes() {
+    return {
+      sizeMode: modes.SELF, // size depends entirely on children
+      positionMode: modes.PARENTS // position depends entirely on parents
+    };
+  }
+
   size() {
     const newBox = {
       x: 0,

@@ -1,8 +1,16 @@
 'use strict';
 
 const Layout = require('../components');
+const {modes} = require('../layout');
 
 class Button extends Layout {
+  getLayoutModes() {
+    return {
+      sizeMode: modes.CHILDREN, // size depends entirely on children
+      positionMode: modes.PARENTS // position depends entirely on parents
+    };
+  }
+
   size(renderContext, props, childBox) {
     this.box.width = childBox.width;
     this.box.height = childBox.height;

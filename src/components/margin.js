@@ -1,8 +1,16 @@
 'use strict';
 
 const Layout = require('../components');
+const {modes} = require('../layout');
 
 class Margin extends Layout {
+  getLayoutModes() {
+    return {
+      sizeMode: modes.SELF_AND_CHILDREN, // size depends entirely on self AND children
+      positionMode: modes.PARENTS // position depends entirely on parents
+    };
+  }
+
   size(renderContext, {top, right, bottom, left}, childBox) {
     this.box = Object.assign({}, childBox);
 

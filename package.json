@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "browserify": "^16.2.3",
+    "hashcode": "^1.0.3",
     "opentype.js": "^1.1.0",
     "segseg": "^0.2.2"
   },

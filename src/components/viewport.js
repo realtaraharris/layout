@@ -1,11 +1,19 @@
 'use strict';
 
 const Layout = require('../components');
+const {modes} = require('../layout');
 
 class Viewport extends Layout {
   constructor() {
     super();
     this.childBoxes = [];
+  }
+
+  getLayoutModes() {
+    return {
+      sizeMode: modes.SELF, // size depends entirely on self
+      positionMode: modes.PARENTS // position depends entirely on parents
+    };
   }
 
   size(renderContext, {width, height}, childBox) {
