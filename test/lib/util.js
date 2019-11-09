@@ -39,9 +39,11 @@ function setupComponentTest(fixture) {
   const renderContext = canvas.getContext('2d');
   renderContext.fonts = fonts;
 
+  let cache = {};
   const treeRoot = layout(
     renderContext,
-    fixture({x: 0, y: 0, width: WIDTH, height: HEIGHT})
+    fixture({x: 0, y: 0, width: WIDTH, height: HEIGHT}),
+    cache
   );
 
   render(renderContext, treeRoot);

@@ -47,7 +47,12 @@ tape('components-line-215', t => {
       )
     );
 
-  layout(getRenderContext(), demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  let cache = {};
+  layout(
+    getRenderContext(),
+    demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}),
+    cache
+  );
 });
 
 tape('components-line-228', t => {
@@ -71,7 +76,12 @@ tape('components-line-228', t => {
       )
     );
 
-  layout(getRenderContext(), demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  let cache = {};
+  layout(
+    getRenderContext(),
+    demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}),
+    cache
+  );
 });
 
 tape('components-line-236', t => {
@@ -104,7 +114,12 @@ tape('components-line-236', t => {
       )
     );
 
-  layout(getRenderContext(), demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  let cache = {};
+  layout(
+    getRenderContext(),
+    demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}),
+    cache
+  );
 });
 
 tape('components-line-246', t => {
@@ -139,5 +154,10 @@ tape('components-line-246', t => {
       )
     );
 
-  layout(getRenderContext(), demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}));
+  let cache = {};
+  layout(
+    getRenderContext(),
+    demo1({x: 0, y: 0, width: WIDTH, height: HEIGHT}),
+    cache
+  );
 });

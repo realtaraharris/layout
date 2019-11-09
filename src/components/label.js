@@ -2,11 +2,31 @@
 
 const Layout = require('../components');
 const {measureText, fillText} = require('../font');
+const encode = require('hashcode').hashCode;
 
 class Label extends Layout {
+  constructor(props) {
+    super(props);
+    this.hash = encode().value(props);
+  }
+
   // TODO: add check to ensure labels have NO children
   // sends a child box up
-  size(renderContext, {text, size, font, sizeMode = 'xHeight'}) {
+  size(
+    renderContext,
+    {text, size, font, sizeMode = 'xHeight'},
+    childBox,
+    childCount,
+    cache
+  ) {
+    // query the cache. if we have an entry in there, we can skip all this
+    const cachedState = cache[this.hash];
+    if (cachedState) {
+      this.box = Object.assign({}, cachedState.box);
+      this.textMetrics = Object.assign({}, cachedState.textMetrics);
+      return Object.assign({}, cachedState.returnValue);
+    }
+
     const {textMetrics, width, height} = measureText(
       renderContext,
       renderContext.fonts[font],
@@ -19,7 +39,14 @@ class Label extends Layout {
     this.box = newBox;
     this.textMetrics = textMetrics;
 
-    return Object.assign({}, newBox);
+    // if we're down here, we have things we need to add to the cache
+    cache[this.hash] = {
+      box: this.box,
+      textMetrics: this.textMetrics,
+      returnValue: newBox
+    };
+
+    return newBox;
   }
 
   position(renderContext, props, updatedParentPosition) {

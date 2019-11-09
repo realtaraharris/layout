@@ -4,6 +4,7 @@ const Layout = require('../components');
 const {insertSorted} = require('../geometry');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 const {measureText, fillText} = require('../font');
+const encode = require('hashcode').hashCode;
 
 function split(
   renderContext,
@@ -288,9 +289,10 @@ function typesetLine(
 }
 
 class Text extends Layout {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.childBoxes = [];
+    this.hash = encode().value(props);
   }
 
   size(
@@ -307,8 +309,20 @@ class Text extends Layout {
       lineHeight = 20,
       showBoxes
     },
-    childBox
+    childBox,
+    childCount,
+    cache
   ) {
+    // query the cache. if we have an entry in there, we can skip all this
+    const cachedState = cache[this.hash];
+    if (cachedState) {
+      this.childBoxes = cachedState.childBoxes;
+      this.tokens = cachedState.tokens;
+      this.finalBoxes = cachedState.finalBoxes;
+      this.debugBoxes = cachedState.debugBoxes;
+      return cachedState.returnValue;
+    }
+
     this.childBoxes.push(childBox);
 
     this.tokens = split(
@@ -415,7 +429,19 @@ class Text extends Layout {
 
     const finalHeight = maxY - lineHeight + dashMeasurements.height;
     this.box = Object.assign({}, {width, height: finalHeight});
-    return {width, height: finalHeight};
+
+    const returnValue = {width, height: finalHeight};
+
+    // if we're down here, we have things we need to add to the cache
+    cache[this.hash] = {
+      childBoxes: this.childBoxes,
+      tokens: this.tokens,
+      finalBoxes: this.finalBoxes,
+      debugBoxes: this.debugBoxes,
+      returnValue: returnValue
+    };
+
+    return returnValue;
   }
 
   position(renderContext, props, updatedParentPosition) {

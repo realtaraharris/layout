@@ -3,7 +3,7 @@
 function c(Methods, props, ...children) {
   const filteredChildren = children.filter(Boolean);
   const component = {
-    instance: new Methods(),
+    instance: new Methods(props),
     props,
     children: filteredChildren
   };
@@ -13,23 +13,24 @@ function c(Methods, props, ...children) {
   return component;
 }
 
-function sizeDown(renderContext, component) {
+function sizeDown(renderContext, component, cache) {
   // if we are a leaf node, start the up phase
   if (component.children.length === 0) {
-    sizeUp(renderContext, component);
+    sizeUp(renderContext, component, null, cache);
   }
 
   for (let child of component.children) {
-    sizeDown(renderContext, child);
+    sizeDown(renderContext, child, cache);
   }
 }
 
-function sizeUp(renderContext, component, childBox) {
+function sizeUp(renderContext, component, childBox, cache) {
   let box = component.instance.size(
     renderContext,
     component.props,
     childBox,
-    component.children.length
+    component.children.length,
+    cache
   );
 
   // NB: if no box is returned, stop traversal per component API
@@ -37,7 +38,7 @@ function sizeUp(renderContext, component, childBox) {
     return;
   }
 
-  sizeUp(renderContext, component.parent, box);
+  sizeUp(renderContext, component.parent, box, cache);
 }
 
 function pickDown(component, rawEvent, eventName, result) {
@@ -77,12 +78,18 @@ function pickUp(component, rawEvent, eventName, result) {
   return pickUp(parent, rawEvent, eventName, result);
 }
 
-function calcBoxPositions(renderContext, component, updatedParentPosition) {
+function calcBoxPositions(
+  renderContext,
+  component,
+  updatedParentPosition,
+  cache
+) {
   const position = component.instance.position(
     renderContext,
     component.props,
     updatedParentPosition,
-    component.children.length
+    component.children.length,
+    cache
   );
 
   if (component.children.length === 0) {
@@ -101,7 +108,7 @@ function calcBoxPositions(renderContext, component, updatedParentPosition) {
     const child = component.children[i];
     const newPos = position[i];
 
-    calcBoxPositions(renderContext, child, newPos);
+    calcBoxPositions(renderContext, child, newPos, cache);
   }
 }
 
@@ -115,12 +122,12 @@ function render(renderContext, component) {
   }
 }
 
-function layout(renderContext, treeRoot) {
+function layout(renderContext, treeRoot, cache) {
   // calls each size function, ensuring that each component has a box
-  sizeDown(renderContext, treeRoot);
+  sizeDown(renderContext, treeRoot, cache);
 
   // calls each position function. also fills in any missing boxes using size props
-  calcBoxPositions(renderContext, treeRoot, {x: 0, y: 0});
+  calcBoxPositions(renderContext, treeRoot, {x: 0, y: 0}, cache);
 
   // console.log(util.inspect(treeRoot, false, null, true))
   return treeRoot;
