@@ -1,6 +1,7 @@
 'use strict';
 
 const Layout = require('../components');
+const PropTypes = require('introspective-prop-types');
 
 class Margin extends Layout {
   size(renderContext, {top, right, bottom, left}, childBox) {
@@ -58,5 +59,13 @@ class Margin extends Layout {
     );
   }
 }
+
+Margin.propTypes = {
+  left: PropTypes.number.isRequired,
+  right: PropTypes.number.isRequired,
+  top: PropTypes.number.isRequired,
+  bottom: PropTypes.number.isRequired,
+  showBoxes: PropTypes.bool.isRequired
+};
 
 module.exports = Margin;

@@ -1,6 +1,7 @@
 'use strict';
 
 const Layout = require('../components');
+const PropTypes = require('introspective-prop-types');
 
 class Root extends Layout {
   size(renderContext, props, childBox) {
@@ -53,5 +54,14 @@ class Root extends Layout {
     };
   }
 }
+
+Root.propTypes = {
+  align: PropTypes.oneOf(['left', 'right', 'center']).isRequired,
+  layers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired,
+  showBoxes: PropTypes.bool.isRequired
+};
 
 module.exports = Root;

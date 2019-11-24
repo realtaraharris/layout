@@ -2,6 +2,7 @@
 
 const Layout = require('../components');
 const log = require('../log');
+const PropTypes = require('introspective-prop-types');
 
 class SpacedLine extends Layout {
   constructor() {
@@ -10,6 +11,10 @@ class SpacedLine extends Layout {
   }
 
   size(renderContext, {mode}, childBox, childCount) {
+    if (childCount === 0) {
+      return {x: 0, y: 0, width: 0, height: 0};
+    }
+
     this.childBoxes.push(childBox);
 
     // if we have all the child boxes, process!
@@ -145,5 +150,8 @@ class SpacedLine extends Layout {
 
   render() {}
 }
-
+SpacedLine.propTypes = {
+  mode: PropTypes.oneOf(['vertical', 'horizontal', 'diagonal']).isRequired,
+  align: PropTypes.oneOf(['left', 'right', 'center']).isRequired
+};
 module.exports = SpacedLine;

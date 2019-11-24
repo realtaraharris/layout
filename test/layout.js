@@ -7,6 +7,7 @@ util.test('spaced-line-horizontal-right-with-margin');
 util.test('spaced-line-vertical-left-with-margin');
 util.test('vertical');
 util.test('vertical-right'); // TODO: rename to vertical-layout-right-aligned
+util.test('spaced-line-no-children');
 util.test('spaced-line-vertical-right');
 util.test('spaced-line-vertical-center');
 util.test('spaced-line-horizontal-center');

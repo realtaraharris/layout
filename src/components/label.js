@@ -3,6 +3,7 @@
 const Layout = require('../components');
 const {measureText, fillText} = require('../font');
 const encode = require('hashcode').hashCode;
+const PropTypes = require('introspective-prop-types');
 
 class Label extends Layout {
   constructor(props) {
@@ -87,5 +88,15 @@ class Label extends Layout {
     }
   }
 }
+
+Label.propTypes = {
+  text: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
+  font: PropTypes.string.isRequired,
+  sizeMode: PropTypes.oneOf(['descender', 'baseline', 'xHeight', 'asecnder'])
+    .isRequired,
+  color: PropTypes.string.isRequired,
+  showBoxes: PropTypes.bool.isRequired
+};
 
 module.exports = Label;
