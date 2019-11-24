@@ -1,30 +1,31 @@
 'use strict';
 
-function c(Methods, props, ...children) {
-  const filteredChildren = children.filter(Boolean);
-  const component = {
-    instance: new Methods(props),
+function c(Component, props, ...children) {
+  return {
+    Component,
+    instance: new Component(props),
     props,
-    children: filteredChildren
+    children: children.filter(Boolean)
   };
-  for (let child of filteredChildren) {
-    child.parent = component;
-  }
-  return component;
 }
 
-function sizeDown(renderContext, component, cache) {
+function sizeDown({renderContext, component, cache, breadcrumbs}) {
   // if we are a leaf node, start the up phase
   if (component.children.length === 0) {
-    sizeUp(renderContext, component, null, cache);
-  }
-
-  for (let child of component.children) {
-    sizeDown(renderContext, child, cache);
+    sizeUp({renderContext, component, childBox: null, cache, breadcrumbs});
+  } else {
+    for (let child of component.children) {
+      sizeDown({
+        renderContext,
+        component: child,
+        cache,
+        breadcrumbs: breadcrumbs.concat(component)
+      });
+    }
   }
 }
 
-function sizeUp(renderContext, component, childBox, cache) {
+function sizeUp({renderContext, component, childBox, cache, breadcrumbs}) {
   let box = component.instance.size(
     renderContext,
     component.props,
@@ -33,12 +34,14 @@ function sizeUp(renderContext, component, childBox, cache) {
     cache
   );
 
+  const parent = breadcrumbs.pop();
+
   // NB: if no box is returned, stop traversal per component API
-  if (!component.parent || !box) {
+  if (!box || !parent) {
     return;
   }
 
-  sizeUp(renderContext, component.parent, box, cache);
+  sizeUp({renderContext, component: parent, childBox: box, cache, breadcrumbs});
 }
 
 function pickDown(component, rawEvent, eventName, result) {
@@ -69,13 +72,11 @@ function pickDown(component, rawEvent, eventName, result) {
 }
 
 function pickUp(component, rawEvent, eventName, result) {
-  const {box, parent} = component.instance;
-
-  if (!parent || !box) {
+  if (!component || !component.parent || !component.instance.box) {
     return;
   }
 
-  return pickUp(parent, rawEvent, eventName, result);
+  return pickUp(component.parent, rawEvent, eventName, result);
 }
 
 function calcBoxPositions(
@@ -112,19 +113,64 @@ function calcBoxPositions(
   }
 }
 
-function render(renderContext, component) {
+function renderBaseLayer(renderContext, component) {
+  if (component.props.layer) {
+    return;
+  }
   component.instance.render(renderContext, component.props);
 
   for (let i = 0; i < component.children.length; i++) {
     renderContext.save();
-    render(renderContext, component.children[i]);
+    renderBaseLayer(renderContext, component.children[i]);
     renderContext.restore();
+  }
+}
+
+function collectLayers(renderContext, component, results) {
+  const {layer} = component.props;
+
+  if (layer) {
+    results[layer].push(component);
+  }
+
+  for (let i = 0; i < component.children.length; i++) {
+    collectLayers(renderContext, component.children[i], results);
+  }
+}
+
+function render(renderContext, component) {
+  let results = {};
+
+  const layerNames =
+    component.instance.constructor.name === 'Root' && component.props.layers
+      ? component.props.layers
+      : [];
+
+  for (let layerName of layerNames) {
+    results[layerName] = [];
+  }
+
+  collectLayers(renderContext, component, results);
+  renderBaseLayer(renderContext, component);
+
+  for (let layerName of layerNames) {
+    const layer = results[layerName];
+    if (!layer) {
+      continue;
+    }
+
+    // render each result
+    for (let c of layer) {
+      renderContext.save();
+      c.instance.render(renderContext, c.props);
+      renderContext.restore();
+    }
   }
 }
 
 function layout(renderContext, treeRoot, cache) {
   // calls each size function, ensuring that each component has a box
-  sizeDown(renderContext, treeRoot, cache);
+  sizeDown({renderContext, component: treeRoot, cache, breadcrumbs: []});
 
   // calls each position function. also fills in any missing boxes using size props
   calcBoxPositions(renderContext, treeRoot, {x: 0, y: 0}, cache);
@@ -140,13 +186,23 @@ function click(treeRoot, rawEvent, eventName) {
   if (results && results.length > 0) {
     for (let {component, box, childBox, event} of results) {
       if (component.props.onClick) {
-        component.props.onClick({box, childBox, event});
+        component.props.onClick({box, childBox, event, component});
       }
       if (component.props.onScroll) {
-        component.props.onScroll({box, childBox, event});
+        component.props.onScroll({box, childBox, event, component});
       }
     }
   }
 }
 
-module.exports = {c, render, layout, click};
+function copyTree(oldTree) {
+  const props = oldTree.props;
+  return {
+    Component: oldTree.Component,
+    instance: new oldTree.Component(props),
+    props,
+    children: oldTree.children.map(child => copyTree(child, oldTree))
+  };
+}
+
+module.exports = {c, render, layout, click, copyTree};
