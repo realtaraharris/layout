@@ -113,15 +113,16 @@ function calcBoxPositions(
   }
 }
 
-function renderBaseLayer(renderContext, component) {
-  if (component.props.layer) {
+function renderLayer(renderContext, component, layerName) {
+  const {layer} = component.props;
+  if (layer && layerName !== layer) {
     return;
   }
   component.instance.render(renderContext, component.props);
 
   for (let i = 0; i < component.children.length; i++) {
     renderContext.save();
-    renderBaseLayer(renderContext, component.children[i]);
+    renderLayer(renderContext, component.children[i]);
     renderContext.restore();
   }
 }
@@ -151,7 +152,7 @@ function render(renderContext, component) {
   }
 
   collectLayers(renderContext, component, results);
-  renderBaseLayer(renderContext, component);
+  renderLayer(renderContext, component, 'base'); // render the base layer first
 
   for (let layerName of layerNames) {
     const layer = results[layerName];
@@ -159,10 +160,9 @@ function render(renderContext, component) {
       continue;
     }
 
-    // render each result
-    for (let c of layer) {
+    for (let l of layer) {
       renderContext.save();
-      c.instance.render(renderContext, c.props);
+      renderLayer(renderContext, l, layerName);
       renderContext.restore();
     }
   }
