@@ -39,12 +39,31 @@ function getAdvanceWidth(font, text, size) {
 }
 
 function getHorizontalTextMetrics(font, text, size) {
-  if (text.length <= 0) {
-    return;
-  }
+  let xOffsetStart = 0;
+  let xOffsetEnd = 0;
+  let advanceWidths = [0];
 
-  const firstLabelChar = text[0];
-  const lastLabelChar = text[text.length - 1];
+  if (text.length > 0) {
+    const firstLabelChar = text[0];
+    const lastLabelChar = text[text.length - 1];
+
+    xOffsetStart = getSideBearings(font, size, firstLabelChar).left;
+    xOffsetEnd = getSideBearings(font, size, lastLabelChar).right;
+
+    let accum = 0;
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const aw = font.getAdvanceWidth(char, size);
+      if (i === 0) {
+        accum += aw + xOffsetStart;
+      } else if (i === text.length - 1) {
+        accum += aw + xOffsetEnd;
+      } else {
+        accum += aw;
+      }
+      advanceWidths.push(accum);
+    }
+  }
 
   return {
     ascender: fUnitsToPixels(font.tables.hhea.ascender, size),
@@ -52,8 +71,9 @@ function getHorizontalTextMetrics(font, text, size) {
     xHeight: fUnitsToPixels(font.tables.os2.sxHeight, size),
     capHeight: fUnitsToPixels(font.tables.os2.sCapHeight, size),
     advanceWidth: getAdvanceWidth(font, text, size),
-    xOffsetStart: getSideBearings(font, size, firstLabelChar).left,
-    xOffsetEnd: getSideBearings(font, size, lastLabelChar).right
+    xOffsetStart,
+    xOffsetEnd,
+    advanceWidths
   };
 }
 

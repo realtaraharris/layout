@@ -56,7 +56,13 @@ class Viewport extends Layout {
       clientY >= box.y &&
       clientY <= box.y + box.height;
 
-    if (insideBox && eventName === 'click') {
+    if (
+      insideBox &&
+      (eventName === 'click' ||
+        eventName === 'mousedown' ||
+        eventName === 'mouseup' ||
+        eventName === 'mousemove')
+    ) {
       return {
         hit: false,
         descend: true

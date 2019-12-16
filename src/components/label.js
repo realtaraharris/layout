@@ -59,7 +59,7 @@ class Label extends Layout {
     // we want to give users an error if they're doing that!
   }
 
-  render(renderContext, {text, size, font, color, showBoxes}) {
+  render(renderContext, {text, size, font, color, showBoxes, selection}) {
     fillText(renderContext, {
       fontName: font,
       text,
@@ -68,6 +68,43 @@ class Label extends Layout {
       size,
       color
     });
+    const {advanceWidths} = this.textMetrics;
+
+    if (selection && advanceWidths) {
+      if (selection.length === 2) {
+        const [selectionStart, selectionEnd] = selection;
+
+        const selStartPx = advanceWidths[selectionStart];
+        const selEndPx = advanceWidths[selectionEnd];
+
+        // draw the selection rectangle
+        renderContext.fillStyle = 'rgba(128, 128, 255, 0.5)';
+
+        const x = this.box.x + selStartPx + this.textMetrics.xOffsetStart;
+        const y = this.box.y;
+        const width = selEndPx - selStartPx + this.textMetrics.xOffsetStart;
+        const height = this.box.height;
+
+        renderContext.fillRect(x, y, width, height);
+      } else if (selection.length === 1) {
+        const [cursorPosition] = selection;
+        const selPx = advanceWidths[cursorPosition];
+
+        const cursorPadding = 2;
+
+        // draw the cursor
+        renderContext.strokeStyle = 'rgba(128, 128, 255, 0.5)';
+        const x = this.box.x + selPx + this.textMetrics.xOffsetStart;
+        const y = this.box.y - cursorPadding;
+        const height = this.box.height + cursorPadding * 2;
+
+        renderContext.beginPath();
+        renderContext.moveTo(x, y);
+        renderContext.lineTo(x, y + height);
+        renderContext.strokeStyle = 'black';
+        renderContext.stroke();
+      }
+    }
 
     if (showBoxes) {
       const horizontalLine = (y, color) => {
@@ -93,8 +130,13 @@ Label.propTypes = {
   text: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   font: PropTypes.string.isRequired,
-  sizeMode: PropTypes.oneOf(['descender', 'baseline', 'xHeight', 'asecnder'])
-    .isRequired,
+  sizeMode: PropTypes.oneOf([
+    'descender',
+    'baseline',
+    'xHeight',
+    'capHeight',
+    'ascender'
+  ]).isRequired,
   color: PropTypes.string.isRequired,
   showBoxes: PropTypes.bool.isRequired
 };

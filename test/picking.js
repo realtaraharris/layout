@@ -93,3 +93,34 @@ tape('click an occluded button inside a viewport', t => {
   debugDot(ctx, rawEvent);
   screenshot('click-occluded-button-inside-viewport', canvas, t); // second, third assertions
 });
+
+tape.only('mouse over a label', t => {
+  t.plan(3);
+  const firstLabelEventHandler = () => {
+    t.fail();
+  };
+
+  const secondLabelEventHandler = () => {
+    t.pass();
+  };
+
+  const mousemoveClickingFixture = require('./fixtures/mousemove-label');
+  const {canvas, ctx, treeRoot} = setupComponentTest(
+    mousemoveClickingFixture({
+      firstLabelEventHandler,
+      secondLabelEventHandler
+    })
+  );
+
+  const xOffset = 100;
+  const yOffset = 20;
+  let rawEvent = {clientX: 30 + xOffset, clientY: 0 + yOffset};
+  click(treeRoot, rawEvent, 'mousemove');
+  debugDot(ctx, rawEvent);
+
+  rawEvent = {clientX: 200 + xOffset, clientY: 10 + yOffset};
+  click(treeRoot, rawEvent, 'mousemove');
+  debugDot(ctx, rawEvent);
+
+  screenshot('mouse-over-a-label', canvas, t); // second, third assertions
+});

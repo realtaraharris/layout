@@ -1,10 +1,24 @@
 'use strict';
 
-function c(Component, props, ...children) {
+function c(componentOrFunction, props, ...children) {
+  const type = typeof componentOrFunction;
+
+  let Component, connectedProps;
+  if (type === 'object') {
+    Component = componentOrFunction.Component;
+    connectedProps = componentOrFunction.props;
+  } else if (type === 'function') {
+    Component = componentOrFunction;
+  }
+
+  const finalProps = connectedProps
+    ? Object.assign({}, connectedProps, props)
+    : props;
+
   return {
     Component,
-    instance: new Component(props),
-    props,
+    instance: new Component(finalProps),
+    props: finalProps,
     children: children.filter(Boolean)
   };
 }
@@ -185,11 +199,32 @@ function click(treeRoot, rawEvent, eventName) {
 
   if (results && results.length > 0) {
     for (let {component, box, childBox, event} of results) {
-      if (component.props.onClick) {
-        component.props.onClick({box, childBox, event, component});
+      if (component.props.onClick && eventName === 'click') {
+        component.props.onClick({box, childBox, event, component, eventName});
+      }
+      if (component.props.onMouseDown && eventName === 'mousedown') {
+        component.props.onMouseDown({
+          box,
+          childBox,
+          event,
+          component,
+          eventName
+        });
+      }
+      if (component.props.onMouseMove && eventName === 'mousemove') {
+        component.props.onMouseMove({
+          box,
+          childBox,
+          event,
+          component,
+          eventName
+        });
+      }
+      if (component.props.onMouseUp && eventName === 'mouseup') {
+        component.props.onMouseUp({box, childBox, event, component, eventName});
       }
       if (component.props.onScroll) {
-        component.props.onScroll({box, childBox, event, component});
+        component.props.onScroll({box, childBox, event, component, eventName});
       }
     }
   }
