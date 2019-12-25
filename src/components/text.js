@@ -297,12 +297,10 @@ class Text extends Layout {
   constructor(props) {
     super(props);
     this.childBoxes = [];
-    this.hash = encode().value(props);
   }
 
-  size(
-    renderContext,
-    {
+  size(renderContext, props, childBox, childCount, cache) {
+    const {
       width,
       hyphenChar,
       size,
@@ -313,22 +311,20 @@ class Text extends Layout {
       lineHeight = 20,
       showBoxes,
       textFunc
-    },
-    childBox,
-    childCount,
-    cache
-  ) {
-    const {text, tracking} = textFunc();
+    } = props;
+    const {text, textHash, tracking} = textFunc();
+
+    const hash = encode().value(Object.assign({}, props, tracking, {textHash}));
 
     // query the cache. if we have an entry in there, we can skip all this
-    // const cachedState = cache[this.hash];
-    // if (cachedState) {
-    //   this.childBoxes = cachedState.childBoxes;
-    //   this.tokens = cachedState.tokens;
-    //   this.finalBoxes = cachedState.finalBoxes;
-    //   this.debugBoxes = cachedState.debugBoxes;
-    //   return cachedState.returnValue;
-    // }
+    const cachedState = cache[hash];
+    if (cachedState) {
+      this.childBoxes = cachedState.childBoxes;
+      this.tokens = cachedState.tokens;
+      this.finalBoxes = cachedState.finalBoxes;
+      this.debugBoxes = cachedState.debugBoxes;
+      return cachedState.returnValue;
+    }
 
     this.childBoxes.push(childBox);
 
@@ -445,15 +441,13 @@ class Text extends Layout {
     const returnValue = {width, height: finalHeight};
 
     // if we're down here, we have things we need to add to the cache
-    // cache[this.hash] = {
-    //   childBoxes: this.childBoxes,
-    //   tokens: this.tokens,
-    //   finalBoxes: this.finalBoxes,
-    //   debugBoxes: this.debugBoxes,
-    //   returnValue: returnValue
-    // };
-
-    console.log('tracking:', tracking);
+    cache[hash] = {
+      childBoxes: this.childBoxes,
+      tokens: this.tokens,
+      finalBoxes: this.finalBoxes,
+      debugBoxes: this.debugBoxes,
+      returnValue: returnValue
+    };
 
     return returnValue;
   }
