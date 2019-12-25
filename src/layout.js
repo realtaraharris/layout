@@ -1,5 +1,7 @@
 'use strict';
 
+const opentype = require('opentype.js');
+
 function c(componentOrFunction, props, ...children) {
   const type = typeof componentOrFunction;
 
@@ -127,16 +129,16 @@ function calcBoxPositions(
   }
 }
 
-function renderLayer(renderContext, component, layerName) {
+function renderLayer(renderContext, component, layerName, position) {
   const {layer} = component.props;
   if (layer && layerName !== layer) {
     return;
   }
-  component.instance.render(renderContext, component.props);
+  component.instance.render(renderContext, component.props, position);
 
   for (let i = 0; i < component.children.length; i++) {
     renderContext.save();
-    renderLayer(renderContext, component.children[i]);
+    renderLayer(renderContext, component.children[i], layerName, i);
     renderContext.restore();
   }
 }
@@ -166,7 +168,7 @@ function render(renderContext, component) {
   }
 
   collectLayers(renderContext, component, results);
-  renderLayer(renderContext, component, 'base'); // render the base layer first
+  renderLayer(renderContext, component, 'base', 0); // render the base layer first
 
   for (let layerName of layerNames) {
     const layer = results[layerName];
@@ -176,7 +178,7 @@ function render(renderContext, component) {
 
     for (let l of layer) {
       renderContext.save();
-      renderLayer(renderContext, l, layerName);
+      renderLayer(renderContext, l, layerName, 0);
       renderContext.restore();
     }
   }
@@ -240,4 +242,48 @@ function copyTree(oldTree) {
   };
 }
 
-module.exports = {c, render, layout, click, copyTree};
+/**
+ * makes the font available to canvas
+ * @param {*} name - font name
+ * @param {*} weight - font weight
+ * @param {*} buffer - buffer containing font data
+ */
+const addFontToCanvasBrowser = async (name, weight, buffer) => {
+  const fontName = `${name}-${weight}`;
+  const font = new FontFace(fontName, buffer);
+  await font.load();
+  document.fonts.add(font);
+
+  const options = {};
+  return opentype.parse(buffer, options);
+};
+
+/**
+ * makes the font available to canvas
+ * @param {*} name - font name
+ * @param {*} weight - font weight
+ * @param {*} buffer - buffer containing font data
+ */
+const addFontToCanvasNode = async (name, weight, buffer) => {
+  const options = {};
+  return opentype.parse(buffer, options);
+};
+
+/**
+ * makes the font available to canvas
+ * @param {*} name - font name
+ * @param {*} weight - font weight
+ * @param {*} buffer - buffer containing font data
+ */
+const addFontToCanvas = async (name, weight, buffer) => {
+  const isBrowser =
+    typeof window !== 'undefined' && typeof window.document !== 'undefined';
+
+  if (isBrowser) {
+    return addFontToCanvasBrowser(name, weight, buffer);
+  } else {
+    return addFontToCanvasNode(name, weight, buffer);
+  }
+};
+
+module.exports = {c, render, layout, click, copyTree, addFontToCanvas};

@@ -94,7 +94,7 @@ tape('click an occluded button inside a viewport', t => {
   screenshot('click-occluded-button-inside-viewport', canvas, t); // second, third assertions
 });
 
-tape.only('mouse over a label', t => {
+tape('mouse over a label', t => {
   t.plan(3);
   const firstLabelEventHandler = () => {
     t.fail();

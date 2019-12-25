@@ -105,7 +105,12 @@ function getLineBoxes(lineIndex, stepHeight, width, polygons) {
   const y = lineIndex * stepHeight;
   const maxY = y + stepHeight;
   const linePolygon = fromPolygons([
-    [[0, y], [width, y], [width, maxY], [0, maxY]]
+    [
+      [0, y],
+      [width, y],
+      [width, maxY],
+      [0, maxY]
+    ]
   ]);
   const splitPolys = polygons.intersect(linePolygon).toPolygons();
 
@@ -299,7 +304,6 @@ class Text extends Layout {
     renderContext,
     {
       width,
-      text,
       hyphenChar,
       size,
       sizeMode,
@@ -307,21 +311,24 @@ class Text extends Layout {
       overflow,
       font,
       lineHeight = 20,
-      showBoxes
+      showBoxes,
+      textFunc
     },
     childBox,
     childCount,
     cache
   ) {
+    const {text, tracking} = textFunc();
+
     // query the cache. if we have an entry in there, we can skip all this
-    const cachedState = cache[this.hash];
-    if (cachedState) {
-      this.childBoxes = cachedState.childBoxes;
-      this.tokens = cachedState.tokens;
-      this.finalBoxes = cachedState.finalBoxes;
-      this.debugBoxes = cachedState.debugBoxes;
-      return cachedState.returnValue;
-    }
+    // const cachedState = cache[this.hash];
+    // if (cachedState) {
+    //   this.childBoxes = cachedState.childBoxes;
+    //   this.tokens = cachedState.tokens;
+    //   this.finalBoxes = cachedState.finalBoxes;
+    //   this.debugBoxes = cachedState.debugBoxes;
+    //   return cachedState.returnValue;
+    // }
 
     this.childBoxes.push(childBox);
 
@@ -350,11 +357,11 @@ class Text extends Layout {
       .width;
 
     let maxY = 0;
-    const tracking = {
-      syllableCounter: 0,
-      tokenCursor: 0,
-      lastLineVisited: 0
-    };
+    // const tracking = {
+    //   syllableCounter: 0,
+    //   tokenCursor: 0,
+    //   lastLineVisited: 0
+    // };
 
     let lineIndex = 0;
     this.finalBoxes = [];
@@ -363,7 +370,12 @@ class Text extends Layout {
     if (polygons) {
       const textHeight = 1e6; // TODO: get rid of this?!
       const framePolygons = fromPolygons([
-        [[0, 0], [width, 0], [width, textHeight], [0, textHeight]]
+        [
+          [0, 0],
+          [width, 0],
+          [width, textHeight],
+          [0, textHeight]
+        ]
       ]);
       let foo = framePolygons['subtract'](polygons);
 
@@ -433,13 +445,15 @@ class Text extends Layout {
     const returnValue = {width, height: finalHeight};
 
     // if we're down here, we have things we need to add to the cache
-    cache[this.hash] = {
-      childBoxes: this.childBoxes,
-      tokens: this.tokens,
-      finalBoxes: this.finalBoxes,
-      debugBoxes: this.debugBoxes,
-      returnValue: returnValue
-    };
+    // cache[this.hash] = {
+    //   childBoxes: this.childBoxes,
+    //   tokens: this.tokens,
+    //   finalBoxes: this.finalBoxes,
+    //   debugBoxes: this.debugBoxes,
+    //   returnValue: returnValue
+    // };
+
+    console.log('tracking:', tracking);
 
     return returnValue;
   }

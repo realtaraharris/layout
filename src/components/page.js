@@ -1,16 +1,25 @@
 'use strict';
 
+// TODO! MOST OF THIS CODE NEEDS TO GET RIPPED OUT. it's just a quick copy-paste to validate an idea
+
 const Layout = require('../components');
 const log = require('../log');
 const PropTypes = require('introspective-prop-types');
 
-class SpacedLine extends Layout {
+class Page extends Layout {
   constructor() {
     super();
     this.childBoxes = [];
   }
 
-  size(renderContext, {mode}, childBox, childCount) {
+  size(
+    renderContext,
+    {mode, maxPageHeight},
+    childBox,
+    childCount,
+    cache,
+    children
+  ) {
     if (childCount === 0) {
       return {x: 0, y: 0, width: 0, height: 0};
     }
@@ -149,10 +158,15 @@ class SpacedLine extends Layout {
     return positionedChildren;
   }
 
-  render() {}
+  render(renderContext, props, position) {
+    console.log({position});
+    if (position > 0) {
+      renderContext.addPage();
+    }
+  }
 }
-SpacedLine.propTypes = {
+Page.propTypes = {
   mode: PropTypes.oneOf(['vertical', 'horizontal', 'diagonal']).isRequired,
   align: PropTypes.oneOf(['left', 'right', 'center']).isRequired
 };
-module.exports = SpacedLine;
+module.exports = Page;

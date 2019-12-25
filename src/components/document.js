@@ -1,10 +1,12 @@
 'use strict';
 
+// TODO! MOST OF THIS CODE NEEDS TO GET RIPPED OUT. it's just a quick copy-paste to validate an idea
+
 const Layout = require('../components');
 const log = require('../log');
 const PropTypes = require('introspective-prop-types');
 
-class SpacedLine extends Layout {
+class Document extends Layout {
   constructor() {
     super();
     this.childBoxes = [];
@@ -127,7 +129,7 @@ class SpacedLine extends Layout {
         log('invalid layout mode in spacedLine:', mode);
       }
 
-      positionedChildren.push({x: _x, y: _y});
+      positionedChildren.push({x: 0, y: 0});
 
       switch (mode) {
         case 'vertical':
@@ -151,8 +153,8 @@ class SpacedLine extends Layout {
 
   render() {}
 }
-SpacedLine.propTypes = {
+Document.propTypes = {
   mode: PropTypes.oneOf(['vertical', 'horizontal', 'diagonal']).isRequired,
   align: PropTypes.oneOf(['left', 'right', 'center']).isRequired
 };
-module.exports = SpacedLine;
+module.exports = Document;
