@@ -5,7 +5,6 @@ const {Text, createTextContinuation} = require('../../src/components/text');
 const Label = require('../../src/components/label');
 const Margin = require('../../src/components/margin');
 const SpacedLine = require('../../src/components/spaced-line');
-const {fromPolygons} = require('../../lib/csg/src/csg');
 
 const createHyphenator = require('hyphen');
 const hyphenationPatternsEnUs = require('hyphen/patterns/en-us');
@@ -29,21 +28,8 @@ module.exports = ({x, y, width, height}) => {
   const textContinuation = createTextContinuation(exampleText);
 
   const marginA = 20;
-
   const textWidth = 520;
   const textHeight = 360;
-
-  // TODO: MOVE THIS BOX INTO THE COMPONENT?
-  const subjectPolygon = fromPolygons([
-    [
-      [0, 0],
-      [textWidth, 0],
-      [textWidth, textHeight],
-      [0, textHeight]
-    ]
-  ]);
-
-  // const polygons = subjectPolygon.subtract(clipPolygon);
 
   return c(
     Root,

@@ -18,7 +18,7 @@ class Button extends Layout {
 
   render() {}
 
-  intersect({clientX, clientY, deltaX, deltaY}) {
+  intersect({clientX, clientY}) {
     const {box} = this;
     if (
       clientX >= box.x &&
