@@ -6,6 +6,23 @@ const {fromPolygons} = require('../../lib/csg/src/csg');
 const {measureText, fillText} = require('../font');
 const encode = require('hashcode').hashCode;
 
+function createTextContinuation({hyphenChar, rawText, text}) {
+  const textHash = encode().value(rawText);
+
+  const tracking = {
+    syllableCounter: 0,
+    tokenCursor: 0,
+    lastLineVisited: 0
+  };
+
+  return () => ({
+    text,
+    hyphenChar,
+    textHash,
+    tracking
+  });
+}
+
 function split(
   renderContext,
   input,
@@ -302,7 +319,6 @@ class Text extends Layout {
   size(renderContext, props, childBox, childCount, cache) {
     const {
       width,
-      hyphenChar,
       size,
       sizeMode,
       polygons,
@@ -310,9 +326,9 @@ class Text extends Layout {
       font,
       lineHeight = 20,
       showBoxes,
-      textFunc
+      textContinuation
     } = props;
-    const {text, textHash, tracking} = textFunc();
+    const {text, textHash, hyphenChar, tracking} = textContinuation();
 
     const hash = encode().value(Object.assign({}, props, tracking, {textHash}));
 
@@ -325,6 +341,7 @@ class Text extends Layout {
       this.debugBoxes = cachedState.debugBoxes;
       return cachedState.returnValue;
     }
+    tracking.lastLineVisited = 0;
 
     this.childBoxes.push(childBox);
 
@@ -353,11 +370,6 @@ class Text extends Layout {
       .width;
 
     let maxY = 0;
-    // const tracking = {
-    //   syllableCounter: 0,
-    //   tokenCursor: 0,
-    //   lastLineVisited: 0
-    // };
 
     let lineIndex = 0;
     this.finalBoxes = [];
@@ -499,4 +511,4 @@ class Text extends Layout {
   }
 }
 
-module.exports = Text;
+module.exports = {Text, createTextContinuation};
