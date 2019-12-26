@@ -3,7 +3,7 @@ const {c} = require('../../src/layout');
 const Root = require('../../src/components/root');
 const Label = require('../../src/components/label');
 const Margin = require('../../src/components/margin');
-const SpacedLine = require('../../src/components/spaced-line');
+const FlowBox = require('../../src/components/flow-box');
 const Button = require('../../src/components/button');
 const log = require('../../src/log');
 
@@ -12,7 +12,7 @@ module.exports = ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'black'},
     c(
-      SpacedLine,
+      FlowBox,
       {mode: 'vertical', align: 'center'},
       c(
         Button,
@@ -31,7 +31,7 @@ module.exports = ({x, y, width, height}) => {
         )
       ),
       c(
-        SpacedLine,
+        FlowBox,
         {mode: 'horizontal', align: 'center'},
         c(
           Button,
@@ -99,7 +99,7 @@ module.exports = ({x, y, width, height}) => {
         )
       ),
       c(
-        SpacedLine,
+        FlowBox,
         {mode: 'diagonal', align: 'center'},
         c(
           Button,

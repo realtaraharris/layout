@@ -4,7 +4,7 @@ const Layout = require('../components');
 const log = require('../log');
 const PropTypes = require('introspective-prop-types');
 
-class SpacedLine extends Layout {
+class FlowBox extends Layout {
   constructor() {
     super();
     this.childBoxes = [];
@@ -151,8 +151,8 @@ class SpacedLine extends Layout {
 
   render() {}
 }
-SpacedLine.propTypes = {
+FlowBox.propTypes = {
   mode: PropTypes.oneOf(['vertical', 'horizontal', 'diagonal']).isRequired,
   align: PropTypes.oneOf(['left', 'right', 'center']).isRequired
 };
-module.exports = SpacedLine;
+module.exports = FlowBox;

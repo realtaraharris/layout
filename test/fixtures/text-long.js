@@ -4,7 +4,7 @@ const Root = require('../../src/components/root');
 const {Text, createTextContinuation} = require('../../src/components/text');
 const Label = require('../../src/components/label');
 const Margin = require('../../src/components/margin');
-const SpacedLine = require('../../src/components/spaced-line');
+const FlowBox = require('../../src/components/flow-box');
 
 const createHyphenator = require('hyphen');
 const hyphenationPatternsEnUs = require('hyphen/patterns/en-us');
@@ -35,7 +35,7 @@ module.exports = ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'black'},
     c(
-      SpacedLine,
+      FlowBox,
       {mode: 'vertical', align: 'left'},
       c(Label, {
         font: 'SourceSansPro-Regular',

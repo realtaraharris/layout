@@ -2,14 +2,14 @@
 const {c} = require('../../src/layout');
 const Root = require('../../src/components/root');
 const Label = require('../../src/components/label');
-const SpacedLine = require('../../src/components/spaced-line');
+const FlowBox = require('../../src/components/flow-box');
 
 module.exports = ({x, y, width, height}) => {
   return c(
     Root,
     {x, y, width, height, color: 'black'},
     c(
-      SpacedLine,
+      FlowBox,
       {mode: 'horizontal', align: 'left'},
       c(Label, {
         font: 'SourceSansPro-Regular',
@@ -19,7 +19,7 @@ module.exports = ({x, y, width, height}) => {
         sizeMode: 'capHeight',
         showBoxes: false
       }),
-      c(SpacedLine, {mode: 'vertical', align: 'right'})
+      c(FlowBox, {mode: 'vertical', align: 'right'})
     )
   );
 };
