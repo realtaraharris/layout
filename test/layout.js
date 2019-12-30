@@ -14,6 +14,10 @@ util.test('flow-box-horizontal-center');
 util.test('flow-box-diagonal-center');
 util.test('flow-box-horizontal-right');
 util.test('flow-box-vertical-center-with-margin');
+
+util.test('flow-box-expanding-simple');
+util.test('flow-box-expanding-nested');
+
 util.test('complex-nested');
 util.test('margin');
 util.test('horizontal');

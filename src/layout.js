@@ -25,6 +25,28 @@ function c(componentOrFunction, props, ...children) {
   };
 }
 
+function expandingSizeDown({renderContext, component, parent, cache}) {
+  if (component.instance.constructor.name === 'ExpandingFlowBox') {
+    // if (component.instance.constructor.name !== 'Root') {
+    component.instance.size(
+      renderContext,
+      component.props,
+      null,
+      0,
+      cache,
+      parent
+    );
+  }
+  for (let child of component.children) {
+    expandingSizeDown({
+      renderContext,
+      component: child,
+      parent: component,
+      cache
+    });
+  }
+}
+
 function sizeDown({renderContext, component, cache, breadcrumbs}) {
   // if we are a leaf node, start the up phase
   if (component.children.length === 0) {
@@ -95,18 +117,19 @@ function pickUp(component, rawEvent, eventName, result) {
   return pickUp(component.parent, rawEvent, eventName, result);
 }
 
-function calcBoxPositions(
+function calcBoxPositions({
   renderContext,
   component,
   updatedParentPosition,
   cache
-) {
+}) {
   const position = component.instance.position(
     renderContext,
     component.props,
     updatedParentPosition,
     component.children.length,
-    cache
+    cache,
+    component.children
   );
 
   if (component.children.length === 0) {
@@ -125,7 +148,12 @@ function calcBoxPositions(
     const child = component.children[i];
     const newPos = position[i];
 
-    calcBoxPositions(renderContext, child, newPos, cache);
+    calcBoxPositions({
+      renderContext,
+      component: child,
+      updatedParentPosition: newPos,
+      cache
+    });
   }
 }
 
@@ -185,11 +213,20 @@ function render(renderContext, component) {
 }
 
 function layout(renderContext, treeRoot, cache) {
+  // first try to get the boxes to expand to fill containers
+  expandingSizeDown({renderContext, component: treeRoot, parent: null, cache});
+
   // calls each size function, ensuring that each component has a box
   sizeDown({renderContext, component: treeRoot, cache, breadcrumbs: []});
 
   // calls each position function. also fills in any missing boxes using size props
-  calcBoxPositions(renderContext, treeRoot, {x: 0, y: 0}, cache);
+
+  calcBoxPositions({
+    renderContext,
+    component: treeRoot,
+    updatedParentPosition: {x: 0, y: 0},
+    cache
+  });
 
   // console.log(util.inspect(treeRoot, false, null, true))
   return treeRoot;

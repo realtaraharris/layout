@@ -159,7 +159,6 @@ class Page extends Layout {
   }
 
   render(renderContext, props, position) {
-    console.log({position});
     if (position > 0) {
       renderContext.addPage();
     }

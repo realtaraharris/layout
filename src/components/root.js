@@ -4,19 +4,25 @@ const Layout = require('../components');
 const PropTypes = require('introspective-prop-types');
 
 class Root extends Layout {
-  size(renderContext, props, childBox) {
+  constructor(props) {
+    super(props);
     this.box.x = props.x;
     this.box.y = props.y;
     this.box.width = props.width;
     this.box.height = props.height;
-
-    if (!isNaN(childBox.width)) {
-      this.box.width = childBox.width;
-    }
-    if (!isNaN(childBox.height)) {
-      this.box.height = childBox.height;
-    }
-
+  }
+  size(renderContext, props, childBox) {
+    // this.box.x = props.x;
+    // this.box.y = props.y;
+    // this.box.width = props.width;
+    // this.box.height = props.height;
+    // if (!isNaN(childBox.width)) {
+    //   this.box.width = childBox.width;
+    // }
+    // if (!isNaN(childBox.height)) {
+    //   this.box.height = childBox.height;
+    // }
+    // console.log('setting this.box to:', this.box);
     // no need to return anything here because the root node has no parent
   }
 
