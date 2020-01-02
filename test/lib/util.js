@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const util = require('util');
 const resemble = require('node-resemble-js');
 const {createCanvas, registerFont} = require('canvas');
 const {render, layout} = require('../../src/layout');
@@ -26,7 +27,7 @@ function clearTerminal() {
   process.stdout.write('\x1Bc');
 }
 
-function setupComponentTest(fixture) {
+function setupComponentTest(fixture, dumpTree) {
   registerFont('test/fixtures/SourceSansPro/SourceSansPro-Regular.ttf', {
     family: 'SourceSansPro-Regular'
   });
@@ -45,6 +46,10 @@ function setupComponentTest(fixture) {
     fixture({x: 0, y: 0, width: WIDTH, height: HEIGHT}),
     cache
   );
+
+  if (dumpTree) {
+    console.log(util.inspect(treeRoot, false, null, true));
+  }
 
   render(renderContext, treeRoot);
 
@@ -90,23 +95,26 @@ function screenshot(name, canvas, t) {
     });
 }
 
-function executeTest(testName, testRunner) {
+function executeTest(testName, testRunner, dumpTree) {
   testRunner(testName, t => {
-    const {canvas} = setupComponentTest(require(`../fixtures/${testName}`));
+    const {canvas} = setupComponentTest(
+      require(`../fixtures/${testName}`),
+      dumpTree
+    );
     screenshot(testName, canvas, t);
   });
 }
 
-function test(testName) {
-  executeTest(testName, tape);
+function test(testName, options) {
+  executeTest(testName, tape, options && options.dumpTree);
 }
 
-function only(testName) {
-  executeTest(testName, tape.only);
+function only(testName, options) {
+  executeTest(testName, tape.only, options && options.dumpTree);
 }
 
-function skip(testName) {
-  executeTest(testName, tape.skip);
+function skip(testName, options) {
+  executeTest(testName, tape.skip, options && options.dumpTree);
 }
 
 module.exports = {

@@ -228,7 +228,6 @@ function layout(renderContext, treeRoot, cache) {
     cache
   });
 
-  // console.log(util.inspect(treeRoot, false, null, true))
   return treeRoot;
 }
 
