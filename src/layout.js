@@ -27,14 +27,14 @@ function c(componentOrFunction, props, ...children) {
 
 function expandingSizeDown({renderContext, component, parent, cache}) {
   if (component.instance.constructor.name === 'ExpandingFlowBox') {
-    // if (component.instance.constructor.name !== 'Root') {
     component.instance.size(
       renderContext,
       component.props,
       null,
       0,
       cache,
-      parent
+      parent,
+      component.children
     );
   }
   for (let child of component.children) {
@@ -47,13 +47,19 @@ function expandingSizeDown({renderContext, component, parent, cache}) {
   }
 }
 
-function sizeDown({renderContext, component, cache, breadcrumbs}) {
+function shrinkingSizeDown({renderContext, component, cache, breadcrumbs}) {
   // if we are a leaf node, start the up phase
   if (component.children.length === 0) {
-    sizeUp({renderContext, component, childBox: null, cache, breadcrumbs});
+    shrinkingSizeUp({
+      renderContext,
+      component,
+      childBox: null,
+      cache,
+      breadcrumbs
+    });
   } else {
     for (let child of component.children) {
-      sizeDown({
+      shrinkingSizeDown({
         renderContext,
         component: child,
         cache,
@@ -63,15 +69,25 @@ function sizeDown({renderContext, component, cache, breadcrumbs}) {
   }
 }
 
-function sizeUp({renderContext, component, childBox, cache, breadcrumbs}) {
-  let box = component.instance.size(
-    renderContext,
-    component.props,
-    childBox,
-    component.children.length,
-    cache
-  );
-
+function shrinkingSizeUp({
+  renderContext,
+  component,
+  childBox,
+  cache,
+  breadcrumbs
+}) {
+  let box;
+  if (component.instance.constructor.name !== 'ExpandingFlowBox') {
+    box = component.instance.size(
+      renderContext,
+      component.props,
+      childBox,
+      component.children.length,
+      cache,
+      null,
+      []
+    );
+  }
   const parent = breadcrumbs.pop();
 
   // NB: if no box is returned, stop traversal per component API
@@ -79,7 +95,13 @@ function sizeUp({renderContext, component, childBox, cache, breadcrumbs}) {
     return;
   }
 
-  sizeUp({renderContext, component: parent, childBox: box, cache, breadcrumbs});
+  shrinkingSizeUp({
+    renderContext,
+    component: parent,
+    childBox: box,
+    cache,
+    breadcrumbs
+  });
 }
 
 function pickDown(component, rawEvent, eventName, result) {
@@ -213,14 +235,18 @@ function render(renderContext, component) {
 }
 
 function layout(renderContext, treeRoot, cache) {
-  // first try to get the boxes to expand to fill containers
+  // first pass: calculate the shrinking box sizes
+  shrinkingSizeDown({
+    renderContext,
+    component: treeRoot,
+    cache,
+    breadcrumbs: []
+  });
+
+  // second pass: calculate the expanding box sizes
   expandingSizeDown({renderContext, component: treeRoot, parent: null, cache});
 
-  // calls each size function, ensuring that each component has a box
-  sizeDown({renderContext, component: treeRoot, cache, breadcrumbs: []});
-
-  // calls each position function. also fills in any missing boxes using size props
-
+  // third pass: calculate the box positions and also update some box sizes
   calcBoxPositions({
     renderContext,
     component: treeRoot,

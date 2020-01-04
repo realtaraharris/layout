@@ -54,7 +54,9 @@ class FlowBox extends Layout {
         }
       }
 
-      return {x: 0, y: 0, width: _w, height: _h}; // send a size up to the parent
+      const newBox = {x: 0, y: 0, width: _w, height: _h}; // send a size up to the parent
+      this.box = newBox;
+      return newBox;
     }
 
     return false; // stops the traversal here
@@ -149,7 +151,18 @@ class FlowBox extends Layout {
     return positionedChildren;
   }
 
-  render() {}
+  render(renderContext, {color, showBoxes}) {
+    if (!showBoxes) {
+      return;
+    }
+    renderContext.strokeStyle = color;
+    renderContext.strokeRect(
+      this.box.x,
+      this.box.y,
+      this.box.width,
+      this.box.height
+    );
+  }
 }
 FlowBox.propTypes = {
   mode: PropTypes.oneOf(['vertical', 'horizontal', 'diagonal']).isRequired,

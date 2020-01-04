@@ -9,7 +9,19 @@ class ExpandingFlowBox extends Layout {
     this.childBoxes = [];
   }
 
-  size(renderContext, {mode, expand}, childBox, childCount, cache, parent) {
+  size(
+    renderContext,
+    {mode, expand},
+    childBox,
+    childCount,
+    cache,
+    parent,
+    children
+  ) {
+    for (let child of children) {
+      const {name} = child.instance.constructor;
+    }
+
     const siblingCount = parent && parent.children.length;
     if (parent && parent.instance) {
       let width;
@@ -36,22 +48,47 @@ class ExpandingFlowBox extends Layout {
     children
   ) {
     let _x = 0;
+    let _y = 0;
+
+    let shrinkChildCount = 0;
+    let shrinkChildrenWidth = 0;
+
+    for (let child of children) {
+      const {name} = child.instance.constructor;
+      if (name === 'FlowBox') {
+        shrinkChildCount++;
+        const {width} = child.instance.box;
+        shrinkChildrenWidth += width;
+      }
+    }
+
+    const childBoxes = [];
     if (children.length > 0) {
-      console.log('children:', children.length);
       for (let i = 0; i < children.length; i++) {
         const child = children[i];
-        console.log(child.instance.box);
+        const {name} = child.instance.constructor;
+
+        if (name === 'ExpandingFlowBox') {
+          child.instance.box.width =
+            (this.box.width - shrinkChildrenWidth) /
+            (children.length - shrinkChildCount);
+        }
+
+        childBoxes.push({x: _x, y: _y});
         child.instance.box.x = _x;
         _x += child.instance.box.width;
       }
     }
 
-    return [{}, {}];
+    return childBoxes;
   }
 
-  render(renderContext, {color}) {
-    renderContext.fillStyle = color;
-    renderContext.fillRect(
+  render(renderContext, {color, showBoxes}) {
+    if (!showBoxes) {
+      return;
+    }
+    renderContext.strokeStyle = color;
+    renderContext.strokeRect(
       this.box.x,
       this.box.y,
       this.box.width,

@@ -3,6 +3,8 @@
 const {c} = require('../../src/layout');
 const Root = require('../../src/components/root');
 const ExpandingFlowBox = require('../../src/components/expanding-flow-box');
+const FlowBox = require('../../src/components/flow-box');
+const Label = require('../../src/components/label');
 
 module.exports = ({x, y, width, height}) => {
   return c(
@@ -11,24 +13,35 @@ module.exports = ({x, y, width, height}) => {
     c(
       ExpandingFlowBox,
       {
-        mode: 'horizontal',
-        align: 'left',
         expand: 'bidirectional',
-        color: 'red',
+        color: 'gray',
         showBoxes: true
       },
+      c(
+        FlowBox,
+        {
+          mode: 'vertical',
+          align: 'left',
+          color: 'red',
+          showBoxes: true
+        },
+        c(Label, {
+          font: 'SourceSansPro-Regular',
+          color: 'black',
+          size: 20,
+          sizeMode: 'capHeight',
+          text: 'happenstance',
+          showBoxes: false
+        })
+      ),
       c(ExpandingFlowBox, {
-        mode: 'vertical',
-        align: 'left',
         expand: 'bidirectional',
-        color: 'blue',
+        color: 'green',
         showBoxes: true
       }),
       c(ExpandingFlowBox, {
-        mode: 'vertical',
-        align: 'left',
         expand: 'bidirectional',
-        color: 'green',
+        color: 'blue',
         showBoxes: true
       })
     )

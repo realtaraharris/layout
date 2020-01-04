@@ -12,7 +12,8 @@ module.exports = ({x, y, width, height}) => {
       mode: 'horizontal',
       align: 'left',
       expand: 'bidirectional',
-      color: 'red'
+      color: 'red',
+      showBoxes: true
     })
   );
 };
