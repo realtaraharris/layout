@@ -33,7 +33,7 @@ tape('components-line-215', t => {
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
   const Root = require('../src/components/root');
   const Label = require('../src/components/label');
-  const FlowBox = proxyquire('../src/components/flow-box', logTest);
+  const FlowBox = proxyquire('../src/components/shrinking-flow-box', logTest);
 
   const demo1 = ({x, y, width, height}) =>
     c(
@@ -62,7 +62,7 @@ tape('components-line-228', t => {
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
   const Root = require('../src/components/root');
   const Label = require('../src/components/label');
-  const FlowBox = proxyquire('../src/components/flow-box', logTest);
+  const FlowBox = proxyquire('../src/components/shrinking-flow-box', logTest);
 
   const demo1 = ({x, y, width, height}) =>
     c(
@@ -90,7 +90,7 @@ tape('components-line-236', t => {
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
   const Root = require('../src/components/root');
   const Label = require('../src/components/label');
-  const FlowBox = proxyquire('../src/components/flow-box', logTest);
+  const FlowBox = proxyquire('../src/components/shrinking-flow-box', logTest);
 
   const demo1 = ({x, y, width, height}) =>
     c(
@@ -128,7 +128,7 @@ tape('components-line-246', t => {
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
   const Root = require('../src/components/root');
   const Label = require('../src/components/label');
-  const FlowBox = proxyquire('../src/components/flow-box', logTest);
+  const FlowBox = proxyquire('../src/components/shrinking-flow-box', logTest);
 
   const demo1 = ({x, y, width, height}) =>
     c(

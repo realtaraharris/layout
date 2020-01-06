@@ -4,7 +4,7 @@ const Root = require('../../src/components/root');
 const {Text, createTextContinuation} = require('../../src/components/text');
 const Label = require('../../src/components/label');
 const Margin = require('../../src/components/margin');
-const FlowBox = require('../../src/components/flow-box');
+const FlowBox = require('../../src/components/shrinking-flow-box');
 
 const createHyphenator = require('hyphen');
 const hyphenationPatternsEnUs = require('hyphen/patterns/en-us');

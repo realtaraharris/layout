@@ -3,7 +3,7 @@
 const {c} = require('../../src/layout');
 const Root = require('../../src/components/root');
 const ExpandingFlowBox = require('../../src/components/expanding-flow-box');
-const FlowBox = require('../../src/components/flow-box');
+const FlowBox = require('../../src/components/shrinking-flow-box');
 const Label = require('../../src/components/label');
 
 module.exports = ({x, y, width, height}) => {

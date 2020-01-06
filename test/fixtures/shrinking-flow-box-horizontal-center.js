@@ -3,7 +3,7 @@ const {c} = require('../../src/layout');
 const Root = require('../../src/components/root');
 const Label = require('../../src/components/label');
 const Margin = require('../../src/components/margin');
-const FlowBox = require('../../src/components/flow-box');
+const FlowBox = require('../../src/components/shrinking-flow-box');
 
 module.exports = ({x, y, width, height}) => {
   const marginA = 100;
@@ -21,11 +21,11 @@ module.exports = ({x, y, width, height}) => {
       },
       c(
         FlowBox,
-        {mode: 'vertical', align: 'right'},
+        {mode: 'horizontal', align: 'center'},
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'white',
-          size: 100,
+          size: 25,
           sizeMode: 'capHeight',
           text: 'i',
           showBoxes: false
@@ -33,7 +33,7 @@ module.exports = ({x, y, width, height}) => {
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'white',
-          size: 100,
+          size: 25,
           sizeMode: 'capHeight',
           text: 'Wide',
           showBoxes: false
@@ -41,7 +41,7 @@ module.exports = ({x, y, width, height}) => {
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'white',
-          size: 100,
+          size: 25,
           sizeMode: 'capHeight',
           text: '|',
           showBoxes: false

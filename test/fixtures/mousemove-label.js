@@ -3,7 +3,7 @@ const {c} = require('../../src/layout');
 const Root = require('../../src/components/root');
 const Label = require('../../src/components/label');
 const Margin = require('../../src/components/margin');
-const FlowBox = require('../../src/components/flow-box');
+const FlowBox = require('../../src/components/shrinking-flow-box');
 const Window = require('../../src/components/window');
 const Viewport = require('../../src/components/viewport');
 
