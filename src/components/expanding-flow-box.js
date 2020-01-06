@@ -18,11 +18,8 @@ class ExpandingFlowBox extends Layout {
     parent,
     children
   ) {
-    for (let child of children) {
-      const {name} = child.instance.constructor;
-    }
-
     const siblingCount = parent && parent.children.length;
+
     if (parent && parent.instance) {
       let width;
       if (siblingCount > 0) {

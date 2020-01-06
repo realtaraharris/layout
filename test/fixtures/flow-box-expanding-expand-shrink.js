@@ -20,11 +20,19 @@ module.exports = ({x, y, width, height}) => {
       c(
         FlowBox,
         {
-          mode: 'vertical',
+          mode: 'horizontal',
           align: 'left',
           color: 'red',
           showBoxes: true
         },
+        c(Label, {
+          font: 'SourceSansPro-Regular',
+          color: 'black',
+          size: 20,
+          sizeMode: 'capHeight',
+          text: 'happenstance',
+          showBoxes: false
+        }),
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'black',
