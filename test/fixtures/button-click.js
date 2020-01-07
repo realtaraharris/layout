@@ -3,7 +3,7 @@ const {c} = require('../../src/layout');
 const Root = require('../../src/components/root');
 const Label = require('../../src/components/label');
 const Margin = require('../../src/components/margin');
-const FlowBox = require('../../src/components/shrinking-flow-box');
+const ShrinkingFlowBox = require('../../src/components/shrinking-flow-box');
 const Button = require('../../src/components/button');
 
 module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
@@ -12,7 +12,7 @@ module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'black'},
     c(
-      FlowBox,
+      ShrinkingFlowBox,
       {mode: 'vertical', align: 'center'},
       c(Label, {
         font: 'SourceSansPro-Regular',

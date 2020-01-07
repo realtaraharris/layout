@@ -52,7 +52,7 @@ class ExpandingFlowBox extends Layout {
 
     for (let child of children) {
       const {name} = child.instance.constructor;
-      if (name === 'FlowBox') {
+      if (name === 'ShrinkingFlowBox') {
         shrinkChildCount++;
         const {width} = child.instance.box;
         shrinkChildrenWidth += width;

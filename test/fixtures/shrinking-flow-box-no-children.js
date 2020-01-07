@@ -2,14 +2,14 @@
 const {c} = require('../../src/layout');
 const Root = require('../../src/components/root');
 const Label = require('../../src/components/label');
-const FlowBox = require('../../src/components/shrinking-flow-box');
+const ShrinkingFlowBox = require('../../src/components/shrinking-flow-box');
 
 module.exports = ({x, y, width, height}) => {
   return c(
     Root,
     {x, y, width, height, color: 'black'},
     c(
-      FlowBox,
+      ShrinkingFlowBox,
       {mode: 'horizontal', align: 'left'},
       c(Label, {
         font: 'SourceSansPro-Regular',
@@ -19,7 +19,7 @@ module.exports = ({x, y, width, height}) => {
         sizeMode: 'capHeight',
         showBoxes: false
       }),
-      c(FlowBox, {mode: 'vertical', align: 'right'})
+      c(ShrinkingFlowBox, {mode: 'vertical', align: 'right'})
     )
   );
 };

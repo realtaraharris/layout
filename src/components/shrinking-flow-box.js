@@ -4,7 +4,7 @@ const Layout = require('../components');
 const log = require('../log');
 const PropTypes = require('introspective-prop-types');
 
-class FlowBox extends Layout {
+class ShrinkingFlowBox extends Layout {
   constructor() {
     super();
     this.childBoxes = [];
@@ -164,8 +164,8 @@ class FlowBox extends Layout {
     );
   }
 }
-FlowBox.propTypes = {
+ShrinkingFlowBox.propTypes = {
   mode: PropTypes.oneOf(['vertical', 'horizontal', 'diagonal']).isRequired,
   align: PropTypes.oneOf(['left', 'right', 'center']).isRequired
 };
-module.exports = FlowBox;
+module.exports = ShrinkingFlowBox;
