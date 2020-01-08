@@ -60,21 +60,22 @@ class ExpandingFlowBox extends Layout {
     }
 
     const childBoxes = [];
-    if (children.length > 0) {
-      for (let i = 0; i < children.length; i++) {
-        const child = children[i];
-        const {name} = child.instance.constructor;
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const {name} = child.instance.constructor;
 
-        if (name === 'ExpandingFlowBox') {
-          child.instance.box.width =
-            (this.box.width - shrinkChildrenWidth) /
-            (children.length - shrinkChildCount);
-        }
-
-        childBoxes.push({x: _x, y: _y});
-        child.instance.box.x = _x;
-        _x += child.instance.box.width;
+      if (name === 'ExpandingFlowBox') {
+        child.instance.box.width =
+          (this.box.width - shrinkChildrenWidth) /
+          (children.length - shrinkChildCount);
       }
+
+      childBoxes.push({
+        x: _x + updatedParentPosition.x,
+        y: _y + updatedParentPosition.y
+      });
+      child.instance.box.x = _x;
+      _x += child.instance.box.width;
     }
 
     return childBoxes;
