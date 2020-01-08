@@ -18,21 +18,23 @@ class ExpandingFlowBox extends Layout {
     parent,
     children
   ) {
-    const siblingCount = parent && parent.children.length;
-
-    if (parent && parent.instance) {
-      let width;
-      if (siblingCount > 0) {
-        width = parent.instance.box.width / siblingCount;
-      }
-
-      const newBox = Object.assign({}, parent.instance.box, {width});
-      this.box = newBox;
-
-      this.childBoxes.push(newBox);
-
-      return newBox;
+    if (!parent || !parent.instance) {
+      return;
     }
+
+    const siblingCount = parent.children.length;
+
+    let width;
+    if (siblingCount > 0) {
+      width = parent.instance.box.width / siblingCount;
+    }
+
+    const newBox = Object.assign({}, parent.instance.box, {width});
+    this.box = newBox;
+
+    this.childBoxes.push(newBox);
+
+    return newBox;
   }
 
   // eslint-disable-next-line no-unused-vars
