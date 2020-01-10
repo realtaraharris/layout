@@ -11,7 +11,7 @@ class Root extends Layout {
     this.box.width = props.width;
     this.box.height = props.height;
   }
-  size(renderContext, props, childBox) {
+  size() {
     // this.box.x = props.x;
     // this.box.y = props.y;
     // this.box.width = props.width;
@@ -26,12 +26,7 @@ class Root extends Layout {
     // no need to return anything here because the root node has no parent
   }
 
-  position(
-    renderContext,
-    {align, width, height},
-    updatedParentPosition,
-    childCount
-  ) {
+  position({align, width, height}, {updatedParentPosition, childCount}) {
     if (align === 'center') {
       this.box.x = width / 2 - this.box.width / 2;
       this.box.y = height / 2 - this.box.height / 2;
@@ -43,7 +38,7 @@ class Root extends Layout {
     return Array(childCount).fill(Object.assign({}, this.box));
   }
 
-  render(renderContext, {color}) {
+  render({color}, {renderContext}) {
     renderContext.fillStyle = color;
     renderContext.fillRect(
       this.box.x,

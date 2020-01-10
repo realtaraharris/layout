@@ -12,14 +12,7 @@ class Page extends Layout {
     this.childBoxes = [];
   }
 
-  size(
-    renderContext,
-    {mode, maxPageHeight},
-    childBox,
-    childCount,
-    cache,
-    children
-  ) {
+  size({mode}, {childBox, childCount}) {
     if (childCount === 0) {
       return {x: 0, y: 0, width: 0, height: 0};
     }
@@ -70,7 +63,7 @@ class Page extends Layout {
   }
 
   // eslint-disable-next-line no-unused-vars
-  position(renderContext, {mode, align}, updatedParentPosition, childCount) {
+  position({mode, align}, {renderContext, updatedParentPosition, childCount}) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
@@ -158,7 +151,7 @@ class Page extends Layout {
     return positionedChildren;
   }
 
-  render(renderContext, props, position) {
+  render(props, {renderContext, position}) {
     if (position > 0) {
       renderContext.addPage();
     }

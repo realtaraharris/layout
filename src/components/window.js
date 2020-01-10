@@ -9,18 +9,18 @@ class Window extends Layout {
 
   // TODO: add check to ensure labels have NO children
   // sends a child box up
-  size(renderContext, props, childBox, childCount, cache) {
+  size() {
     return {x: 0, y: 0, width: 0, height: 0};
   }
 
-  position(renderContext, {x, y}, updatedParentPosition) {
+  position({x, y}) {
     this.box.x = x;
     this.box.y = y;
 
     return [{x: this.box.x, y: this.box.y, width: 0, height: 0}];
   }
 
-  render(renderContext, {text, size, font, color, width, height, showBoxes}) {
+  render({width, height, showBoxes}, {renderContext}) {
     if (showBoxes) {
       renderContext.strokeStyle = 'gray';
       renderContext.strokeRect(this.box.x, this.box.y, width, height);

@@ -316,9 +316,8 @@ class Text extends Layout {
     this.childBoxes = [];
   }
 
-  size(renderContext, props, childBox, childCount, cache) {
+  size(props, {renderContext, childBox, cache, parent}) {
     const {
-      width,
       size,
       sizeMode,
       polygons,
@@ -464,14 +463,14 @@ class Text extends Layout {
     return returnValue;
   }
 
-  position(renderContext, props, updatedParentPosition) {
+  position(props, {updatedParentPosition}) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
     return [updatedParentPosition];
   }
 
-  render(renderContext, {font, size, color, showBoxes = false}) {
+  render({font, size, color, showBoxes = false}, {renderContext}) {
     renderContext.beginPath();
     if (showBoxes) {
       for (let {color, x, y, width, height} of this.debugBoxes) {

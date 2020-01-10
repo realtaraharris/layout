@@ -12,7 +12,7 @@ class Document extends Layout {
     this.childBoxes = [];
   }
 
-  size(renderContext, {mode}, childBox, childCount) {
+  size({mode}, {childBox, childCount}) {
     if (childCount === 0) {
       return {x: 0, y: 0, width: 0, height: 0};
     }
@@ -63,7 +63,7 @@ class Document extends Layout {
   }
 
   // eslint-disable-next-line no-unused-vars
-  position(renderContext, {mode, align}, updatedParentPosition, childCount) {
+  position({mode, align}, {updatedParentPosition}) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 

@@ -27,15 +27,15 @@ function c(componentOrFunction, props, ...children) {
 
 function expandingSizeDown({renderContext, component, parent, cache}) {
   if (component.instance.constructor.name === 'ExpandingFlowBox') {
-    component.instance.size(
+    component.instance.size(component.props, {
       renderContext,
-      component.props,
-      null,
-      0,
+      childBox: null,
+      childCount: 0,
       cache,
       parent,
-      component.children
-    );
+      children: component.children,
+      mode: 'down'
+    });
   }
   for (let child of component.children) {
     expandingSizeDown({
@@ -78,15 +78,15 @@ function shrinkingSizeUp({
 }) {
   let box;
   if (component.instance.constructor.name !== 'ExpandingFlowBox') {
-    box = component.instance.size(
+    box = component.instance.size(component.props, {
       renderContext,
-      component.props,
       childBox,
-      component.children.length,
+      childCount: component.children.length,
       cache,
-      null,
-      []
-    );
+      parent: null,
+      children: [],
+      mode: 'up'
+    });
   }
   const parent = breadcrumbs.pop();
 
@@ -145,14 +145,14 @@ function calcBoxPositions({
   updatedParentPosition,
   cache
 }) {
-  const position = component.instance.position(
+  const position = component.instance.position(component.props, {
     renderContext,
-    component.props,
     updatedParentPosition,
-    component.children.length,
+    childCount: component.children.length,
     cache,
-    component.children
-  );
+    children: component.children,
+    mode: 'down'
+  });
 
   if (component.children.length === 0) {
     return;
@@ -184,7 +184,11 @@ function renderLayer(renderContext, component, layerName, position) {
   if (layer && layerName !== layer) {
     return;
   }
-  component.instance.render(renderContext, component.props, position);
+  component.instance.render(component.props, {
+    renderContext,
+    position,
+    mode: 'down'
+  });
 
   for (let i = 0; i < component.children.length; i++) {
     renderContext.save();

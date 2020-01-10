@@ -9,15 +9,7 @@ class ExpandingFlowBox extends Layout {
     this.childBoxes = [];
   }
 
-  size(
-    renderContext,
-    {mode, expand},
-    childBox,
-    childCount,
-    cache,
-    parent,
-    children
-  ) {
+  size(props, {parent}) {
     if (!parent || !parent.instance) {
       return;
     }
@@ -38,14 +30,7 @@ class ExpandingFlowBox extends Layout {
   }
 
   // eslint-disable-next-line no-unused-vars
-  position(
-    renderContext,
-    {mode, align, expand},
-    updatedParentPosition,
-    childCount,
-    cache,
-    children
-  ) {
+  position(props, {updatedParentPosition, children}) {
     let _x = 0;
     let _y = 0;
 
@@ -83,7 +68,7 @@ class ExpandingFlowBox extends Layout {
     return childBoxes;
   }
 
-  render(renderContext, {color, showBoxes}) {
+  render({color, showBoxes}, {renderContext}) {
     if (!showBoxes) {
       return;
     }

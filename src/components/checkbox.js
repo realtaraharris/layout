@@ -16,12 +16,12 @@ class Checkbox extends Layout {
     return Object.assign({}, newBox);
   }
 
-  position(renderContext, props, updatedParentPosition) {
+  position(props, {updatedParentPosition}) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
   }
 
-  render(renderContext, {color, checked}) {
+  render({color, checked}, {renderContext}) {
     renderContext.fillStyle = color;
 
     roundRect(

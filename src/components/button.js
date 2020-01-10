@@ -3,13 +3,13 @@
 const Layout = require('../components');
 
 class Button extends Layout {
-  size(renderContext, props, childBox) {
+  size(props, {childBox}) {
     this.box.width = childBox.width;
     this.box.height = childBox.height;
     return childBox; // sends a child box up
   }
 
-  position(renderContext, props, updatedParentPosition) {
+  position(props, {updatedParentPosition}) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 

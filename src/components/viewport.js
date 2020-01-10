@@ -8,14 +8,14 @@ class Viewport extends Layout {
     this.childBoxes = [];
   }
 
-  size(renderContext, {width, height}, childBox) {
+  size({width, height}, {childBox}) {
     this.childBoxes.push(childBox);
 
     this.box = Object.assign({}, {width, height});
     return {width, height};
   }
 
-  position(renderContext, {offsetX, offsetY}, updatedParentPosition) {
+  position({offsetX, offsetY}, {updatedParentPosition}) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
@@ -33,7 +33,7 @@ class Viewport extends Layout {
     return result;
   }
 
-  render(renderContext) {
+  render(props, {renderContext}) {
     renderContext.strokeStyle = 'teal';
     renderContext.strokeRect(
       this.box.x,

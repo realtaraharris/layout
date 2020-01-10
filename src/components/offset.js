@@ -7,18 +7,18 @@ class Offset extends Layout {
     super(props);
   }
 
-  size(renderContext, props, childBox, childCount, cache) {
+  size() {
     return {x: 0, y: 0, width: 0, height: 0};
   }
 
-  position(renderContext, {x, y}, updatedParentPosition) {
+  position({x, y}, {updatedParentPosition}) {
     this.box.x = updatedParentPosition.x + x;
     this.box.y = updatedParentPosition.y + y;
 
     return [{x: this.box.x, y: this.box.y, width: 0, height: 0}];
   }
 
-  render(renderContext, props) {}
+  render() {}
 }
 
 module.exports = Offset;

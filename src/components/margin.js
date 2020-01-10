@@ -4,7 +4,7 @@ const Layout = require('../components');
 const PropTypes = require('introspective-prop-types');
 
 class Margin extends Layout {
-  size(renderContext, {top, right, bottom, left}, childBox) {
+  size({top, right, bottom, left}, {childBox}) {
     this.box = Object.assign({}, childBox);
 
     return {
@@ -15,12 +15,7 @@ class Margin extends Layout {
     };
   }
 
-  position(
-    renderContext, // eslint-disable-line no-unused-vars
-    {top, right, bottom, left}, // eslint-disable-line no-unused-vars
-    updatedParentPosition,
-    childCount
-  ) {
+  position({top, left}, {updatedParentPosition, childCount}) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
@@ -35,7 +30,7 @@ class Margin extends Layout {
     );
   }
 
-  render(renderContext, {top, bottom, left, right, showBoxes = false}) {
+  render({top, bottom, left, right, showBoxes = false}, {renderContext}) {
     if (!showBoxes) {
       return;
     }

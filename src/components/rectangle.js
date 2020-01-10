@@ -4,7 +4,7 @@ const Layout = require('../components');
 const {roundRect} = require('../draw');
 
 class Rectangle extends Layout {
-  size(renderContext, props, childBox) {
+  size(props, {childBox}) {
     this.box = Object.assign({}, childBox);
 
     return {
@@ -15,12 +15,7 @@ class Rectangle extends Layout {
     };
   }
 
-  position(
-    renderContext, // eslint-disable-line no-unused-vars
-    props, // eslint-disable-line no-unused-vars
-    updatedParentPosition,
-    childCount
-  ) {
+  position(props, {updatedParentPosition, childCount}) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
@@ -36,7 +31,7 @@ class Rectangle extends Layout {
     );
   }
 
-  render(renderContext, {color, topLeft, topRight, bottomLeft, bottomRight}) {
+  render({color, topLeft, topRight, bottomLeft, bottomRight}, {renderContext}) {
     renderContext.fillStyle = color;
 
     roundRect(

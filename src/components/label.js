@@ -13,13 +13,7 @@ class Label extends Layout {
 
   // TODO: add check to ensure labels have NO children
   // sends a child box up
-  size(
-    renderContext,
-    {text, size, font, sizeMode = 'xHeight'},
-    childBox,
-    childCount,
-    cache
-  ) {
+  size({text, size, font, sizeMode = 'xHeight'}, {renderContext, cache}) {
     // query the cache. if we have an entry in there, we can skip all this
     const cachedState = cache[this.hash];
     if (cachedState) {
@@ -50,7 +44,7 @@ class Label extends Layout {
     return newBox;
   }
 
-  position(renderContext, props, updatedParentPosition) {
+  position(props, {updatedParentPosition}) {
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
@@ -59,7 +53,7 @@ class Label extends Layout {
     // we want to give users an error if they're doing that!
   }
 
-  render(renderContext, {text, size, font, color, showBoxes, selection}) {
+  render({text, size, font, color, showBoxes, selection}, {renderContext}) {
     fillText(renderContext, {
       fontName: font,
       text,
