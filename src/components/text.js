@@ -314,10 +314,25 @@ class Text extends Layout {
   constructor(props) {
     super(props);
     this.childBoxes = [];
+    this.debugBoxes = [];
+    this.finalBoxes = [];
   }
 
-  size(props, {renderContext, childBox, cache, parent}) {
+  size(props, {renderContext, childBox, cache, parent, mode}) {
+    let width;
+    if (mode === 'up') {
+      return {width: 0, height: 0};
+    }
+    if (mode === 'down') {
+      console.log('line 326:', parent.instance.box);
+      // return parent.instance.box;
+      // width = parent.instance.box.width;
+      // this.box = Object.assign({}, parent.instance.box); // {width: 400, height: 400};
+      // return {width: 400, height: 400};
+    }
+
     const {
+      // width,
       size,
       sizeMode,
       polygons,
@@ -328,6 +343,10 @@ class Text extends Layout {
       textContinuation
     } = props;
     const {text, textHash, hyphenChar, tracking} = textContinuation();
+
+    console.log('mode:', mode);
+    // const {width} = mode === 'up' ? parent.instance.box : props;
+    mode === 'down' && console.log('parent:', parent.instance.box);
 
     const hash = encode().value(Object.assign({}, props, tracking, {textHash}));
 
@@ -438,6 +457,9 @@ class Text extends Layout {
         this.debugBoxes.push(...debugBoxes);
 
         const currentY = lineIndex * lineHeight;
+        if (currentY === this.box.height) {
+          break;
+        }
         if (tracking.tokenCursor === this.tokens.length) {
           maxY = currentY + lineHeight;
           break;
@@ -463,7 +485,20 @@ class Text extends Layout {
     return returnValue;
   }
 
-  position(props, {updatedParentPosition}) {
+  position(props, {updatedParentPosition, mode}) {
+    if (mode === 'up') {
+      console.log(
+        parent.instance.box,
+        'updatedParentPosition:',
+        updatedParentPosition
+      );
+      // return {width: 400, height: 0};
+    }
+    if (mode === 'down') {
+      console.log({updatedParentPosition});
+      // return parent.instance.box;
+    }
+
     this.box.x = updatedParentPosition.x;
     this.box.y = updatedParentPosition.y;
 
@@ -498,6 +533,7 @@ class Text extends Layout {
     }
 
     if (showBoxes) {
+      console.log('this.box!!!:', this.box);
       renderContext.setLineDash([10, 10]);
       renderContext.strokeStyle = 'orange';
       renderContext.strokeRect(

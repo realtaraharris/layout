@@ -9,19 +9,24 @@ class ExpandingFlowBox extends Layout {
     this.childBoxes = [];
   }
 
-  size(props, {parent}) {
+  size({mode}, {parent}) {
     if (!parent || !parent.instance) {
       return;
     }
 
+    console.log('MODE:', mode);
+
     const siblingCount = parent.children.length;
+    const newBox = Object.assign({}, parent.instance.box);
 
-    let width;
     if (siblingCount > 0) {
-      width = parent.instance.box.width / siblingCount;
+      if (mode === 'horizontal') {
+        newBox.width = parent.instance.box.width / siblingCount;
+      }
+      if (mode === 'vertical') {
+        newBox.height = parent.instance.box.height / siblingCount;
+      }
     }
-
-    const newBox = Object.assign({}, parent.instance.box, {width});
     this.box = newBox;
 
     this.childBoxes.push(newBox);
@@ -30,19 +35,28 @@ class ExpandingFlowBox extends Layout {
   }
 
   // eslint-disable-next-line no-unused-vars
-  position(props, {updatedParentPosition, children}) {
+  position({mode}, {updatedParentPosition, children}) {
     let _x = 0;
     let _y = 0;
 
+    console.log('MODE:', mode);
+
     let shrinkChildCount = 0;
     let shrinkChildrenWidth = 0;
+    let shrinkChildrenHeight = 0;
 
     for (let child of children) {
       const {name} = child.instance.constructor;
-      if (name === 'ShrinkingFlowBox') {
-        shrinkChildCount++;
-        const {width} = child.instance.box;
-        shrinkChildrenWidth += width;
+      if (name === 'ShrinkingFlowBox' || name === 'Label') {
+        const {width, height} = child.instance.box;
+
+        if (mode === 'horizontal') {
+          shrinkChildrenWidth += width;
+          shrinkChildCount++;
+        } else if (mode == 'vertical') {
+          shrinkChildrenHeight += height;
+          shrinkChildCount++;
+        }
       }
     }
 
@@ -51,18 +65,46 @@ class ExpandingFlowBox extends Layout {
       const child = children[i];
       const {name} = child.instance.constructor;
 
+      const newHeight =
+        (this.box.height - shrinkChildrenHeight) /
+        (children.length - shrinkChildCount);
+      const newWidth =
+        (this.box.width - shrinkChildrenWidth) /
+        (children.length - shrinkChildCount);
+
       if (name === 'ExpandingFlowBox') {
-        child.instance.box.width =
-          (this.box.width - shrinkChildrenWidth) /
-          (children.length - shrinkChildCount);
+        if (mode === 'horizontal') {
+          child.instance.box.width = newWidth;
+        } else {
+          child.instance.box.height = newHeight;
+        }
+
+        if (mode === 'vertical') {
+          child.instance.box.height = newHeight;
+        } else {
+          child.instance.box.height = this.box.height;
+        }
+      } else if (name === 'Rectangle' || name === 'Text') {
+        if (mode === 'vertical') {
+          child.instance.box.height = newHeight;
+        }
       }
 
       childBoxes.push({
         x: _x + updatedParentPosition.x,
         y: _y + updatedParentPosition.y
       });
-      child.instance.box.x = _x;
-      _x += child.instance.box.width;
+
+      if (mode === 'horizontal') {
+        child.instance.box.x = _x;
+      }
+
+      if (mode === 'vertical') {
+        child.instance.box.y = _y;
+      }
+
+      _x += mode === 'horizontal' ? child.instance.box.width : 0;
+      _y += mode === 'vertical' ? child.instance.box.height : 0;
     }
 
     return childBoxes;

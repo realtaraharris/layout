@@ -26,17 +26,17 @@ function c(componentOrFunction, props, ...children) {
 }
 
 function expandingSizeDown({renderContext, component, parent, cache}) {
-  if (component.instance.constructor.name === 'ExpandingFlowBox') {
-    component.instance.size(component.props, {
-      renderContext,
-      childBox: null,
-      childCount: 0,
-      cache,
-      parent,
-      children: component.children,
-      mode: 'down'
-    });
-  }
+  // if (component.instance.constructor.name === 'ExpandingFlowBox') {
+  component.instance.size(component.props, {
+    renderContext,
+    childBox: null,
+    childCount: 0,
+    cache,
+    parent,
+    children: component.children,
+    mode: 'down'
+  });
+  // }
   for (let child of component.children) {
     expandingSizeDown({
       renderContext,
@@ -77,17 +77,17 @@ function shrinkingSizeUp({
   breadcrumbs
 }) {
   let box;
-  if (component.instance.constructor.name !== 'ExpandingFlowBox') {
-    box = component.instance.size(component.props, {
-      renderContext,
-      childBox,
-      childCount: component.children.length,
-      cache,
-      parent: null,
-      children: [],
-      mode: 'up'
-    });
-  }
+  // if (component.instance.constructor.name !== 'ExpandingFlowBox') {
+  box = component.instance.size(component.props, {
+    renderContext,
+    childBox,
+    childCount: component.children.length,
+    cache,
+    parent: null,
+    children: [],
+    mode: 'up'
+  });
+  // }
   const parent = breadcrumbs.pop();
 
   // NB: if no box is returned, stop traversal per component API
@@ -143,7 +143,8 @@ function calcBoxPositions({
   renderContext,
   component,
   updatedParentPosition,
-  cache
+  cache,
+  parent
 }) {
   const position = component.instance.position(component.props, {
     renderContext,
@@ -151,7 +152,8 @@ function calcBoxPositions({
     childCount: component.children.length,
     cache,
     children: component.children,
-    mode: 'down'
+    mode: 'down',
+    parent
   });
 
   if (component.children.length === 0) {
@@ -174,7 +176,8 @@ function calcBoxPositions({
       renderContext,
       component: child,
       updatedParentPosition: newPos,
-      cache
+      cache,
+      parent: component
     });
   }
 }
