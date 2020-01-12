@@ -48,6 +48,7 @@ class ExpandingFlowBox extends Layout {
     for (let child of children) {
       const {name} = child.instance.constructor;
       if (name === 'ShrinkingFlowBox' || name === 'Label') {
+        // if (child.instance.flowMode() === 'shrink') {
         const {width, height} = child.instance.box;
 
         if (mode === 'horizontal') {
@@ -73,6 +74,7 @@ class ExpandingFlowBox extends Layout {
         (children.length - shrinkChildCount);
 
       if (name === 'ExpandingFlowBox') {
+        // if (child.instance.flowMode() === 'shrink') {
         if (mode === 'horizontal') {
           child.instance.box.width = newWidth;
         } else {
@@ -84,7 +86,7 @@ class ExpandingFlowBox extends Layout {
         } else {
           child.instance.box.height = this.box.height;
         }
-      } else if (name === 'Rectangle' || name === 'Text') {
+      } else if (child.instance.flowMode() === 'expand') {
         if (mode === 'vertical') {
           child.instance.box.height = newHeight;
         }

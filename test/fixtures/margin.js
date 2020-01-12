@@ -28,8 +28,7 @@ module.exports = ({x, y, width, height}) => {
           size: 100,
           sizeMode: 'capHeight',
           text: 'A',
-          showBoxes: false,
-          done: () => {}
+          showBoxes: false
         })
       ),
       c(
@@ -47,8 +46,7 @@ module.exports = ({x, y, width, height}) => {
           size: 100,
           sizeMode: 'capHeight',
           text: 'i',
-          showBoxes: false,
-          done: () => {}
+          showBoxes: false
         })
       )
     )

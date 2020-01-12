@@ -31,6 +31,7 @@ class Margin extends Layout {
   }
 
   render({top, bottom, left, right, showBoxes = false}, {renderContext}) {
+    console.log('SHOWBOXES:', showBoxes, this.box);
     if (!showBoxes) {
       return;
     }

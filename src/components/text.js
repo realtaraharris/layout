@@ -544,6 +544,10 @@ class Text extends Layout {
       );
     }
   }
+
+  flowMode() {
+    return 'expand';
+  }
 }
 
 module.exports = {Text, createTextContinuation};

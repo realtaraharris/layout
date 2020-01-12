@@ -27,6 +27,10 @@ class Layout {
       descend: true
     };
   }
+
+  flowMode() {
+    return 'shrink';
+  }
 }
 
 module.exports = Layout;

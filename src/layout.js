@@ -26,17 +26,18 @@ function c(componentOrFunction, props, ...children) {
 }
 
 function expandingSizeDown({renderContext, component, parent, cache}) {
-  // if (component.instance.constructor.name === 'ExpandingFlowBox') {
-  component.instance.size(component.props, {
-    renderContext,
-    childBox: null,
-    childCount: 0,
-    cache,
-    parent,
-    children: component.children,
-    mode: 'down'
-  });
-  // }
+  if (component.instance.flowMode() === 'expand') {
+    // if (component.instance.constructor.name === 'ExpandingFlowBox') {
+    component.instance.size(component.props, {
+      renderContext,
+      childBox: null,
+      childCount: 0,
+      cache,
+      parent,
+      children: component.children,
+      mode: 'down'
+    });
+  }
   for (let child of component.children) {
     expandingSizeDown({
       renderContext,

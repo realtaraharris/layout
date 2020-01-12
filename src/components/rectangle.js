@@ -70,6 +70,10 @@ class Rectangle extends Layout {
     );
     renderContext.fill();
   }
+
+  flowMode() {
+    return 'expand';
+  }
 }
 
 module.exports = Rectangle;

@@ -18,7 +18,7 @@ util.test('shrinking-flow-box-vertical-center-with-margin');
 util.test('expanding-flow-box-simple');
 util.test('expanding-flow-box-nested');
 util.test('expanding-flow-box-expand-shrink');
-util.only('expanding-flow-box-text', {dumpTree: false});
+util.test('expanding-flow-box-text', {dumpTree: false});
 
 util.test('complex-nested');
 util.test('margin');
