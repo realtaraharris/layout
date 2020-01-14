@@ -26,7 +26,7 @@ function c(componentOrFunction, props, ...children) {
 }
 
 function expandingSizeDown({renderContext, component, parent, cache}) {
-  if (component.instance.flowMode() === 'expand') {
+  if (component.instance.flowMode() === 'shrink') {
     // if (component.instance.constructor.name === 'ExpandingFlowBox') {
     component.instance.size(component.props, {
       renderContext,

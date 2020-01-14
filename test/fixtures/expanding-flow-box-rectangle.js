@@ -90,9 +90,9 @@ module.exports = ({x, y, width, height}) => {
             })
           )
         ),
-        // c(Rectangle, {
-        c(Text, {
-          // color: '#FFDD00',
+        c(Rectangle, {
+          // c(Text, {
+          color: '#FFDD00',
           topLeft: 0,
           topRight: 0,
           bottomLeft: 0,
@@ -106,7 +106,7 @@ module.exports = ({x, y, width, height}) => {
           textContinuation,
           operation: 'add',
           overflow: 'continue',
-          color: 'black',
+          // color: 'black',
           showBoxes
         }),
         c(Label, {
@@ -149,8 +149,8 @@ module.exports = ({x, y, width, height}) => {
             })
           )
         ),
-        // c(Rectangle, {
-        c(Text, {
+        c(Rectangle, {
+          // c(Text, {
           color: 'orange',
           topLeft: 0,
           topRight: 0,
@@ -200,9 +200,9 @@ module.exports = ({x, y, width, height}) => {
             })
           )
         ),
-        // c(Rectangle, {
-        c(Text, {
-          // color: 'red',
+        c(Rectangle, {
+          // c(Text, {
+          color: 'red',
           topLeft: 0,
           topRight: 0,
           bottomLeft: 0,
@@ -217,7 +217,7 @@ module.exports = ({x, y, width, height}) => {
           operation: 'add',
           // overflow: 'clip',
           overflow: 'continue',
-          color: 'black',
+          // color: 'black',
           showBoxes
         })
       )

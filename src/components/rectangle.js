@@ -7,16 +7,16 @@ class Rectangle extends Layout {
   size(props, {childBox, mode, parent}) {
     this.box = Object.assign({}, childBox);
 
-    if (mode === 'down') {
-      this.box.height = 400;
-      // console.log('boop line 12', parent.instance.box.height);
-      return {
-        x: this.box.x,
-        y: this.box.y,
-        width: this.box.width,
-        height: parent.instance.box.height
-      };
-    }
+    // if (mode === 'down') {
+    //   // this.box.height = 400;
+    //   // console.log('boop line 12', parent.instance.box.height);
+    //   return {
+    //     x: this.box.x,
+    //     y: this.box.y,
+    //     width: this.box.width,
+    //     height: parent.instance.box.height
+    //   };
+    // }
 
     return {
       x: this.box.x,
@@ -27,14 +27,8 @@ class Rectangle extends Layout {
   }
 
   position(props, {updatedParentPosition, childCount, mode, parent}) {
-    if (mode === 'up') {
-      this.box.height = parent.instance.box.height;
-      return {width: 0, height: 0};
-    }
     if (mode === 'down') {
-      // console.log('line 26:', parent.instance.box);
       this.box.width = parent.instance.box.width;
-      // this.box.height = parent.instance.box.height;
     }
 
     this.box.x = updatedParentPosition.x;

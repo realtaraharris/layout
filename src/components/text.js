@@ -185,8 +185,8 @@ function typesetLine(
   dashWidth,
   showBoxes
 ) {
-  const finalX = box.x + startX;
-  const finalY = box.y + startY;
+  const finalX = startX;
+  const finalY = startY;
   const finalW = endX - startX;
   const finalH = endY - startY;
 
@@ -318,21 +318,36 @@ class Text extends Layout {
     this.finalBoxes = [];
   }
 
-  size(props, {renderContext, childBox, cache, parent, mode}) {
-    let width;
-    if (mode === 'up') {
-      return {width: 0, height: 0};
-    }
+  size(props, {childBox, mode, parent}) {
+    this.box = Object.assign({}, childBox);
+
+    return {
+      x: this.box.x,
+      y: this.box.y,
+      width: this.box.width,
+      height: this.box.height
+    };
+  }
+
+  position(
+    props,
+    {renderContext, updatedParentPosition, childBox, cache, parent, mode}
+  ) {
+    console.log('IN THE POSITION METHOD HERE');
+    let width, height;
+    // if (mode === 'up') {
+    //   // this.box.height = parent.instance.box.height;
+    //   // return {width: 0, height: 0};
+    // }
     if (mode === 'down') {
-      console.log('line 326:', parent.instance.box);
-      // return parent.instance.box;
-      // width = parent.instance.box.width;
-      // this.box = Object.assign({}, parent.instance.box); // {width: 400, height: 400};
-      // return {width: 400, height: 400};
+      width = parent.instance.box.width;
+      this.box.width = parent.instance.box.width;
+      this.box.height = parent.instance.box.height;
     }
+    this.box.x = updatedParentPosition.x;
+    this.box.y = updatedParentPosition.y;
 
     const {
-      // width,
       size,
       sizeMode,
       polygons,
@@ -457,7 +472,7 @@ class Text extends Layout {
         this.debugBoxes.push(...debugBoxes);
 
         const currentY = lineIndex * lineHeight;
-        if (currentY === this.box.height) {
+        if (currentY === height) {
           break;
         }
         if (tracking.tokenCursor === this.tokens.length) {
@@ -468,10 +483,13 @@ class Text extends Layout {
       }
     }
 
-    const finalHeight = maxY - lineHeight + dashMeasurements.height;
-    this.box = Object.assign({}, {width, height: finalHeight});
+    // const finalHeight = maxY - lineHeight + dashMeasurements.height;
+    // this.box = Object.assign({}, {width, height: finalHeight});
 
-    const returnValue = {width, height: finalHeight};
+    const returnValue = {
+      width,
+      height: parent.instance.box.height
+    }; //finalHeight};
 
     // if we're down here, we have things we need to add to the cache
     cache[hash] = {
@@ -485,7 +503,10 @@ class Text extends Layout {
     return returnValue;
   }
 
-  position(props, {updatedParentPosition, mode}) {
+  sizeOld(
+    props,
+    {updatedParentPosition, renderContext, childBox, cache, parent, mode}
+  ) {
     if (mode === 'up') {
       console.log(
         parent.instance.box,
