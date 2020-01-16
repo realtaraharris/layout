@@ -4,46 +4,57 @@ const Layout = require('../components');
 const {roundRect} = require('../draw');
 
 class Rectangle extends Layout {
-  size(props, {childBox, mode, parent}) {
-    this.box = Object.assign({}, childBox);
+  constructor() {
+    super();
+    this.box = {x: 0, y: 0, width: 20, height: 20};
+  }
+  size(props, {childBox, mode, parent, childPosition, depth}) {
+    // this.box = Object.assign({}, childBox);
+    if (mode === 'down') {
+      console.log(
+        'Rectangle, down. parent.instance.childBoxes:',
+        parent.instance.childBoxes,
+        'name:',
+        parent.instance.constructor.name,
+        'depth:',
+        depth
+      );
 
-    // if (mode === 'down') {
-    //   // this.box.height = 400;
-    //   // console.log('boop line 12', parent.instance.box.height);
-    //   return {
-    //     x: this.box.x,
-    //     y: this.box.y,
-    //     width: this.box.width,
-    //     height: parent.instance.box.height
-    //   };
-    // }
-
-    return {
-      x: this.box.x,
-      y: this.box.y,
-      width: this.box.width,
-      height: this.box.height
-    };
+      this.box = Object.assign({}, parent.instance.childBoxes[childPosition]);
+      console.log('THIS.BOX:', {
+        box: this.box,
+        childPosition
+      });
+      // return {
+      //   x: this.box.x,
+      //   y: this.box.y,
+      //   width: this.box.width,
+      //   height: parent.instance.box.height
+      // };
+    }
   }
 
-  position(props, {updatedParentPosition, childCount, mode, parent}) {
-    if (mode === 'down') {
-      this.box.width = parent.instance.box.width;
-    }
+  position(
+    props,
+    {updatedParentPosition, childCount, mode, parent, childPosition}
+  ) {
+    // if (mode === 'down') {
+    //   this.box.width = parent.instance.box.width;
+    // }
 
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
+    console.log(
+      'childPosition:',
+      childPosition,
+      'parent.instance.childBoxes[childPosition]:',
+      parent.instance.childBoxes[childPosition]
+    );
+    this.box.x = parent.instance.childBoxes[childPosition].x;
+    this.box.y = parent.instance.childBoxes[childPosition].y;
+    // this.box.x = updatedParentPosition.x;
+    // this.box.y = updatedParentPosition.y;
 
     // TODO: this should not accept multiple children!
-    return Array(childCount).fill(
-      Object.assign(
-        {},
-        {
-          x: updatedParentPosition.x,
-          y: updatedParentPosition.y
-        }
-      )
-    );
+    // return [updatedParentPosition];
   }
 
   render({color, topLeft, topRight, bottomLeft, bottomRight}, {renderContext}) {
