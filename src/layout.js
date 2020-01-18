@@ -129,7 +129,6 @@ function expandingSizeDown({
     childPosition < component.children.length;
     childPosition++
   ) {
-    console.log('layout.js/childPosition:', childPosition);
     const child = component.children[childPosition];
     expandingSizeDown({
       renderContext,

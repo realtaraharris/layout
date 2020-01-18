@@ -61,8 +61,6 @@ class ShrinkingFlowBox extends Layout {
       return newBox;
     }
 
-    console.log('this>childBoxes:', this.childBoxes);
-
     return false; // stops the traversal here
   }
 

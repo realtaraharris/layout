@@ -27,7 +27,7 @@ function clearTerminal() {
   process.stdout.write('\x1Bc');
 }
 
-function setupComponentTest(fixture, dumpTree) {
+function setupComponentTest(fixture, options) {
   registerFont('test/fixtures/SourceSansPro/SourceSansPro-Regular.ttf', {
     family: 'SourceSansPro-Regular'
   });
@@ -47,9 +47,10 @@ function setupComponentTest(fixture, dumpTree) {
     cache
   );
 
-  if (dumpTree) {
-    // console.log(util.inspect(treeRoot, false, null, true));
+  if (options && options.dumpTree) {
     printTree(treeRoot, 0);
+  } else if (options && options.dumpFullTree) {
+    console.log(util.inspect(treeRoot, false, null, true));
   }
 
   render(renderContext, treeRoot);
@@ -96,26 +97,26 @@ function screenshot(name, canvas, t) {
     });
 }
 
-function executeTest(testName, testRunner, dumpTree) {
+function executeTest(testName, testRunner, options) {
   testRunner(testName, t => {
     const {canvas} = setupComponentTest(
       require(`../fixtures/${testName}`),
-      dumpTree
+      options
     );
     screenshot(testName, canvas, t);
   });
 }
 
 function test(testName, options) {
-  executeTest(testName, tape, options && options.dumpTree);
+  executeTest(testName, tape, options);
 }
 
 function only(testName, options) {
-  executeTest(testName, tape.only, options && options.dumpTree);
+  executeTest(testName, tape.only, options);
 }
 
 function skip(testName, options) {
-  executeTest(testName, tape.skip, options && options.dumpTree);
+  executeTest(testName, tape.skip, options);
 }
 
 module.exports = {

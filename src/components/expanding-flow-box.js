@@ -13,25 +13,8 @@ class ExpandingFlowBox extends Layout {
     if (!parent || !parent.instance) {
       return;
     }
-    console.log(
-      'ExpandingFlowBox, down.',
-      'parent name:',
-      parent.instance.constructor.name,
-      'childBoxes:',
-      parent.instance.childBoxes,
-      'childPos:',
-      childPosition,
-      'depth:',
-      depth
-    );
-    // if (
-    //   parent.instance.constructor.name === 'ExpandingFlowBox' ||
-    //   parent.instance.constructor.name === 'Root'
-    // ) {
     const newBox = Object.assign({}, parent.instance.childBoxes[childPosition]);
     this.box = newBox;
-
-    // }
 
     let _x = 0;
     let _y = 0;
@@ -43,8 +26,8 @@ class ExpandingFlowBox extends Layout {
 
       for (let child of children) {
         const {name} = child.instance.constructor;
-        if (name === 'ShrinkingFlowBox' || name === 'Label') {
-          // if (child.instance.flowMode() === 'shrink') {
+        // if (name === 'ShrinkingFlowBox' || name === 'Label') {
+        if (child.instance.flowMode() === 'shrink') {
           const {width, height} = child.instance.box;
 
           if (mode === 'horizontal') {
@@ -111,58 +94,33 @@ class ExpandingFlowBox extends Layout {
         };
 
         if (name === 'ExpandingFlowBox') {
-          console.log('115 pushing:', newChildBox);
           this.childBoxes.push(newChildBox);
         } else {
-          console.log('117 pushing:', this.box);
           this.childBoxes.push(this.box);
         }
       }
-      console.log(
-        'XXthis.childBoxes:',
-        this.childBoxes,
-        this.constructor.name,
-        'depth:',
-        depth
-      );
     } else if (parent.instance.childBoxes[childPosition]) {
-      console.log(
-        '129:',
-        this.childBoxes,
-        parent.instance.childBoxes[childPosition]
-      );
       this.childBoxes = [
         Object.assign({}, parent.instance.childBoxes[childPosition])
       ];
     }
-
-    console.log(
-      'THIS.CHILDBOXES at end of ExpandingFlowBox SIZE method:',
-      this.childBoxes
-    );
   }
 
   // eslint-disable-next-line no-unused-vars
   position({mode}, {updatedParentPosition, children}) {
-    console.log(
-      'THIS.CHILDBOXES at start of ExpandingFlowBox POSITION method:',
-      this.childBoxes
-    );
-    console.log('updatedParentPosition:', updatedParentPosition);
     let _x = 0;
     let _y = 0;
     for (let childBox of this.childBoxes) {
       if (mode === 'horizontal') {
         childBox.x = _x;
-        _x += childBox.width;
+        // _x += childBox.width;
       }
       if (mode === 'vertical') {
         childBox.y = _y;
-        _y += childBox.height;
+        // _y += childBox.height;
       }
     }
 
-    console.log('9999 this.childBoxes:', this.childBoxes);
     return Object.assign([], this.childBoxes);
   }
 
@@ -189,15 +147,6 @@ class ExpandingFlowBox extends Layout {
       this.box.height
     );
   }
-}
-
-function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
 }
 
 ExpandingFlowBox.propTypes = {

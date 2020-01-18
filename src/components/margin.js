@@ -4,8 +4,10 @@ const Layout = require('../components');
 const PropTypes = require('introspective-prop-types');
 
 class Margin extends Layout {
-  size({top, right, bottom, left}, {childBox}) {
-    this.box = Object.assign({}, childBox);
+  size({top, right, bottom, left}, {childBox, mode}) {
+    if (mode === 'up') {
+      this.box = Object.assign({}, childBox);
+    }
 
     return {
       x: this.box.x,
@@ -31,7 +33,6 @@ class Margin extends Layout {
   }
 
   render({top, bottom, left, right, showBoxes = false}, {renderContext}) {
-    console.log('SHOWBOXES:', showBoxes, this.box);
     if (!showBoxes) {
       return;
     }

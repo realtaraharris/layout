@@ -333,7 +333,6 @@ class Text extends Layout {
     props,
     {renderContext, updatedParentPosition, childBox, cache, parent, mode}
   ) {
-    console.log('IN THE POSITION METHOD HERE');
     let width, height;
     // if (mode === 'up') {
     //   // this.box.height = parent.instance.box.height;
@@ -359,9 +358,7 @@ class Text extends Layout {
     } = props;
     const {text, textHash, hyphenChar, tracking} = textContinuation();
 
-    console.log('mode:', mode);
     // const {width} = mode === 'up' ? parent.instance.box : props;
-    mode === 'down' && console.log('parent:', parent.instance.box);
 
     const hash = encode().value(Object.assign({}, props, tracking, {textHash}));
 
@@ -554,7 +551,6 @@ class Text extends Layout {
     }
 
     if (showBoxes) {
-      console.log('this.box!!!:', this.box);
       renderContext.setLineDash([10, 10]);
       renderContext.strokeStyle = 'orange';
       renderContext.strokeRect(

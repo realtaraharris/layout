@@ -11,20 +11,7 @@ class Rectangle extends Layout {
   size(props, {childBox, mode, parent, childPosition, depth}) {
     // this.box = Object.assign({}, childBox);
     if (mode === 'down') {
-      console.log(
-        'Rectangle, down. parent.instance.childBoxes:',
-        parent.instance.childBoxes,
-        'name:',
-        parent.instance.constructor.name,
-        'depth:',
-        depth
-      );
-
       this.box = Object.assign({}, parent.instance.childBoxes[childPosition]);
-      console.log('THIS.BOX:', {
-        box: this.box,
-        childPosition
-      });
       // return {
       //   x: this.box.x,
       //   y: this.box.y,
@@ -42,12 +29,6 @@ class Rectangle extends Layout {
     //   this.box.width = parent.instance.box.width;
     // }
 
-    console.log(
-      'childPosition:',
-      childPosition,
-      'parent.instance.childBoxes[childPosition]:',
-      parent.instance.childBoxes[childPosition]
-    );
     this.box.x = parent.instance.childBoxes[childPosition].x;
     this.box.y = parent.instance.childBoxes[childPosition].y;
     // this.box.x = updatedParentPosition.x;
@@ -59,7 +40,6 @@ class Rectangle extends Layout {
 
   render({color, topLeft, topRight, bottomLeft, bottomRight}, {renderContext}) {
     renderContext.fillStyle = color;
-    console.log('this.box, line 36:', this.box);
     roundRect(
       renderContext,
       this.box.x,

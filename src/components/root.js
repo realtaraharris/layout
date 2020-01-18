@@ -16,18 +16,6 @@ class Root extends Layout {
   }
 
   size({x, y, width, height}, {depth}) {
-    console.log('Root, down.', 'depth:', depth, {x, y, width, height});
-    // this.box.x = props.x;
-    // this.box.y = props.y;
-    // this.box.width = props.width;
-    // this.box.height = props.height;
-    // if (!isNaN(childBox.width)) {
-    //   this.box.width = childBox.width;
-    // }
-    // if (!isNaN(childBox.height)) {
-    //   this.box.height = childBox.height;
-    // }
-    // console.log('setting this.box to:', this.box);
     // no need to return anything here because the root node has no parent
   }
 
