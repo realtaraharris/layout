@@ -4,7 +4,7 @@ const fs = require('fs');
 const util = require('util');
 const resemble = require('node-resemble-js');
 const {createCanvas, registerFont} = require('canvas');
-const {render, layout} = require('../../src/layout');
+const {render, layout, printTree} = require('../../src/layout');
 const tape = require('tape-catch');
 const opentype = require('opentype.js');
 
@@ -48,7 +48,8 @@ function setupComponentTest(fixture, dumpTree) {
   );
 
   if (dumpTree) {
-    console.log(util.inspect(treeRoot, false, null, true));
+    // console.log(util.inspect(treeRoot, false, null, true));
+    printTree(treeRoot, 0);
   }
 
   render(renderContext, treeRoot);

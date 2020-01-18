@@ -62,13 +62,23 @@ function printBox({x, y, width, height}) {
 function printChildBoxes(childBoxes, padding) {
   if (childBoxes) {
     return childBoxes
-      .map(childBox => `${padding}  ${printBox(childBox)}`)
+      .map(childBox => `${padding}${printBox(childBox)}`)
       .join('\n');
   }
   return `${padding}-`;
 }
 
-function dumpTree(component, depth) {
+function printChildBoxCount(childBoxes, subPadding) {
+  if (!childBoxes) {
+    return ': -';
+  }
+  if (childBoxes.length === 1) {
+    return `: ${printChildBoxes(childBoxes, '')}`;
+  }
+  return ` (${childBoxes.length}):\n${printChildBoxes(childBoxes, subPadding)}`;
+}
+
+function printTree(component, depth) {
   const {box, childBoxes} = component.instance;
   const {name} = component.instance.constructor;
 
@@ -77,11 +87,11 @@ function dumpTree(component, depth) {
   console.log(
     `${padding}${name}\n${subPadding}box: ${printBox(
       box
-    )}\n${subPadding}childBoxes:\n${printChildBoxes(childBoxes, subPadding)}`
+    )}\n${subPadding}childBoxes${printChildBoxCount(childBoxes, subPadding)}`
   );
 
   for (let child of component.children) {
-    dumpTree(child, depth + 1);
+    printTree(child, depth + 1);
   }
 }
 
@@ -451,4 +461,12 @@ const addFontToCanvas = async (name, weight, buffer) => {
   }
 };
 
-module.exports = {c, render, layout, click, copyTree, addFontToCanvas};
+module.exports = {
+  c,
+  render,
+  layout,
+  click,
+  copyTree,
+  addFontToCanvas,
+  printTree
+};
