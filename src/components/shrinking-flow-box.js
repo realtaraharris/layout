@@ -15,7 +15,9 @@ class ShrinkingFlowBox extends Layout {
       return {x: 0, y: 0, width: 0, height: 0};
     }
 
-    this.childBoxes.push(childBox);
+    if (childBox) {
+      this.childBoxes.push(childBox);
+    }
 
     // if we have all the child boxes, process!
     if (this.childBoxes.length === childCount) {
@@ -58,6 +60,8 @@ class ShrinkingFlowBox extends Layout {
       this.box = newBox;
       return newBox;
     }
+
+    console.log('this>childBoxes:', this.childBoxes);
 
     return false; // stops the traversal here
   }

@@ -10,7 +10,11 @@ class Root extends Layout {
     this.box.y = props.y;
     this.box.width = props.width;
     this.box.height = props.height;
+    this.childBoxes = [
+      {x: props.x, y: props.y, width: props.width, height: props.height}
+    ];
   }
+
   size({x, y, width, height}, {depth}) {
     console.log('Root, down.', 'depth:', depth, {x, y, width, height});
     // this.box.x = props.x;
@@ -25,7 +29,6 @@ class Root extends Layout {
     // }
     // console.log('setting this.box to:', this.box);
     // no need to return anything here because the root node has no parent
-    this.childBoxes = [{x, y, width, height}];
   }
 
   position({align, width, height}, {updatedParentPosition, childCount}) {

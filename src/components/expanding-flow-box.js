@@ -17,6 +17,8 @@ class ExpandingFlowBox extends Layout {
       'ExpandingFlowBox, down.',
       'parent name:',
       parent.instance.constructor.name,
+      'childBoxes:',
+      parent.instance.childBoxes,
       'childPos:',
       childPosition,
       'depth:',
@@ -26,7 +28,9 @@ class ExpandingFlowBox extends Layout {
     //   parent.instance.constructor.name === 'ExpandingFlowBox' ||
     //   parent.instance.constructor.name === 'Root'
     // ) {
-    this.box = Object.assign({}, parent.instance.childBoxes[childPosition]);
+    const newBox = Object.assign({}, parent.instance.childBoxes[childPosition]);
+    this.box = newBox;
+
     // }
 
     let _x = 0;
@@ -107,8 +111,10 @@ class ExpandingFlowBox extends Layout {
         };
 
         if (name === 'ExpandingFlowBox') {
+          console.log('115 pushing:', newChildBox);
           this.childBoxes.push(newChildBox);
         } else {
+          console.log('117 pushing:', this.box);
           this.childBoxes.push(this.box);
         }
       }
@@ -119,16 +125,29 @@ class ExpandingFlowBox extends Layout {
         'depth:',
         depth
       );
-    } else {
+    } else if (parent.instance.childBoxes[childPosition]) {
+      console.log(
+        '129:',
+        this.childBoxes,
+        parent.instance.childBoxes[childPosition]
+      );
       this.childBoxes = [
         Object.assign({}, parent.instance.childBoxes[childPosition])
       ];
     }
-    // return newBox;
+
+    console.log(
+      'THIS.CHILDBOXES at end of ExpandingFlowBox SIZE method:',
+      this.childBoxes
+    );
   }
 
   // eslint-disable-next-line no-unused-vars
   position({mode}, {updatedParentPosition, children}) {
+    console.log(
+      'THIS.CHILDBOXES at start of ExpandingFlowBox POSITION method:',
+      this.childBoxes
+    );
     console.log('updatedParentPosition:', updatedParentPosition);
     let _x = 0;
     let _y = 0;
