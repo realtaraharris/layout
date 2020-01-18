@@ -38,6 +38,53 @@ function dumpChildBoxes(childBoxes, message) {
   }
 }
 
+function leftPad(distance, character) {
+  let scratch = '';
+  for (let i = 0; i < distance; i++) {
+    scratch += character;
+  }
+  return scratch;
+}
+
+function fixed(number) {
+  if (typeof number === 'number') {
+    return number.toFixed(2);
+  }
+  return '-';
+}
+
+function printBox({x, y, width, height}) {
+  return `x: ${fixed(x)} y: ${fixed(y)} width: ${fixed(width)} height: ${fixed(
+    height
+  )}`;
+}
+
+function printChildBoxes(childBoxes, padding) {
+  if (childBoxes) {
+    return childBoxes
+      .map(childBox => `${padding}  ${printBox(childBox)}`)
+      .join('\n');
+  }
+  return `${padding}-`;
+}
+
+function dumpTree(component, depth) {
+  const {box, childBoxes} = component.instance;
+  const {name} = component.instance.constructor;
+
+  const padding = leftPad(depth * 2, ' ');
+  const subPadding = padding + '  ';
+  console.log(
+    `${padding}${name}\n${subPadding}box: ${printBox(
+      box
+    )}\n${subPadding}childBoxes:\n${printChildBoxes(childBoxes, subPadding)}`
+  );
+
+  for (let child of component.children) {
+    dumpTree(child, depth + 1);
+  }
+}
+
 function expandingSizeDown({
   renderContext,
   component,
