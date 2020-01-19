@@ -16,10 +16,10 @@ class ExpandingFlowBox extends Layout {
     const newBox = Object.assign({}, parent.instance.childBoxes[childPosition]);
     this.box = newBox;
 
-    let _x = 0;
-    let _y = 0;
     if (mode === 'down') {
-      // this.box = Object.assign({}, parent.instance.box);
+      let _x = 0;
+      let _y = 0;
+
       let shrinkChildCount = 0;
       let shrinkChildrenWidth = 0;
       let shrinkChildrenHeight = 0;
@@ -57,35 +57,20 @@ class ExpandingFlowBox extends Layout {
         // if (child.instance.flowMode() === 'shrink') {
         if (props.mode === 'horizontal') {
           width = newWidth;
-          if (i > 0) {
-            _x += newWidth;
-          }
-        } else {
-          height = newHeight;
-          if (i > 0) {
-            _y += newHeight;
-          }
-        }
-        if (props.mode === 'vertical') {
-          height = newHeight;
-          if (i > 0) {
-            _y += newHeight;
-          }
-        } else {
           height = this.box.height;
           if (i > 0) {
+            _x += newWidth;
             _y += this.box.height;
           }
+        } else if (props.mode === 'vertical') {
+          height = newHeight;
+          if (i > 0) {
+            _y += newHeight;
+          }
+        } else {
+          console.error(`invalid mode in ExpandingFlowBox: ${props.mode}`);
         }
-        // }
-        // } else if (child.instance.flowMode() === 'expand') {
-        //   if (props.mode === 'vertical') {
-        //     height = newHeight;
-        //     _y += newHeight;
-        //   }
-        //   width = newWidth;
-        //   _x += newWidth;
-        // }
+
         const newChildBox = {
           x: _x,
           y: _y,
