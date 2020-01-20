@@ -16,12 +16,12 @@ util.test('shrinking-flow-box-horizontal-right');
 util.test('shrinking-flow-box-vertical-center-with-margin');
 
 util.test('expanding-flow-box-simple');
-util.test('expanding-flow-box-nested');
-util.test('expanding-flow-box-expand-shrink');
 
-util.test('expanding-flow-box-text');
-util.test('expanding-flow-box-rectangle');
-util.test('expanding-flow-box-simple-rectangle');
+// util.test('expanding-flow-box-nested');
+// util.test('expanding-flow-box-rectangle', {dumpTree: true});
+// util.test('expanding-flow-box-expand-shrink');
+// util.test('expanding-flow-box-text');
+// util.test('expanding-flow-box-simple-rectangle', {dumpTree: false});
 
 util.test('complex-nested');
 util.test('margin');

@@ -10,8 +10,10 @@ class Rectangle extends Layout {
   }
   size(props, {childBox, mode, parent, childPosition, depth}) {
     // this.box = Object.assign({}, childBox);
-    if (mode === 'down') {
+    if (mode === 'expand') {
       this.box = Object.assign({}, parent.instance.childBoxes[childPosition]);
+      this.box.x = 0;
+      this.box.y = 0;
       // return {
       //   x: this.box.x,
       //   y: this.box.y,
@@ -25,12 +27,12 @@ class Rectangle extends Layout {
     props,
     {updatedParentPosition, childCount, mode, parent, childPosition}
   ) {
-    // if (mode === 'down') {
+    // if (mode === 'expand') {
     //   this.box.width = parent.instance.box.width;
     // }
 
-    this.box.x = parent.instance.childBoxes[childPosition].x;
-    this.box.y = parent.instance.childBoxes[childPosition].y;
+    this.box.x += parent.instance.childBoxes[childPosition].x;
+    this.box.y += parent.instance.childBoxes[childPosition].y;
     // this.box.x = updatedParentPosition.x;
     // this.box.y = updatedParentPosition.y;
 
@@ -39,7 +41,7 @@ class Rectangle extends Layout {
   }
 
   render({color, topLeft, topRight, bottomLeft, bottomRight}, {renderContext}) {
-    renderContext.fillStyle = color;
+    renderContext.strokeStyle = color;
     roundRect(
       renderContext,
       this.box.x,
@@ -53,7 +55,7 @@ class Rectangle extends Layout {
         bottomRight
       }
     );
-    renderContext.fill();
+    renderContext.stroke();
   }
 
   flowMode() {

@@ -114,7 +114,7 @@ function expandingSizeDown({
     cache,
     parent,
     children: component.children,
-    mode: 'down',
+    mode: 'expand',
     childPosition,
     depth
   });
@@ -180,7 +180,7 @@ function shrinkingSizeUp({
     cache,
     parent,
     children: component.children,
-    mode: 'up'
+    mode: 'shrink'
   });
   // }
 
@@ -247,7 +247,7 @@ function calcBoxPositions({
     childCount: component.children.length,
     cache,
     children: component.children,
-    mode: 'down',
+    mode: '',
     parent,
     childPosition
   });
@@ -288,7 +288,7 @@ function renderLayer(renderContext, component, layerName, position) {
   component.instance.render(component.props, {
     renderContext,
     position,
-    mode: 'down'
+    mode: ''
   });
 
   for (let i = 0; i < component.children.length; i++) {

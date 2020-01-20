@@ -334,11 +334,11 @@ class Text extends Layout {
     {renderContext, updatedParentPosition, childBox, cache, parent, mode}
   ) {
     let width, height;
-    // if (mode === 'up') {
+    // if (mode === 'shrink') {
     //   // this.box.height = parent.instance.box.height;
     //   // return {width: 0, height: 0};
     // }
-    if (mode === 'down') {
+    if (mode === 'expand') {
       width = parent.instance.box.width;
       this.box.width = parent.instance.box.width;
       this.box.height = parent.instance.box.height;
@@ -358,7 +358,7 @@ class Text extends Layout {
     } = props;
     const {text, textHash, hyphenChar, tracking} = textContinuation();
 
-    // const {width} = mode === 'up' ? parent.instance.box : props;
+    // const {width} = mode === 'shrink' ? parent.instance.box : props;
 
     const hash = encode().value(Object.assign({}, props, tracking, {textHash}));
 
@@ -504,7 +504,7 @@ class Text extends Layout {
     props,
     {updatedParentPosition, renderContext, childBox, cache, parent, mode}
   ) {
-    if (mode === 'up') {
+    if (mode === 'shrink') {
       console.log(
         parent.instance.box,
         'updatedParentPosition:',
@@ -512,7 +512,7 @@ class Text extends Layout {
       );
       // return {width: 400, height: 0};
     }
-    if (mode === 'down') {
+    if (mode === 'expand') {
       console.log({updatedParentPosition});
       // return parent.instance.box;
     }

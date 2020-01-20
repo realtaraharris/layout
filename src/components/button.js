@@ -4,7 +4,7 @@ const Layout = require('../components');
 
 class Button extends Layout {
   size(props, {childBox, mode}) {
-    if (mode === 'up') {
+    if (mode === 'shrink') {
       this.box.width = childBox.width;
       this.box.height = childBox.height;
     }

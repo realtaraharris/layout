@@ -65,9 +65,18 @@ class ShrinkingFlowBox extends Layout {
   }
 
   // eslint-disable-next-line no-unused-vars
-  position({mode, align}, {renderContext, updatedParentPosition, childCount}) {
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
+  position(
+    props,
+    {renderContext, updatedParentPosition, childPosition, parent}
+  ) {
+    if (parent.instance.constructor.name === 'ExpandingFlowBox') {
+      const parentBox = parent.instance.childBoxes[childPosition];
+      this.box.x += parentBox.x;
+      this.box.y += parentBox.y;
+    } else {
+      this.box.x = updatedParentPosition.x;
+      this.box.y = updatedParentPosition.y;
+    }
 
     // calculate the box we'll be in because we don't have this info in
     // this.box when this function is run - maybe later we can use that instead?
@@ -93,8 +102,8 @@ class ShrinkingFlowBox extends Layout {
     for (let box of this.childBoxes) {
       let _x = updatedParentPosition.x;
 
-      if (mode === 'horizontal') {
-        switch (align) {
+      if (props.mode === 'horizontal') {
+        switch (props.align) {
           case 'left':
             _x += box.x;
             break;
@@ -108,11 +117,11 @@ class ShrinkingFlowBox extends Layout {
             _y = updatedParentPosition.y + biggestBox.height - box.height;
             break;
           default:
-            log('invalid alignment mode in spacedLine:', align);
+            log('invalid alignment props.mode in spacedLine:', props.align);
             break;
         }
-      } else if (mode === 'vertical') {
-        switch (align) {
+      } else if (props.mode === 'vertical') {
+        switch (props.align) {
           case 'left':
             break;
           case 'center':
@@ -122,18 +131,18 @@ class ShrinkingFlowBox extends Layout {
             _x += biggestBox.width - box.width;
             break;
           default:
-            log('invalid alignment mode in spacedLine:', align);
+            log('invalid alignment props.mode in spacedLine:', props.align);
             break;
         }
-      } else if (mode === 'diagonal') {
+      } else if (props.mode === 'diagonal') {
         _x += box.x;
       } else {
-        log('invalid layout mode in spacedLine:', mode);
+        log('invalid layout props.mode in spacedLine:', props.mode);
       }
 
       positionedChildren.push({x: _x, y: _y});
 
-      switch (mode) {
+      switch (props.mode) {
         case 'vertical':
           _y += box.height;
           break;
@@ -145,7 +154,7 @@ class ShrinkingFlowBox extends Layout {
           _y += box.height;
           break;
         default:
-          log('invalid layout mode in spacedLine:', mode);
+          log('invalid layout props.mode in spacedLine:', props.mode);
           break;
       }
     }

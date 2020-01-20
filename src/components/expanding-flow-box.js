@@ -7,6 +7,9 @@ class ExpandingFlowBox extends Layout {
   constructor() {
     super();
     this.childBoxes = [];
+    this.shrinkChildCount = 0;
+    this.shrinkChildrenWidth = 0;
+    this.shrinkChildrenHeight = 0;
   }
 
   size(props, {mode, parent, children, childPosition, depth}) {
@@ -16,29 +19,37 @@ class ExpandingFlowBox extends Layout {
     const newBox = Object.assign({}, parent.instance.childBoxes[childPosition]);
     this.box = newBox;
 
-    if (mode === 'down') {
+    if (mode === 'expand') {
       let _x = 0;
       let _y = 0;
-
-      let shrinkChildCount = 0;
-      let shrinkChildrenWidth = 0;
-      let shrinkChildrenHeight = 0;
 
       for (let child of children) {
         const {name} = child.instance.constructor;
         // if (name === 'ShrinkingFlowBox' || name === 'Label') {
+        console.log(
+          'child.instance.flowMode():',
+          child.instance.flowMode(),
+          name
+        );
         if (child.instance.flowMode() === 'shrink') {
           const {width, height} = child.instance.box;
+          console.log(`                           ${width}${height}`);
 
           if (mode === 'horizontal') {
-            shrinkChildrenWidth += width;
-            shrinkChildCount++;
+            this.shrinkChildrenWidth += width;
+            this.shrinkChildCount++;
           } else if (mode == 'vertical') {
-            shrinkChildrenHeight += height;
-            shrinkChildCount++;
+            this.shrinkChildrenHeight += height;
+            this.shrinkChildCount++;
           }
         }
       }
+
+      console.log('this.shrinkChildrenHeight:', this.shrinkChildrenHeight);
+      console.log('this.shrinkChildrenWidth:', this.shrinkChildrenWidth);
+
+      this.box.height -= this.shrinkChildrenHeight;
+      this.box.width -= this.shrinkChildrenWidth;
 
       let width = 0;
       let height = 0;
@@ -47,20 +58,19 @@ class ExpandingFlowBox extends Layout {
         const {name} = child.instance.constructor;
 
         const newHeight =
-          (this.box.height - shrinkChildrenHeight) /
-          (children.length - shrinkChildCount);
+          this.box.height / //  - this.shrinkChildrenHeight) /
+          (children.length - this.shrinkChildCount);
         const newWidth =
-          (this.box.width - shrinkChildrenWidth) /
-          (children.length - shrinkChildCount);
+          this.box.width / // - this.shrinkChildrenWidth) /
+          (children.length - this.shrinkChildCount);
 
         // if (name === 'Rectangle') {
         // if (child.instance.flowMode() === 'shrink') {
         if (props.mode === 'horizontal') {
-          width = newWidth;
           height = this.box.height;
           if (i > 0) {
             _x += newWidth;
-            _y += this.box.height;
+            // _y += this.box.height;
           }
         } else if (props.mode === 'vertical') {
           height = newHeight;
@@ -92,19 +102,31 @@ class ExpandingFlowBox extends Layout {
   }
 
   // eslint-disable-next-line no-unused-vars
-  position({mode}, {updatedParentPosition, children}) {
-    let _x = 0;
-    let _y = 0;
-    for (let childBox of this.childBoxes) {
-      if (mode === 'horizontal') {
-        childBox.x = _x;
-        // _x += childBox.width;
-      }
-      if (mode === 'vertical') {
-        childBox.y = _y;
-        // _y += childBox.height;
-      }
+  position(
+    props,
+    {updatedParentPosition, children, parent, childPosition, mode}
+  ) {
+    const parentBox = parent.instance.childBoxes[childPosition];
+    if (props.mode === 'horizontal') {
+      this.box.x += parentBox.x;
+      console.log('this.box.x:', this.box.x);
+    } else if (props.mode === 'vertical') {
+      this.box.y += parentBox.y;
+      console.log('this.box.y:', this.box.y);
     }
+
+    // let _x = parentBox.x;
+    // let _y = parentBox.y;
+
+    // for (let childBox of this.childBoxes) {
+    //   if (props.mode === 'horizontal') {
+    //     this.box.x = _x;
+    //     _x += childBox.width;
+    //   } else if (props.mode === 'vertical') {
+    //     this.box.y = _y;
+    //     _y += childBox.height;
+    //   }
+    // }
 
     return Object.assign([], this.childBoxes);
   }

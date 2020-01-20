@@ -5,7 +5,7 @@ const PropTypes = require('introspective-prop-types');
 
 class Margin extends Layout {
   size({top, right, bottom, left}, {childBox, mode}) {
-    if (mode === 'up') {
+    if (mode === 'shrink') {
       this.box = Object.assign({}, childBox);
     }
 
