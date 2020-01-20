@@ -34,7 +34,7 @@
     "@stryker-mutator/html-reporter": "^2.0.0",
     "@stryker-mutator/javascript-mutator": "^2.0.0",
     "browserify-istanbul": "^3.0.1",
-    "canvas": "^2.5.0",
+    "canvas": "^2.6.1",
     "eslint": "^6.3.0",
     "hyphen": "^1.1.1",
     "node-resemble-js": "^0.2.0",
