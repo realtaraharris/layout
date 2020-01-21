@@ -21,7 +21,7 @@ util.test('expanding-flow-box-simple');
 // util.test('expanding-flow-box-rectangle', {dumpTree: true});
 // util.test('expanding-flow-box-expand-shrink');
 // util.test('expanding-flow-box-text');
-// util.test('expanding-flow-box-simple-rectangle', {dumpTree: false});
+// util.test('expanding-flow-box-simple-rectangle', {dumpTree: true});
 
 util.test('complex-nested');
 util.test('margin');

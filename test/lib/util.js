@@ -47,6 +47,21 @@ function setupComponentTest(fixture, options) {
     cache
   );
 
+  // treeRoot.children[0].children[0].children[1].instance.box.y = 20.1;
+  // treeRoot.children[0].children[0].children[1].instance.box.width = 266.67;
+  // treeRoot.children[0].children[0].children[1].instance.box.height = 559.8;
+  // treeRoot.children[0].children[0].children[2].instance.box.y = 579.9;
+
+  // treeRoot.children[0].children[1].children[1].instance.box.x = 266.67;
+  // treeRoot.children[0].children[1].children[1].instance.box.y = 20.1;
+  // treeRoot.children[0].children[1].children[1].instance.box.width = 266.67;
+  // treeRoot.children[0].children[1].children[1].instance.box.height = 579.9;
+
+  // treeRoot.children[0].children[2].children[1].instance.box.x = 533.33;
+  // treeRoot.children[0].children[2].children[1].instance.box.y = 20.1;
+  // treeRoot.children[0].children[2].children[1].instance.box.width = 266.67;
+  // treeRoot.children[0].children[2].children[1].instance.box.height = 579.9;
+
   if (options && options.dumpTree) {
     printTree(treeRoot, 0);
   } else if (options && options.dumpFullTree) {

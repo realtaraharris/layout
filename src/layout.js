@@ -115,6 +115,7 @@ function expandingSizeDown({
     parent,
     children: component.children,
     mode: 'expand',
+    traversalMode: 'down',
     childPosition,
     depth
   });
@@ -141,7 +142,13 @@ function expandingSizeDown({
   }
 }
 
-function shrinkingSizeDown({renderContext, component, cache, breadcrumbs}) {
+function shrinkingSizeDown({
+  renderContext,
+  component,
+  cache,
+  breadcrumbs,
+  depth
+}) {
   // if we are a leaf node, start the up phase
   if (component.children.length === 0) {
     shrinkingSizeUp({
@@ -149,7 +156,8 @@ function shrinkingSizeDown({renderContext, component, cache, breadcrumbs}) {
       component,
       childBox: null,
       cache,
-      breadcrumbs
+      breadcrumbs,
+      depth
     });
   } else {
     for (let child of component.children) {
@@ -157,7 +165,8 @@ function shrinkingSizeDown({renderContext, component, cache, breadcrumbs}) {
         renderContext,
         component: child,
         cache,
-        breadcrumbs: breadcrumbs.concat(component)
+        breadcrumbs: breadcrumbs.concat(component),
+        depth
       });
     }
   }
@@ -168,10 +177,10 @@ function shrinkingSizeUp({
   component,
   childBox,
   cache,
-  breadcrumbs
+  breadcrumbs,
+  depth
 }) {
   let box;
-  // if (component.instance.constructor.name !== 'ExpandingFlowBox') {
   const parent = breadcrumbs.pop();
   box = component.instance.size(component.props, {
     renderContext,
@@ -180,9 +189,10 @@ function shrinkingSizeUp({
     cache,
     parent,
     children: component.children,
-    mode: 'shrink'
+    mode: 'shrink',
+    traversalMode: 'up',
+    depth
   });
-  // }
 
   // NB: if no box is returned, stop traversal per component API
   if (!box || !parent) {
@@ -233,14 +243,18 @@ function pickUp(component, rawEvent, eventName, result) {
   return pickUp(component.parent, rawEvent, eventName, result);
 }
 
-function calcBoxPositions({
+function calcBoxPositionsDepthFirst({
   renderContext,
   component,
   updatedParentPosition,
   cache,
   parent,
-  childPosition
+  childPosition,
+  depth
 }) {
+  console.log(
+    `calling position() on ${component.instance.constructor.name}, depth: ${depth}`
+  );
   const position = component.instance.position(component.props, {
     renderContext,
     updatedParentPosition,
@@ -249,7 +263,9 @@ function calcBoxPositions({
     children: component.children,
     mode: '',
     parent,
-    childPosition
+    childPosition,
+    traversalMode: 'down',
+    depth
   });
 
   if (component.children.length === 0) {
@@ -269,13 +285,14 @@ function calcBoxPositions({
     const child = component.children[i];
     const newPos = position[i];
 
-    calcBoxPositions({
+    calcBoxPositionsDepthFirst({
       renderContext,
       component: child,
       updatedParentPosition: newPos,
       cache,
       parent: component,
-      childPosition: i
+      childPosition: i,
+      depth: depth + 1
     });
   }
 }
@@ -288,7 +305,7 @@ function renderLayer(renderContext, component, layerName, position) {
   component.instance.render(component.props, {
     renderContext,
     position,
-    mode: ''
+    traversalMode: 'down'
   });
 
   for (let i = 0; i < component.children.length; i++) {
@@ -345,7 +362,8 @@ function layout(renderContext, treeRoot, cache) {
     renderContext,
     component: treeRoot,
     cache,
-    breadcrumbs: []
+    breadcrumbs: [],
+    depth: 0
   });
 
   // second pass: calculate the expanding box sizes
@@ -358,12 +376,13 @@ function layout(renderContext, treeRoot, cache) {
   });
 
   // third pass: calculate the box positions and also update some box sizes
-  calcBoxPositions({
+  calcBoxPositionsDepthFirst({
     renderContext,
     component: treeRoot,
     updatedParentPosition: {x: 0, y: 0},
     cache,
-    childPosition: 0
+    childPosition: 0,
+    depth: 0
   });
 
   return treeRoot;
