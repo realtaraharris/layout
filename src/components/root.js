@@ -15,20 +15,15 @@ class Root extends Layout {
     ];
   }
 
-  size({x, y, width, height}, {depth}) {
+  size() {
     // no need to return anything here because the root node has no parent
   }
 
-  position({align, width, height}, {updatedParentPosition, childCount}) {
+  position({align, width, height}) {
     if (align === 'center') {
       this.box.x = width / 2 - this.box.width / 2;
       this.box.y = height / 2 - this.box.height / 2;
-    } else {
-      this.box.x = updatedParentPosition.x;
-      this.box.y = updatedParentPosition.y;
     }
-
-    return Array(childCount).fill(Object.assign({}, this.box));
   }
 
   render({color}, {renderContext}) {

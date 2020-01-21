@@ -10,73 +10,55 @@ class ShrinkingFlowBox extends Layout {
     this.childBoxes = [];
   }
 
-  size({mode}, {childBox, childCount}) {
-    if (childCount === 0) {
-      return {x: 0, y: 0, width: 0, height: 0};
+  size(props, {mode, children}) {
+    if (mode !== 'shrink') {
+      return;
     }
 
-    if (childBox) {
-      this.childBoxes.push(childBox);
-    }
+    // go through each child and assign a final { x, y } coord pair
+    let _w = 0;
+    let _h = 0;
 
-    // if we have all the child boxes, process!
-    if (this.childBoxes.length === childCount) {
-      // go through each child and assign a final { x, y } coord pair
-      let _w = 0;
-      let _h = 0;
+    let tallest = 0;
+    let widest = 0;
+    for (let child of children) {
+      const {box} = child.instance;
 
-      let tallest = 0;
-      let widest = 0;
-      for (let box of this.childBoxes) {
-        box.x = _w;
-        box.y = _h;
-
-        switch (mode) {
-          case 'vertical':
-            _h += box.height;
-
-            if (box.width > widest) {
-              widest = box.width;
-              _w = box.width; // set the width to the _last_ box's width
-            }
-            break;
-          case 'horizontal':
-            if (box.height > tallest) {
-              tallest = box.height;
-              _h = box.height; // set the height to the _last_ box's height
-            }
-            _w += box.width;
-            break;
-          case 'diagonal':
-            _w += box.width;
-            _h += box.height;
-            break;
-          default:
-            log('invalid layout mode in spacedLine:', mode);
-        }
+      switch (props.mode) {
+        case 'vertical':
+          if (box.width > widest) {
+            widest = box.width;
+            _w = box.width; // set the width to the _last_ box's width
+          }
+          _h += box.height;
+          break;
+        case 'horizontal':
+          if (box.height > tallest) {
+            tallest = box.height;
+            _h = box.height; // set the height to the _last_ box's height
+          }
+          _w += box.width;
+          break;
+        case 'diagonal':
+          _w += box.width;
+          _h += box.height;
+          break;
+        default:
+          log('invalid layout mode in spacedLine:', props.mode);
       }
-
-      const newBox = {x: 0, y: 0, width: _w, height: _h}; // send a size up to the parent
-      this.box = newBox;
-      return newBox;
+      this.childBoxes.push({
+        x: 0,
+        y: 0,
+        width: box.width,
+        height: box.height
+      });
     }
 
-    return false; // stops the traversal here
+    this.box = {x: 0, y: 0, width: _w, height: _h};
   }
 
-  // eslint-disable-next-line no-unused-vars
-  position(
-    props,
-    {renderContext, updatedParentPosition, childPosition, parent}
-  ) {
-    if (parent.instance.constructor.name === 'ExpandingFlowBox') {
-      const parentBox = parent.instance.childBoxes[childPosition];
-      this.box.x += parentBox.x;
-      this.box.y += parentBox.y;
-    } else {
-      this.box.x = updatedParentPosition.x;
-      this.box.y = updatedParentPosition.y;
-    }
+  position(props, {childPosition, parent}) {
+    const parentBox = parent.instance.childBoxes[childPosition];
 
     // calculate the box we'll be in because we don't have this info in
     // this.box when this function is run - maybe later we can use that instead?
@@ -95,13 +77,13 @@ class ShrinkingFlowBox extends Layout {
       {width: 0, height: 0}
     );
 
-    let positionedChildren = [];
-    let _y = updatedParentPosition.y;
+    this.box.x = parentBox.x;
+    this.box.y = parentBox.y;
 
-    // go through each child and assign a final { x, y } coord pair
+    let _y = parentBox.y;
+    let _x = parentBox.x;
+
     for (let box of this.childBoxes) {
-      let _x = updatedParentPosition.x;
-
       if (props.mode === 'horizontal') {
         switch (props.align) {
           case 'left':
@@ -109,12 +91,11 @@ class ShrinkingFlowBox extends Layout {
             break;
           case 'center':
             _x += box.x;
-            _y =
-              updatedParentPosition.y + biggestBox.height / 2 - box.height / 2;
+            _y = parentBox.y + biggestBox.height / 2 - box.height / 2;
             break;
           case 'right':
             _x += box.x;
-            _y = updatedParentPosition.y + biggestBox.height - box.height;
+            _y = parentBox.y + biggestBox.height - box.height;
             break;
           default:
             log('invalid alignment props.mode in spacedLine:', props.align);
@@ -125,10 +106,10 @@ class ShrinkingFlowBox extends Layout {
           case 'left':
             break;
           case 'center':
-            _x += biggestBox.width / 2 - box.width / 2;
+            _x = parentBox.x + biggestBox.width / 2 - box.width / 2;
             break;
           case 'right':
-            _x += biggestBox.width - box.width;
+            _x = parentBox.y + biggestBox.width - box.width;
             break;
           default:
             log('invalid alignment props.mode in spacedLine:', props.align);
@@ -140,7 +121,8 @@ class ShrinkingFlowBox extends Layout {
         log('invalid layout props.mode in spacedLine:', props.mode);
       }
 
-      positionedChildren.push({x: _x, y: _y});
+      box.x = _x;
+      box.y = _y;
 
       switch (props.mode) {
         case 'vertical':
@@ -158,8 +140,6 @@ class ShrinkingFlowBox extends Layout {
           break;
       }
     }
-
-    return positionedChildren;
   }
 
   render({color, showBoxes}, {renderContext}) {

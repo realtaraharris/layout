@@ -56,7 +56,7 @@ tape('click a button', t => {
 tape('click a button inside a viewport', t => {
   t.plan(8);
   const onLabelClick = event => {
-    t.equals(event.box.x, 80.37999999999998);
+    t.equals(event.box.x, 80.37999999999997);
     t.equals(event.box.y, 145.10000000000002);
     t.equals(event.box.width, 46.39);
     t.equals(event.box.height, 66.2);

@@ -27,7 +27,6 @@ module.exports = ({x, y, width, height}) => {
         {
           mode: 'vertical',
           align: 'left',
-          expand: 'bidirectional',
           showBoxes,
           color: 'blue'
         },
@@ -54,7 +53,7 @@ module.exports = ({x, y, width, height}) => {
           )
         ),
         c(Rectangle, {
-          color: '#FFDD00',
+          color: 'rgba(255, 221, 0, 1)',
           topLeft: 0,
           topRight: 0,
           bottomLeft: 0,

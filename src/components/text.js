@@ -318,33 +318,28 @@ class Text extends Layout {
     this.finalBoxes = [];
   }
 
-  size(props, {childBox, mode, parent}) {
-    this.box = Object.assign({}, childBox);
-
-    return {
-      x: this.box.x,
-      y: this.box.y,
-      width: this.box.width,
-      height: this.box.height
+  size(props, {mode, parent, childPosition}) {
+    if (mode !== 'expand') {
+      return;
+    }
+    const parentBox = parent.instance.childBoxes[childPosition];
+    this.box = {
+      x: 0,
+      y: 0,
+      width: parentBox.width,
+      height: parentBox.height
     };
   }
 
-  position(
-    props,
-    {renderContext, updatedParentPosition, childBox, cache, parent, mode}
-  ) {
-    let width, height;
+  position(props, {renderContext, childBox, cache, parent, childPosition}) {
+    const {width, height} = this.box;
     // if (mode === 'shrink') {
-    //   // this.box.height = parent.instance.box.height;
-    //   // return {width: 0, height: 0};
     // }
-    if (mode === 'expand') {
-      width = parent.instance.box.width;
-      this.box.width = parent.instance.box.width;
-      this.box.height = parent.instance.box.height;
-    }
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
+    // if (mode === 'expand') {
+    // }
+    const parentBox = parent.instance.childBoxes[childPosition];
+    this.box.x = parentBox.x;
+    this.box.y = parentBox.y;
 
     const {
       size,
@@ -469,7 +464,7 @@ class Text extends Layout {
         this.debugBoxes.push(...debugBoxes);
 
         const currentY = lineIndex * lineHeight;
-        if (currentY === height) {
+        if (currentY >= height - lineHeight) {
           break;
         }
         if (tracking.tokenCursor === this.tokens.length) {
@@ -498,29 +493,6 @@ class Text extends Layout {
     };
 
     return returnValue;
-  }
-
-  sizeOld(
-    props,
-    {updatedParentPosition, renderContext, childBox, cache, parent, mode}
-  ) {
-    if (mode === 'shrink') {
-      console.log(
-        parent.instance.box,
-        'updatedParentPosition:',
-        updatedParentPosition
-      );
-      // return {width: 400, height: 0};
-    }
-    if (mode === 'expand') {
-      console.log({updatedParentPosition});
-      // return parent.instance.box;
-    }
-
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
-
-    return [updatedParentPosition];
   }
 
   render({font, size, color, showBoxes = false}, {renderContext}) {

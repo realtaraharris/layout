@@ -21,191 +21,9 @@ function c(componentOrFunction, props, ...children) {
     Component,
     instance: new Component(finalProps),
     props: finalProps,
+    parent: Component,
     children: children.filter(Boolean)
   };
-}
-
-function dumpChildBoxes(childBoxes, message) {
-  if (childBoxes) {
-    for (let childBox of childBoxes) {
-      if (!childBox) {
-        continue;
-      }
-      console.log(
-        `${message}. childBox.width: ${childBox.width}, childBox.height: ${childBox.height}`
-      );
-    }
-  }
-}
-
-function leftPad(distance, character) {
-  let scratch = '';
-  for (let i = 0; i < distance; i++) {
-    scratch += character;
-  }
-  return scratch;
-}
-
-function fixed(number) {
-  if (typeof number === 'number') {
-    return number.toFixed(2);
-  }
-  return '-';
-}
-
-function printBox({x, y, width, height}) {
-  return `x: ${fixed(x)} y: ${fixed(y)} width: ${fixed(width)} height: ${fixed(
-    height
-  )}`;
-}
-
-function printChildBoxes(childBoxes, padding) {
-  if (childBoxes) {
-    return childBoxes
-      .map(childBox => `${padding}${printBox(childBox)}`)
-      .join('\n');
-  }
-  return `${padding}-`;
-}
-
-function printChildBoxCount(childBoxes, subPadding) {
-  if (!childBoxes) {
-    return ': -';
-  }
-  if (childBoxes.length === 1) {
-    return `: ${printChildBoxes(childBoxes, '')}`;
-  }
-  return ` (${childBoxes.length}):\n${printChildBoxes(childBoxes, subPadding)}`;
-}
-
-function printTree(component, depth) {
-  const {box, childBoxes} = component.instance;
-  const {name} = component.instance.constructor;
-
-  const padding = leftPad(depth * 2, ' ');
-  const subPadding = padding + '  ';
-  console.log(
-    `${padding}${name}\n${subPadding}box: ${printBox(
-      box
-    )}\n${subPadding}childBoxes${printChildBoxCount(childBoxes, subPadding)}`
-  );
-
-  for (let child of component.children) {
-    printTree(child, depth + 1);
-  }
-}
-
-function expandingSizeDown({
-  renderContext,
-  component,
-  parent,
-  cache,
-  childPosition,
-  depth
-}) {
-  // if (component.instance.flowMode() === 'shrink') {
-  // // if (component.instance.constructor.name === 'ExpandingFlowBox') {
-  // console.log(`sizing down ${component.instance.constructor.name}`);
-  // parent &&
-  //   parent.instance &&
-  //   dumpChildBoxes(parent.instance.childBoxes, 'before');
-  component.instance.size(component.props, {
-    renderContext,
-    cache,
-    parent,
-    children: component.children,
-    mode: 'expand',
-    traversalMode: 'down',
-    childPosition,
-    depth
-  });
-  // dumpChildBoxes(component.instance.childBoxes, 'after');
-
-  if (!component) {
-    return;
-  }
-
-  for (
-    let childPosition = 0;
-    childPosition < component.children.length;
-    childPosition++
-  ) {
-    const child = component.children[childPosition];
-    expandingSizeDown({
-      renderContext,
-      component: child,
-      parent: component,
-      cache,
-      childPosition,
-      depth: depth + 1
-    });
-  }
-}
-
-function shrinkingSizeDown({
-  renderContext,
-  component,
-  cache,
-  breadcrumbs,
-  depth
-}) {
-  // if we are a leaf node, start the up phase
-  if (component.children.length === 0) {
-    shrinkingSizeUp({
-      renderContext,
-      component,
-      childBox: null,
-      cache,
-      breadcrumbs,
-      depth
-    });
-  } else {
-    for (let child of component.children) {
-      shrinkingSizeDown({
-        renderContext,
-        component: child,
-        cache,
-        breadcrumbs: breadcrumbs.concat(component),
-        depth
-      });
-    }
-  }
-}
-
-function shrinkingSizeUp({
-  renderContext,
-  component,
-  childBox,
-  cache,
-  breadcrumbs,
-  depth
-}) {
-  let box;
-  const parent = breadcrumbs.pop();
-  box = component.instance.size(component.props, {
-    renderContext,
-    childBox,
-    childCount: component.children.length,
-    cache,
-    parent,
-    children: component.children,
-    mode: 'shrink',
-    traversalMode: 'up',
-    depth
-  });
-
-  // NB: if no box is returned, stop traversal per component API
-  if (!box || !parent) {
-    return;
-  }
-
-  shrinkingSizeUp({
-    renderContext,
-    component: parent,
-    childBox: box,
-    cache,
-    breadcrumbs
-  });
 }
 
 function pickDown(component, rawEvent, eventName, result) {
@@ -243,57 +61,48 @@ function pickUp(component, rawEvent, eventName, result) {
   return pickUp(component.parent, rawEvent, eventName, result);
 }
 
-function calcBoxPositionsDepthFirst({
-  renderContext,
-  component,
-  updatedParentPosition,
-  cache,
-  parent,
-  childPosition,
-  depth
-}) {
-  console.log(
-    `calling position() on ${component.instance.constructor.name}, depth: ${depth}`
-  );
-  const position = component.instance.position(component.props, {
-    renderContext,
-    updatedParentPosition,
-    childCount: component.children.length,
-    cache,
-    children: component.children,
-    mode: '',
-    parent,
-    childPosition,
-    traversalMode: 'down',
-    depth
-  });
+function walkTreeBreadthFirst(treeRoot, depth, callback) {
+  const queue = [{component: treeRoot, parent: null, depth}];
 
-  if (component.children.length === 0) {
-    return;
+  while (queue.length > 0) {
+    const {component, parent, childPosition} = queue.shift();
+    callback({component, parent, childPosition, depth});
+
+    if (component.children) {
+      depth++;
+      queue.push(
+        ...component.children.map((c, index) => ({
+          component: c,
+          parent: component,
+          childPosition: index
+        }))
+      );
+    }
+  }
+}
+
+function walkTreeReverseBreadthFirst(treeRoot, depth, callback) {
+  const queue = [{component: treeRoot, parent: null, childPosition: 0, depth}];
+  const stack = [];
+
+  while (queue.length > 0) {
+    const item = queue.shift();
+    stack.push(item);
+
+    if (item.component.children) {
+      queue.push(
+        ...item.component.children.map((component, childPosition) => ({
+          component,
+          parent: item.component,
+          childPosition,
+          depth: ++depth
+        }))
+      );
+    }
   }
 
-  if (position.length !== component.children.length) {
-    console.error(
-      'scratch position count does not match child count',
-      position.length,
-      component.children.length,
-      component.instance.constructor.name
-    );
-  }
-
-  for (let i = 0; i < component.children.length; i++) {
-    const child = component.children[i];
-    const newPos = position[i];
-
-    calcBoxPositionsDepthFirst({
-      renderContext,
-      component: child,
-      updatedParentPosition: newPos,
-      cache,
-      parent: component,
-      childPosition: i,
-      depth: depth + 1
-    });
+  while (stack.length > 0) {
+    callback(stack.pop());
   }
 }
 
@@ -357,33 +166,55 @@ function render(renderContext, component) {
 }
 
 function layout(renderContext, treeRoot, cache) {
-  // first pass: calculate the shrinking box sizes
-  shrinkingSizeDown({
-    renderContext,
-    component: treeRoot,
-    cache,
-    breadcrumbs: [],
-    depth: 0
-  });
+  // first pass: calculate shrinking box sizes
+  walkTreeReverseBreadthFirst(
+    treeRoot,
+    0,
+    ({component, parent, childPosition, depth}) =>
+      component.instance.size(component.props, {
+        renderContext,
+        cache,
+        parent,
+        children: component.children,
+        childPosition,
+        mode: 'shrink',
+        depth
+      })
+  );
 
-  // second pass: calculate the expanding box sizes
-  expandingSizeDown({
-    renderContext,
-    component: treeRoot,
-    parent: null,
-    cache,
-    depth: 0
-  });
+  // second pass: calculate expanding box sizes
+  walkTreeBreadthFirst(
+    treeRoot,
+    0,
+    ({component, parent, childPosition, depth}) => {
+      component.instance.size(component.props, {
+        renderContext,
+        cache,
+        parent,
+        children: component.children,
+        childPosition,
+        mode: 'expand',
+        depth
+      });
+    }
+  );
 
-  // third pass: calculate the box positions and also update some box sizes
-  calcBoxPositionsDepthFirst({
-    renderContext,
-    component: treeRoot,
-    updatedParentPosition: {x: 0, y: 0},
-    cache,
-    childPosition: 0,
-    depth: 0
-  });
+  // third pass: calculate box positions
+  walkTreeBreadthFirst(
+    treeRoot,
+    0,
+    ({component, parent, childPosition, depth}) => {
+      component.instance.position(component.props, {
+        renderContext,
+        cache,
+        parent,
+        children: component.children,
+        childPosition,
+        mode: '',
+        depth
+      });
+    }
+  );
 
   return treeRoot;
 }
@@ -485,6 +316,5 @@ module.exports = {
   layout,
   click,
   copyTree,
-  addFontToCanvas,
-  printTree
+  addFontToCanvas
 };

@@ -8,16 +8,19 @@ class Window extends Layout {
   }
 
   // TODO: add check to ensure labels have NO children
-  // sends a child box up
   size() {
-    return {x: 0, y: 0, width: 0, height: 0};
+    this.box = {x: 0, y: 0, width: 0, height: 0};
+    this.childBoxes = [{x: 0, y: 0, width: 0, height: 0}];
   }
 
   position({x, y}) {
     this.box.x = x;
     this.box.y = y;
 
-    return [{x: this.box.x, y: this.box.y, width: 0, height: 0}];
+    for (let childBox of this.childBoxes) {
+      childBox.x += x;
+      childBox.y += y;
+    }
   }
 
   render({width, height, showBoxes}, {renderContext}) {

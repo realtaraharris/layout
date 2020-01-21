@@ -8,14 +8,22 @@ class Offset extends Layout {
   }
 
   size() {
-    return {x: 0, y: 0, width: 0, height: 0};
+    this.box = {x: 0, y: 0, width: 0, height: 0};
   }
 
-  position({x, y}, {updatedParentPosition}) {
-    this.box.x = updatedParentPosition.x + x;
-    this.box.y = updatedParentPosition.y + y;
+  position({x, y}, {parent, childPosition}) {
+    const parentBox = parent.instance.childBoxes[childPosition];
+    this.box.x = parentBox.x + x;
+    this.box.y = parentBox.y + y;
 
-    return [{x: this.box.x, y: this.box.y, width: 0, height: 0}];
+    this.childBoxes = [
+      {
+        x: this.box.x,
+        y: this.box.y,
+        width: 0,
+        height: 0
+      }
+    ];
   }
 
   render() {}

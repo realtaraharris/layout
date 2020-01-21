@@ -6,6 +6,7 @@
   "scripts": {
     "test": "node test/",
     "test:lint": "eslint lib/ src/ test/",
+    "test:lint:watch": "CHOKIDAR_USEPOLLING=true esw lib/ src/ test/ --color --watch --clear",
     "test:unit": "npm run test:lint && npm run test:unit:cover",
     "test:unit:cover": "nyc node test/; nyc report --reporter=lcov",
     "test:unit:cleanup": "rm -f test/screenshots/*-diff.png; exit 0",
@@ -36,6 +37,7 @@
     "browserify-istanbul": "^3.0.1",
     "canvas": "^2.6.1",
     "eslint": "^6.3.0",
+    "eslint-watch": "^6.0.1",
     "hyphen": "^1.1.1",
     "node-resemble-js": "^0.2.0",
     "nodemon": "^1.19.1",

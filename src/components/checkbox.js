@@ -5,20 +5,18 @@ const {roundRect} = require('../draw');
 
 class Checkbox extends Layout {
   size() {
-    const newBox = {
+    this.box = {
       x: 0,
       y: 0,
       width: 40,
       height: 40
     };
-    this.box = newBox;
-
-    return Object.assign({}, newBox);
   }
 
-  position(props, {updatedParentPosition}) {
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
+  position(props, {parent, childPosition}) {
+    const parentBox = parent.instance.childBoxes[childPosition];
+    this.box.x = parentBox.x;
+    this.box.y = parentBox.y;
   }
 
   render({color, checked}, {renderContext}) {

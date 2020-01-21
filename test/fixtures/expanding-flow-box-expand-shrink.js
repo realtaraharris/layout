@@ -13,7 +13,7 @@ module.exports = ({x, y, width, height}) => {
     c(
       ExpandingFlowBox,
       {
-        expand: 'bidirectional',
+        mode: 'horizontal',
         color: 'gray',
         showBoxes: true
       },
@@ -31,24 +31,24 @@ module.exports = ({x, y, width, height}) => {
           size: 20,
           sizeMode: 'capHeight',
           text: 'happenstance',
-          showBoxes: false
+          showBoxes: true
         }),
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'black',
           size: 20,
           sizeMode: 'capHeight',
-          text: 'happenstance',
-          showBoxes: false
+          text: 'happenstance2',
+          showBoxes: true
         })
       ),
       c(ExpandingFlowBox, {
-        expand: 'bidirectional',
+        mode: 'horizontal',
         color: 'green',
         showBoxes: true
       }),
       c(ExpandingFlowBox, {
-        expand: 'bidirectional',
+        mode: 'horizontal',
         color: 'blue',
         showBoxes: true
       })

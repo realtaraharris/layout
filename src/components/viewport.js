@@ -8,29 +8,43 @@ class Viewport extends Layout {
     this.childBoxes = [];
   }
 
-  size({width, height}, {childBox}) {
-    this.childBoxes.push(childBox);
+  size({width, height}) {
+    this.box = {
+      x: 0,
+      y: 0,
+      width,
+      height
+    };
 
-    this.box = Object.assign({}, {width, height});
-    return {width, height};
-  }
-
-  position({offsetX, offsetY}, {updatedParentPosition}) {
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
-
-    // TODO: this should only accept a SINGLE child, not an array!
-    const absX = (this.box.width - this.childBoxes[0].width) * offsetX;
-    const absY = (this.box.height - this.childBoxes[0].height) * offsetY;
-
-    const result = [
+    this.childBoxes = [
       {
-        x: this.box.x + absX,
-        y: this.box.y + absY
+        x: this.box.x,
+        y: this.box.y,
+        width: this.box.width,
+        height: this.box.height
       }
     ];
+  }
 
-    return result;
+  position({offsetX, offsetY}, {parent, childPosition, children}) {
+    const child = children[0]; // TODO: make sure you have a child!
+
+    const parentBox = parent.instance.childBoxes[childPosition];
+
+    const absX = (this.box.width - child.instance.box.width) * offsetX;
+    const absY = (this.box.height - child.instance.box.height) * offsetY;
+
+    this.box.x = parentBox.x;
+    this.box.y = parentBox.y;
+
+    this.childBoxes = [
+      {
+        x: this.box.x + absX,
+        y: this.box.y + absY,
+        width: this.box.width,
+        height: this.box.height
+      }
+    ];
   }
 
   render(props, {renderContext}) {

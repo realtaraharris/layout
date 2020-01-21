@@ -3,19 +3,39 @@
 const Layout = require('../components');
 
 class Button extends Layout {
-  size(props, {childBox, mode}) {
-    if (mode === 'shrink') {
-      this.box.width = childBox.width;
-      this.box.height = childBox.height;
+  size(props, {children, mode}) {
+    if (mode !== 'shrink') {
+      return;
     }
-    return childBox; // sends a child box up
+
+    if (children.length > 1) {
+      console.error('too many kids!');
+    }
+    const childBox = children[0].instance.box;
+
+    this.box = {
+      x: 0,
+      y: 0,
+      width: childBox.width,
+      height: childBox.height
+    };
+
+    this.childBoxes = [
+      {
+        x: this.box.x,
+        y: this.box.y,
+        width: this.box.width,
+        height: this.box.height
+      }
+    ];
   }
 
-  position(props, {updatedParentPosition}) {
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
-
-    return [updatedParentPosition];
+  position(props, {parent, childPosition}) {
+    const parentBox = parent.instance.childBoxes[childPosition];
+    this.box.x = parentBox.x;
+    this.box.y = parentBox.y;
+    this.childBoxes[0].x = this.box.x;
+    this.childBoxes[0].y = this.box.y;
   }
 
   render() {}

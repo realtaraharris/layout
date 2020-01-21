@@ -4,35 +4,42 @@ const Layout = require('../components');
 const PropTypes = require('introspective-prop-types');
 
 class Margin extends Layout {
-  size({top, right, bottom, left}, {childBox, mode}) {
-    if (mode === 'shrink') {
-      this.box = Object.assign({}, childBox);
+  size({top, right, bottom, left}, {children, mode}) {
+    if (mode !== 'shrink') {
+      return;
     }
 
-    return {
-      x: this.box.x,
-      y: this.box.y,
-      width: this.box.width + left + right,
-      height: this.box.height + top + bottom
+    if (children.length > 1) {
+      console.error('too many kids!');
+    }
+    const childBox = children[0].instance.box;
+
+    this.box = {
+      x: 0,
+      y: 0,
+      width: childBox.width + left + right,
+      height: childBox.height + top + bottom
     };
+
+    this.childBoxes = [
+      {
+        x: this.box.x + left,
+        y: this.box.y + top,
+        width: childBox.width,
+        height: childBox.height
+      }
+    ];
   }
 
-  position({top, left}, {updatedParentPosition, childCount}) {
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
-
-    return Array(childCount).fill(
-      Object.assign(
-        {},
-        {
-          x: updatedParentPosition.x + left,
-          y: updatedParentPosition.y + top
-        }
-      )
-    );
+  position({top, left}, {parent, childPosition}) {
+    const parentBox = parent.instance.childBoxes[childPosition];
+    this.box.x = parentBox.x;
+    this.box.y = parentBox.y;
+    this.childBoxes[0].x = this.box.x + left;
+    this.childBoxes[0].y = this.box.y + top;
   }
 
-  render({top, bottom, left, right, showBoxes = false}, {renderContext}) {
+  render({showBoxes = false}, {renderContext}) {
     if (!showBoxes) {
       return;
     }
@@ -40,10 +47,10 @@ class Margin extends Layout {
     renderContext.setLineDash([4, 4]);
     renderContext.strokeStyle = 'darkgray';
     renderContext.strokeRect(
-      this.box.x + left,
-      this.box.y + top,
-      this.box.width,
-      this.box.height
+      this.childBoxes[0].x, // + left,
+      this.childBoxes[0].y, // + top,
+      this.childBoxes[0].width,
+      this.childBoxes[0].height
     );
 
     renderContext.setLineDash([]);
@@ -51,8 +58,8 @@ class Margin extends Layout {
     renderContext.strokeRect(
       this.box.x,
       this.box.y,
-      this.box.width + right + left,
-      this.box.height + top + bottom
+      this.box.width, // + right + left,
+      this.box.height // + top + bottom
     );
   }
 }

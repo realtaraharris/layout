@@ -85,11 +85,11 @@ class Document extends Layout {
     );
 
     let positionedChildren = [];
-    let _y = updatedParentPosition.y;
+    let _y = updatedParentPosition.y; // eslint-disable-line
 
     // go through each child and assign a final { x, y } coord pair
     for (let box of this.childBoxes) {
-      let _x = updatedParentPosition.x;
+      let _x = updatedParentPosition.x; // eslint-disable-line
 
       if (mode === 'horizontal') {
         switch (align) {

@@ -13,7 +13,11 @@ class Label extends Layout {
 
   // TODO: add check to ensure labels have NO children
   // sends a child box up
-  size({text, size, font, sizeMode = 'xHeight'}, {renderContext, cache}) {
+  size({text, size, font, sizeMode = 'xHeight'}, {renderContext, mode, cache}) {
+    if (mode !== 'shrink') {
+      return;
+    }
+
     // query the cache. if we have an entry in there, we can skip all this
     const cachedState = cache[this.hash];
     if (cachedState) {
@@ -40,17 +44,12 @@ class Label extends Layout {
       textMetrics: this.textMetrics,
       returnValue: newBox
     };
-
-    return newBox;
   }
 
-  position(props, {updatedParentPosition}) {
-    this.box.x = updatedParentPosition.x;
-    this.box.y = updatedParentPosition.y;
-
-    // return value ignored in leaf nodes such as these
-    // TODO: add assertions that ths component has no children!
-    // we want to give users an error if they're doing that!
+  position(props, {parent, childPosition}) {
+    const parentBox = parent.instance.childBoxes[childPosition];
+    this.box.x = parentBox.x;
+    this.box.y = parentBox.y;
   }
 
   render({text, size, font, color, showBoxes, selection}, {renderContext}) {
