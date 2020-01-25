@@ -17,11 +17,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "browserify": "^16.2.3",
     "hashcode": "^1.0.3",
     "introspective-prop-types": "0.0.4",
-    "opentype.js": "^1.1.0",
-    "segseg": "^0.2.2"
+    "opentype.js": "^1.1.0"
   },
   "prettier": {
     "jsxSingleQuote": true,
@@ -41,7 +39,7 @@
     "hyphen": "^1.1.1",
     "node-resemble-js": "^0.2.0",
     "nodemon": "^1.19.1",
-    "nyc": "^13.3.0",
+    "nyc": "^15.0.0",
     "proxyquire": "^2.1.0",
     "resemblejs": "^3.1.0",
     "tape": "^4.10.1",
