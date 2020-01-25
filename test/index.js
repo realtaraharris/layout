@@ -4,10 +4,11 @@ const {clearTerminal} = require('./lib/util');
 
 clearTerminal();
 
-require('./core');
-require('./layout');
+require('./core/core');
+require('./components/components');
+// require('./components/text');
+
 require('./geometry');
 require('../lib/csg/test/csg');
-require('./picking');
+require('./picking/picking');
 require('./logging');
-// require('./text');

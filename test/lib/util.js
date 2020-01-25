@@ -64,12 +64,10 @@ function debugDot(ctx, target) {
   ctx.fillRect(target.clientX, target.clientY, 10, 10);
 }
 
-function screenshot(name, canvas, t) {
-  const base = `${__dirname}/../screenshots/${name}`;
-
-  const actualFull = `${base}-actual.png`;
-  const expectedFull = `${base}-expected.png`;
-  const diffFull = `${base}-diff.png`;
+function screenshot(base, canvas, t) {
+  const actualFull = `${base}/actual.png`;
+  const expectedFull = `${base}/expected.png`;
+  const diffFull = `${base}/diff.png`;
 
   const actualBuffer = canvas.toBuffer();
 
@@ -98,26 +96,26 @@ function screenshot(name, canvas, t) {
     });
 }
 
-function executeTest(testName, testRunner, options) {
+function executeTest(suite, testName, testRunner, options) {
   testRunner(testName, t => {
     const {canvas} = setupComponentTest(
-      require(`../fixtures/${testName}`),
+      require(`../${suite}/${testName}/fixture`),
       options
     );
-    screenshot(testName, canvas, t);
+    screenshot(`${__dirname}/../${suite}/${testName}`, canvas, t);
   });
 }
 
-function test(testName, options) {
-  executeTest(testName, tape, options);
+function test(suite, testName, options) {
+  executeTest(suite, testName, tape, options);
 }
 
-function only(testName, options) {
-  executeTest(testName, tape.only, options);
+function only(suite, testName, options) {
+  executeTest(suite, testName, tape.only, options);
 }
 
-function skip(testName, options) {
-  executeTest(testName, tape.skip, options);
+function skip(suite, testName, options) {
+  executeTest(suite, testName, tape.skip, options);
 }
 
 module.exports = {
