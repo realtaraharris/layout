@@ -76,15 +76,37 @@ class ExpandingFlowBox extends Layout {
   position(props, {parent, childPosition}) {
     const parentBox = parent.instance.childBoxes[childPosition];
 
-    this.box.x = parentBox.x;
-    this.box.y = parentBox.y;
+    if (props.align === 'center') {
+      const biggestBox = this.childBoxes.reduce(
+        (accum, curr) => {
+          if (curr.height > accum.height) {
+            accum.height = curr.height;
+          }
 
-    let _x = parentBox.x;
-    let _y = parentBox.y;
+          if (curr.width > accum.width) {
+            accum.width = curr.width;
+          }
+
+          return accum;
+        },
+        {width: 0, height: 0}
+      );
+
+      this.box.x = parentBox.x + (parentBox.width - biggestBox.width) / 2;
+      this.box.y = parentBox.y + (parentBox.height - biggestBox.height) / 2;
+      this.box.width = biggestBox.width;
+      this.box.height = biggestBox.height;
+    } else {
+      this.box.x = parentBox.x;
+      this.box.y = parentBox.y;
+    }
+
+    let _x = this.box.x;
+    let _y = this.box.y;
 
     for (let childBox of this.childBoxes) {
-      childBox.y = _y;
       childBox.x = _x;
+      childBox.y = _y;
       if (props.mode === 'horizontal') {
         _x += childBox.width;
       } else if (props.mode === 'vertical') {
@@ -124,7 +146,6 @@ class ExpandingFlowBox extends Layout {
 
 ExpandingFlowBox.propTypes = {
   mode: PropTypes.oneOf(['vertical', 'horizontal', 'diagonal']).isRequired,
-  align: PropTypes.oneOf(['left', 'right', 'center']).isRequired,
-  expand: PropTypes.oneOf(['vertical', 'horizontal', 'bidirectional'])
+  align: PropTypes.oneOf(['left', 'right', 'center']).isRequired
 };
 module.exports = ExpandingFlowBox;

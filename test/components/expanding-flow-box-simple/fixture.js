@@ -11,7 +11,6 @@ module.exports = ({x, y, width, height}) => {
     c(ExpandingFlowBox, {
       mode: 'horizontal',
       align: 'left',
-      expand: 'bidirectional',
       color: 'red',
       showBoxes: true
     })

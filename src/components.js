@@ -36,15 +36,6 @@ class Layout {
 module.exports = Layout;
 
 /**
- * given an existing line + offset vector, returns an offset line
- */
-// class Offset extends Layout {
-//   size () {}
-//   position () {}
-//   render: () {}
-// }
-
-/**
  * supplies a list of line segments + a way of finding intersections
  */
 // class Grid extends Layout {

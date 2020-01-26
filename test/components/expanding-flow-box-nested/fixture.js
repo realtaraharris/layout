@@ -13,21 +13,18 @@ module.exports = ({x, y, width, height}) => {
       {
         mode: 'horizontal',
         align: 'left',
-        expand: 'bidirectional',
         color: 'red',
         showBoxes: true
       },
       c(ExpandingFlowBox, {
         mode: 'vertical',
         align: 'left',
-        expand: 'bidirectional',
         color: 'blue',
         showBoxes: true
       }),
       c(ExpandingFlowBox, {
         mode: 'vertical',
         align: 'left',
-        expand: 'bidirectional',
         color: 'green',
         showBoxes: true
       })

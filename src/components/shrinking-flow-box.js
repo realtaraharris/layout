@@ -18,9 +18,9 @@ class ShrinkingFlowBox extends Layout {
     // go through each child and assign a final { x, y } coord pair
     let _w = 0;
     let _h = 0;
-
     let tallest = 0;
     let widest = 0;
+
     for (let child of children) {
       const {box} = child.instance;
 
@@ -87,14 +87,11 @@ class ShrinkingFlowBox extends Layout {
       if (props.mode === 'horizontal') {
         switch (props.align) {
           case 'left':
-            _x += box.x;
             break;
           case 'center':
-            _x += box.x;
             _y = parentBox.y + biggestBox.height / 2 - box.height / 2;
             break;
           case 'right':
-            _x += box.x;
             _y = parentBox.y + biggestBox.height - box.height;
             break;
           default:
@@ -109,7 +106,7 @@ class ShrinkingFlowBox extends Layout {
             _x = parentBox.x + biggestBox.width / 2 - box.width / 2;
             break;
           case 'right':
-            _x = parentBox.y + biggestBox.width - box.width;
+            _x = parentBox.x + biggestBox.width - box.width;
             break;
           default:
             log('invalid alignment props.mode in spacedLine:', props.align);

@@ -26,7 +26,10 @@ class Rectangle extends Layout {
     this.box.y = parentBox.y;
   }
 
-  render({color, topLeft, topRight, bottomLeft, bottomRight}, {renderContext}) {
+  render(
+    {color, topLeft = 0, topRight = 0, bottomLeft = 0, bottomRight = 0},
+    {renderContext}
+  ) {
     renderContext.fillStyle = color;
     roundRect(
       renderContext,

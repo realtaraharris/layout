@@ -2,6 +2,7 @@
 
 const util = require('../lib/util');
 
+util.test('components', 'box', {dumpTree: false});
 util.test('components', 'root-shrinking-flow-box-labels', {dumpTree: false});
 util.test('components', 'margin', {dumpTree: false});
 util.test('components', 'horizontal-simple', {dumpTree: false});

@@ -15,7 +15,6 @@ module.exports = ({x, y, width, height}) => {
       {
         mode: 'horizontal',
         align: 'left',
-        expand: 'bidirectional',
         showBoxes,
         color: 'red'
       },
@@ -24,7 +23,6 @@ module.exports = ({x, y, width, height}) => {
         {
           mode: 'vertical',
           align: 'left',
-          expand: 'bidirectional',
           showBoxes,
           color: 'blue'
         },
@@ -42,7 +40,6 @@ module.exports = ({x, y, width, height}) => {
         {
           mode: 'vertical',
           align: 'left',
-          expand: 'bidirectional',
           showBoxes,
           color: 'blue'
         },
@@ -60,7 +57,6 @@ module.exports = ({x, y, width, height}) => {
         {
           mode: 'vertical',
           align: 'left',
-          expand: 'bidirectional',
           showBoxes,
           color: 'blue'
         },
