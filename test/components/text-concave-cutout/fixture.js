@@ -5,6 +5,8 @@ const {Text, createTextContinuation} = require('../../../src/components/text');
 const Label = require('../../../src/components/label');
 const Margin = require('../../../src/components/margin');
 const ShrinkingFlowBox = require('../../../src/components/shrinking-flow-box');
+const Box = require('../../../src/components/box');
+
 const {fromPolygons} = require('../../../lib/csg/src/csg');
 
 const createHyphenator = require('hyphen');
@@ -26,9 +28,6 @@ module.exports = ({x, y, width, height}) => {
   const textContinuation = createTextContinuation(exampleText);
 
   const marginA = 10;
-
-  const textWidth = 550;
-  const textHeight = 460 + 40;
 
   const clipPolygon = fromPolygons([
     [
@@ -68,22 +67,24 @@ module.exports = ({x, y, width, height}) => {
           right: marginA,
           showBoxes: true
         },
-        c(Text, {
-          width: textWidth,
-          height: textHeight,
-          lineHeight: 20,
-          font: 'SourceSansPro-Regular',
-          size: 17,
-          sizeMode: 'capHeight',
-          textContinuation,
+        c(
+          Box,
+          {width: 520, height: 440, showBoxes: false},
+          c(Text, {
+            lineHeight: 20,
+            font: 'SourceSansPro-Regular',
+            size: 17,
+            sizeMode: 'capHeight',
+            textContinuation,
 
-          operation: 'subtract',
-          overflow: 'clip', // ignores any words that don't fit in the polygon
-          polygons: clipPolygon,
+            operation: 'subtract',
+            overflow: 'clip', // ignores any words that don't fit in the polygon
+            polygons: clipPolygon,
 
-          color: 'white',
-          showBoxes: true
-        })
+            color: 'white',
+            showBoxes: true
+          })
+        )
       )
     )
   );

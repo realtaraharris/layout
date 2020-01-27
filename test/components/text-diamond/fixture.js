@@ -1,10 +1,13 @@
 'use strict';
+
 const {c} = require('../../../src/layout');
 const Root = require('../../../src/components/root');
 const {Text, createTextContinuation} = require('../../../src/components/text');
 const Label = require('../../../src/components/label');
 const Margin = require('../../../src/components/margin');
 const ShrinkingFlowBox = require('../../../src/components/shrinking-flow-box');
+const Box = require('../../../src/components/box');
+
 const {fromPolygons} = require('../../../lib/csg/src/csg');
 const {createCircle} = require('../../../src/geometry');
 const createHyphenator = require('hyphen');
@@ -25,9 +28,6 @@ module.exports = ({x, y, width, height}) => {
   const textContinuation = createTextContinuation(exampleText);
 
   const marginA = 20;
-
-  const textWidth = 500;
-  const textHeight = 500;
 
   const subjectPolygon = fromPolygons([
     createCircle(250, 250, 130).map(([x, y]) => [x + 250, y + 250])
@@ -73,22 +73,24 @@ module.exports = ({x, y, width, height}) => {
           right: 20,
           showBoxes: true
         },
-        c(Text, {
-          width: textWidth,
-          height: textHeight,
-          lineHeight: 20,
-          font: 'SourceSerifPro-Regular',
-          size: 17,
-          sizeMode: 'capHeight',
-          textContinuation,
+        c(
+          Box,
+          {width: 500, height: 500},
+          c(Text, {
+            lineHeight: 20,
+            font: 'SourceSerifPro-Regular',
+            size: 17,
+            sizeMode: 'capHeight',
+            textContinuation,
 
-          polygons: polygons.inverse(),
-          operation: 'intersect',
-          overflow: 'clip', // ignores any words that don't fit in the polygon
+            polygons: polygons.inverse(),
+            operation: 'intersect',
+            overflow: 'clip', // ignores any words that don't fit in the polygon
 
-          color: 'white',
-          showBoxes: true
-        })
+            color: 'white',
+            showBoxes: true
+          })
+        )
       )
     )
   );

@@ -5,6 +5,7 @@ const {Text, createTextContinuation} = require('../../../src/components/text');
 const Label = require('../../../src/components/label');
 const Margin = require('../../../src/components/margin');
 const ShrinkingFlowBox = require('../../../src/components/shrinking-flow-box');
+const Box = require('../../../src/components/box');
 
 const createHyphenator = require('hyphen');
 const hyphenationPatternsEnUs = require('hyphen/patterns/en-us');
@@ -54,21 +55,26 @@ module.exports = ({x, y, width, height}) => {
           right: 20,
           showBoxes: true
         },
-        c(Text, {
-          width: textWidth,
-          height: textHeight,
-          lineHeight: 20,
-          font: 'SourceSerifPro-Regular',
-          size: 17,
-          sizeMode: 'capHeight',
-          textContinuation,
+        c(
+          Box,
+          {
+            width: textWidth,
+            height: textHeight
+          },
+          c(Text, {
+            lineHeight: 20,
+            font: 'SourceSerifPro-Regular',
+            size: 17,
+            sizeMode: 'capHeight',
+            textContinuation,
 
-          operation: 'add',
-          overflow: 'continue', // ignores any words that don't fit in the polygon
+            operation: 'add',
+            overflow: 'continue', // ignores any words that don't fit in the polygon
 
-          color: 'white',
-          showBoxes: true
-        })
+            color: 'white',
+            showBoxes: true
+          })
+        )
       )
     )
   );

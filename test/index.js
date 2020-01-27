@@ -6,7 +6,7 @@ clearTerminal();
 
 require('./core/core');
 require('./components/components');
-// require('./components/text');
+require('./components/text');
 
 require('./geometry');
 require('../lib/csg/test/csg');
