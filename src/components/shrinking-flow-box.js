@@ -151,6 +151,17 @@ class ShrinkingFlowBox extends Layout {
     if (!showBoxes) {
       return;
     }
+
+    for (let childBox of this.childBoxes) {
+      renderContext.strokeStyle = 'green';
+      renderContext.strokeRect(
+        childBox.x,
+        childBox.y,
+        childBox.width,
+        childBox.height
+      );
+    }
+
     renderContext.strokeStyle = color;
     renderContext.strokeRect(
       this.box.x,
