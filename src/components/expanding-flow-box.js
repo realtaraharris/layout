@@ -49,6 +49,46 @@ function sizeExpanding(props, children, box) {
   return newChildBoxes;
 }
 
+function positionExpanding(props, parentBox, box, childBoxes) {
+  if (props.align === 'center') {
+    const biggestBox = childBoxes.reduce(
+      (accum, curr) => {
+        if (curr.height > accum.height) {
+          accum.height = curr.height;
+        }
+
+        if (curr.width > accum.width) {
+          accum.width = curr.width;
+        }
+
+        return accum;
+      },
+      {width: 0, height: 0}
+    );
+
+    box.x = parentBox.x + (parentBox.width - biggestBox.width) / 2;
+    box.y = parentBox.y + (parentBox.height - biggestBox.height) / 2;
+    box.width = biggestBox.width;
+    box.height = biggestBox.height;
+  } else {
+    box.x = parentBox.x;
+    box.y = parentBox.y;
+  }
+
+  let _x = box.x;
+  let _y = box.y;
+
+  for (let childBox of childBoxes) {
+    childBox.x = _x;
+    childBox.y = _y;
+    if (props.mode === 'horizontal') {
+      _x += childBox.width;
+    } else if (props.mode === 'vertical') {
+      _y += childBox.height;
+    }
+  }
+}
+
 class ExpandingFlowBox extends Layout {
   constructor() {
     super();
@@ -62,49 +102,12 @@ class ExpandingFlowBox extends Layout {
 
     this.box = Object.assign({}, parent.instance.childBoxes[childPosition]);
 
-    sizeExpanding(props, children, this.box, this.childBoxes);
+    this.childBoxes = sizeExpanding(props, children, this.box);
   }
 
   position(props, {parent, childPosition}) {
     const parentBox = parent.instance.childBoxes[childPosition];
-
-    if (props.align === 'center') {
-      const biggestBox = this.childBoxes.reduce(
-        (accum, curr) => {
-          if (curr.height > accum.height) {
-            accum.height = curr.height;
-          }
-
-          if (curr.width > accum.width) {
-            accum.width = curr.width;
-          }
-
-          return accum;
-        },
-        {width: 0, height: 0}
-      );
-
-      this.box.x = parentBox.x + (parentBox.width - biggestBox.width) / 2;
-      this.box.y = parentBox.y + (parentBox.height - biggestBox.height) / 2;
-      this.box.width = biggestBox.width;
-      this.box.height = biggestBox.height;
-    } else {
-      this.box.x = parentBox.x;
-      this.box.y = parentBox.y;
-    }
-
-    let _x = this.box.x;
-    let _y = this.box.y;
-
-    for (let childBox of this.childBoxes) {
-      childBox.x = _x;
-      childBox.y = _y;
-      if (props.mode === 'horizontal') {
-        _x += childBox.width;
-      } else if (props.mode === 'vertical') {
-        _y += childBox.height;
-      }
-    }
+    positionExpanding(props, parentBox, this.box, this.childBoxes);
   }
 
   render({color, showBoxes}, {renderContext}) {
