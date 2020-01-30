@@ -1,5 +1,7 @@
 'use strict';
 
+const opentype = require('opentype.js');
+
 // const POINTS_PER_INCH = 72;
 // const UNITS_PER_EM = 2048;
 
@@ -114,3 +116,48 @@ function fillText(
   // outlines.draw(renderContext);
 }
 exports.fillText = fillText;
+
+/**
+ * makes the font available to canvas
+ * @param {*} name - font name
+ * @param {*} weight - font weight
+ * @param {*} buffer - buffer containing font data
+ */
+const addFontToCanvasBrowser = async (name, weight, buffer) => {
+  const fontName = `${name}-${weight}`;
+  const font = new FontFace(fontName, buffer);
+  await font.load();
+  document.fonts.add(font);
+
+  const options = {};
+  return opentype.parse(buffer, options);
+};
+
+/**
+ * makes the font available to canvas
+ * @param {*} name - font name
+ * @param {*} weight - font weight
+ * @param {*} buffer - buffer containing font data
+ */
+const addFontToCanvasNode = async (name, weight, buffer) => {
+  const options = {};
+  return opentype.parse(buffer, options);
+};
+
+/**
+ * makes the font available to canvas
+ * @param {*} name - font name
+ * @param {*} weight - font weight
+ * @param {*} buffer - buffer containing font data
+ */
+const addFontToCanvas = async (name, weight, buffer) => {
+  const isBrowser =
+    typeof window !== 'undefined' && typeof window.document !== 'undefined';
+
+  if (isBrowser) {
+    return addFontToCanvasBrowser(name, weight, buffer);
+  } else {
+    return addFontToCanvasNode(name, weight, buffer);
+  }
+};
+exports.addFontToCanvas = addFontToCanvas;
