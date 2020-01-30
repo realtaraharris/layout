@@ -19,11 +19,8 @@ class Root extends Component {
     // no need to do anything here because the root node has no parent
   }
 
-  position({align, width, height}) {
-    if (align === 'center') {
-      this.box.x = width / 2 - this.box.width / 2;
-      this.box.y = height / 2 - this.box.height / 2;
-    }
+  position() {
+    // no need to do anything here because the root node has no parent
   }
 
   render({color}, {renderContext}) {
