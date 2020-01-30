@@ -26,41 +26,6 @@ function c(componentOrFunction, props, ...children) {
   };
 }
 
-function pickDown(component, rawEvent, eventName, result) {
-  const {intersect} = component.instance;
-  const intersection = intersect(rawEvent, eventName);
-
-  if (intersection.hit) {
-    result.push({
-      component,
-      box: intersection.box,
-      childBox: intersection.childBox,
-      event: intersection.event
-    });
-  }
-
-  if (!intersection.descend) {
-    return;
-  }
-
-  // if we are a leaf node, start the up phase
-  if (component.children.length === 0) {
-    pickUp(component, rawEvent, eventName, result);
-  }
-
-  for (let child of component.children) {
-    pickDown(child, rawEvent, eventName, result);
-  }
-}
-
-function pickUp(component, rawEvent, eventName, result) {
-  if (!component || !component.parent || !component.instance.box) {
-    return;
-  }
-
-  return pickUp(component.parent, rawEvent, eventName, result);
-}
-
 function walkTreeBreadthFirst(treeRoot, depth, callback) {
   const queue = [{component: treeRoot, parent: null, depth}];
 
@@ -227,7 +192,19 @@ function layout(renderContext, treeRoot, cache) {
 
 function click(treeRoot, rawEvent, eventName) {
   let results = [];
-  pickDown(treeRoot, rawEvent, eventName, results);
+  walkTreeBreadthFirst(treeRoot, 0, ({component}) => {
+    const {intersect} = component.instance;
+    const intersection = intersect(rawEvent, eventName);
+
+    if (intersection.hit) {
+      results.push({
+        component,
+        box: intersection.box,
+        childBox: intersection.childBox,
+        event: intersection.event
+      });
+    }
+  });
 
   if (results && results.length > 0) {
     for (let {component, box, childBox, event} of results) {
