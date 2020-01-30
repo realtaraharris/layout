@@ -48,9 +48,7 @@ function sizeShrinking(props, children) {
   return {box: {x: 0, y: 0, width: _w, height: _h}, childBoxes};
 }
 
-function positionShrinking(props, childBoxes, parentBox) {
-  // calculate the box we'll be in because we don't have this info in
-  // this.box when this function is run - maybe later we can use that instead?
+function positionShrinking(props, parentBox, childBoxes) {
   const biggestBox = childBoxes.reduce(
     (accum, curr) => {
       if (curr.height > accum.height) {
@@ -69,7 +67,7 @@ function positionShrinking(props, childBoxes, parentBox) {
   let _y = parentBox.y;
   let _x = parentBox.x;
 
-  for (let box of childBoxes) {
+  return childBoxes.map(box => {
     if (props.mode === 'horizontal') {
       switch (props.align) {
         case 'left':
@@ -104,8 +102,8 @@ function positionShrinking(props, childBoxes, parentBox) {
       log('invalid layout props.mode in spacedLine:', props.mode);
     }
 
-    box.x = _x;
-    box.y = _y;
+    const x = _x;
+    const y = _y;
 
     switch (props.mode) {
       case 'vertical':
@@ -122,7 +120,9 @@ function positionShrinking(props, childBoxes, parentBox) {
         log('invalid layout props.mode in spacedLine:', props.mode);
         break;
     }
-  }
+
+    return {x, y, width: box.width, height: box.height};
+  });
 }
 
 class ShrinkingFlowBox extends Layout {
@@ -140,11 +140,11 @@ class ShrinkingFlowBox extends Layout {
     this.childBoxes = childBoxes;
   }
 
-  position(props, {childPosition, parent}) {
+  position(props, {parent, childPosition}) {
     const parentBox = parent.instance.childBoxes[childPosition];
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
-    positionShrinking(props, this.childBoxes, parentBox);
+    this.childBoxes = positionShrinking(props, parentBox, this.childBoxes);
   }
 
   render({color, showBoxes}, {renderContext}) {

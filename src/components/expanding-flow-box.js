@@ -121,10 +121,10 @@ class ExpandingFlowBox extends Layout {
   }
 
   position(props, {parent, childPosition}) {
-    const childBox = parent.instance.childBoxes[childPosition];
+    const parentBox = parent.instance.childBoxes[childPosition];
     const {box, childBoxes} = positionExpanding(
       props,
-      childBox,
+      parentBox,
       this.childBoxes
     );
 
