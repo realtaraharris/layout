@@ -30,17 +30,14 @@ function walkTreeBreadthFirst(treeRoot, depth, callback) {
   while (queue.length > 0) {
     const {component, parent, childPosition} = queue.shift();
     callback({component, parent, childPosition, depth});
-
-    if (component.children) {
-      depth++;
-      queue.push(
-        ...component.children.map((c, index) => ({
-          component: c,
-          parent: component,
-          childPosition: index
-        }))
-      );
-    }
+    queue.push(
+      ...component.children.map((c, index) => ({
+        component: c,
+        parent: component,
+        childPosition: index,
+        depth: ++depth
+      }))
+    );
   }
 }
 
@@ -51,17 +48,14 @@ function walkTreeReverseBreadthFirst(treeRoot, depth, callback) {
   while (queue.length > 0) {
     const item = queue.shift();
     stack.push(item);
-
-    if (item.component.children) {
-      queue.push(
-        ...item.component.children.map((component, childPosition) => ({
-          component,
-          parent: item.component,
-          childPosition,
-          depth: ++depth
-        }))
-      );
-    }
+    queue.push(
+      ...item.component.children.map((component, childPosition) => ({
+        component,
+        parent: item.component,
+        childPosition,
+        depth: ++depth
+      }))
+    );
   }
 
   while (stack.length > 0) {
@@ -87,6 +81,7 @@ function renderLayer(renderContext, component, layerName, position) {
   }
 }
 
+// TODO: this is the last depth-first traversal. replace with walkTreeBreadthFirst
 function collectLayers(renderContext, component, results) {
   const {layer} = component.props;
 
