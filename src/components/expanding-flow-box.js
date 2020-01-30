@@ -3,6 +3,52 @@
 const Layout = require('../components');
 const PropTypes = require('introspective-prop-types');
 
+function sizeExpanding(props, children, box) {
+  let shrinkChildCount = 0;
+  let shrinkChildrenWidth = 0;
+  let shrinkChildrenHeight = 0;
+
+  for (let child of children) {
+    if (child.instance.flowMode() !== 'shrink') {
+      continue;
+    }
+
+    if (props.mode === 'horizontal') {
+      shrinkChildrenWidth += child.instance.box.width;
+    } else if (props.mode === 'vertical') {
+      shrinkChildrenHeight += child.instance.box.height;
+    }
+    shrinkChildCount++;
+  }
+
+  let newChildBoxes = [];
+  for (let child of children) {
+    let width = 0;
+    let height = 0;
+    if (child.instance.flowMode() === 'shrink') {
+      const childBox = child.instance.box;
+      width = childBox.width;
+      height = childBox.height;
+    } else {
+      const denomHeight =
+        props.mode === 'vertical' ? children.length - shrinkChildCount : 1;
+      const denomWidth =
+        props.mode === 'horizontal' ? children.length - shrinkChildCount : 1;
+      width = (box.width - shrinkChildrenWidth) / denomWidth;
+      height = (box.height - shrinkChildrenHeight) / denomHeight;
+    }
+
+    newChildBoxes.push({
+      x: 0,
+      y: 0,
+      width,
+      height
+    });
+  }
+
+  return newChildBoxes;
+}
+
 class ExpandingFlowBox extends Layout {
   constructor() {
     super();
@@ -16,46 +62,7 @@ class ExpandingFlowBox extends Layout {
 
     this.box = Object.assign({}, parent.instance.childBoxes[childPosition]);
 
-    let shrinkChildCount = 0;
-    let shrinkChildrenWidth = 0;
-    let shrinkChildrenHeight = 0;
-
-    for (let child of children) {
-      if (child.instance.flowMode() !== 'shrink') {
-        continue;
-      }
-
-      if (props.mode === 'horizontal') {
-        shrinkChildrenWidth += child.instance.box.width;
-      } else if (props.mode === 'vertical') {
-        shrinkChildrenHeight += child.instance.box.height;
-      }
-      shrinkChildCount++;
-    }
-
-    for (let child of children) {
-      let width = 0;
-      let height = 0;
-      if (child.instance.flowMode() === 'shrink') {
-        const childBox = child.instance.box;
-        width = childBox.width;
-        height = childBox.height;
-      } else {
-        const denomHeight =
-          props.mode === 'vertical' ? children.length - shrinkChildCount : 1;
-        const denomWidth =
-          props.mode === 'horizontal' ? children.length - shrinkChildCount : 1;
-        width = (this.box.width - shrinkChildrenWidth) / denomWidth;
-        height = (this.box.height - shrinkChildrenHeight) / denomHeight;
-      }
-
-      this.childBoxes.push({
-        x: 0,
-        y: 0,
-        width,
-        height
-      });
-    }
+    sizeExpanding(props, children, this.box, this.childBoxes);
   }
 
   position(props, {parent, childPosition}) {
