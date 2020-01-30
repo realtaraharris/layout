@@ -177,7 +177,7 @@ function layout(renderContext, treeRoot, cache) {
         parent,
         children: component.children,
         childPosition,
-        mode: 'shrink',
+        sizing: 'shrink',
         depth
       })
   );
@@ -193,7 +193,7 @@ function layout(renderContext, treeRoot, cache) {
         parent,
         children: component.children,
         childPosition,
-        mode: 'expand',
+        sizing: 'expand',
         depth
       });
     }
@@ -210,7 +210,7 @@ function layout(renderContext, treeRoot, cache) {
         parent,
         children: component.children,
         childPosition,
-        mode: '',
+        positioning: '',
         depth
       });
     }

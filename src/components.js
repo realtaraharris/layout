@@ -28,7 +28,7 @@ class Layout {
     };
   }
 
-  flowMode() {
+  sizing() {
     return 'shrink';
   }
 }

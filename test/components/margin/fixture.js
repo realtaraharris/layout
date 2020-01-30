@@ -3,7 +3,7 @@ const {c} = require('../../../src/layout');
 const Root = require('../../../src/components/root');
 const Label = require('../../../src/components/label');
 const Margin = require('../../../src/components/margin');
-const ShrinkingFlowBox = require('../../../src/components/shrinking-flow-box');
+const FlowBox = require('../../../src/components/flow-box');
 
 module.exports = ({x, y, width, height}) => {
   const marginA = 10;
@@ -11,8 +11,8 @@ module.exports = ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'black'},
     c(
-      ShrinkingFlowBox,
-      {mode: 'horizontal', align: 'left'},
+      FlowBox,
+      {sizing: 'shrink', mode: 'horizontal', align: 'left'},
       c(
         Margin,
         {

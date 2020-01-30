@@ -2,7 +2,7 @@
 
 const {c} = require('../../../src/layout');
 const Root = require('../../../src/components/root');
-const ExpandingFlowBox = require('../../../src/components/expanding-flow-box');
+const FlowBox = require('../../../src/components/flow-box');
 const Rectangle = require('../../../src/components/rectangle');
 
 module.exports = ({x, y, width, height}) => {
@@ -11,16 +11,18 @@ module.exports = ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'white'},
     c(
-      ExpandingFlowBox,
+      FlowBox,
       {
+        sizing: 'expand',
         mode: 'horizontal',
         align: 'left',
         showBoxes,
         color: 'red'
       },
       c(
-        ExpandingFlowBox,
+        FlowBox,
         {
+          sizing: 'expand',
           mode: 'vertical',
           align: 'left',
           showBoxes,
@@ -36,8 +38,9 @@ module.exports = ({x, y, width, height}) => {
         })
       ),
       c(
-        ExpandingFlowBox,
+        FlowBox,
         {
+          sizing: 'expand',
           mode: 'vertical',
           align: 'left',
           showBoxes,
@@ -53,8 +56,9 @@ module.exports = ({x, y, width, height}) => {
         })
       ),
       c(
-        ExpandingFlowBox,
+        FlowBox,
         {
+          sizing: 'expand',
           mode: 'vertical',
           align: 'left',
           showBoxes,

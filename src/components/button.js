@@ -3,8 +3,8 @@
 const Layout = require('../components');
 
 class Button extends Layout {
-  size(props, {children, mode}) {
-    if (mode !== 'shrink') {
+  size(props, {children, sizing}) {
+    if (sizing !== 'shrink') {
       return;
     }
 

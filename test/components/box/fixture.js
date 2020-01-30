@@ -3,8 +3,7 @@
 const {c} = require('../../../src/layout');
 const Box = require('../../../src/components/box');
 const Root = require('../../../src/components/root');
-const ShrinkingFlowBox = require('../../../src/components/shrinking-flow-box');
-const ExpandingFlowBox = require('../../../src/components/expanding-flow-box');
+const FlowBox = require('../../../src/components/flow-box');
 const Label = require('../../../src/components/label');
 const Rectangle = require('../../../src/components/rectangle');
 
@@ -13,11 +12,21 @@ module.exports = ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'white'},
     c(
-      ExpandingFlowBox,
-      {mode: 'horizontal', align: 'center', showBoxes: true},
+      FlowBox,
+      {
+        sizing: 'expand',
+        mode: 'horizontal',
+        align: 'center',
+        showBoxes: true
+      },
       c(
-        ShrinkingFlowBox,
-        {mode: 'vertical', align: 'right', showBoxes: false},
+        FlowBox,
+        {
+          sizing: 'shrink',
+          mode: 'vertical',
+          align: 'right',
+          showBoxes: false
+        },
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'black',

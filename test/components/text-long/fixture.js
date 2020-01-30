@@ -4,7 +4,7 @@ const Root = require('../../../src/components/root');
 const {Text, createTextContinuation} = require('../../../src/components/text');
 const Label = require('../../../src/components/label');
 const Margin = require('../../../src/components/margin');
-const ShrinkingFlowBox = require('../../../src/components/shrinking-flow-box');
+const FlowBox = require('../../../src/components/flow-box');
 const Box = require('../../../src/components/box');
 
 const createHyphenator = require('hyphen');
@@ -36,8 +36,8 @@ module.exports = ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'black'},
     c(
-      ShrinkingFlowBox,
-      {mode: 'vertical', align: 'left'},
+      FlowBox,
+      {sizing: 'shrink', mode: 'vertical', align: 'left'},
       c(Label, {
         font: 'SourceSansPro-Regular',
         color: 'white',

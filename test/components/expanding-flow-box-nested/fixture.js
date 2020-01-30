@@ -2,27 +2,30 @@
 
 const {c} = require('../../../src/layout');
 const Root = require('../../../src/components/root');
-const ExpandingFlowBox = require('../../../src/components/expanding-flow-box');
+const FlowBox = require('../../../src/components/flow-box');
 
 module.exports = ({x, y, width, height}) => {
   return c(
     Root,
     {x, y, width, height, color: 'white'},
     c(
-      ExpandingFlowBox,
+      FlowBox,
       {
+        sizing: 'expand',
         mode: 'horizontal',
         align: 'left',
         color: 'red',
         showBoxes: true
       },
-      c(ExpandingFlowBox, {
+      c(FlowBox, {
+        sizing: 'expand',
         mode: 'vertical',
         align: 'left',
         color: 'blue',
         showBoxes: true
       }),
-      c(ExpandingFlowBox, {
+      c(FlowBox, {
+        sizing: 'expand',
         mode: 'vertical',
         align: 'left',
         color: 'green',

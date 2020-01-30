@@ -4,8 +4,8 @@ const Layout = require('../components');
 const PropTypes = require('introspective-prop-types');
 
 class Margin extends Layout {
-  size({top, right, bottom, left}, {children, mode}) {
-    if (mode !== 'shrink') {
+  size({top, right, bottom, left}, {children, sizing}) {
+    if (sizing !== 'shrink') {
       return;
     }
 

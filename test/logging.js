@@ -33,18 +33,15 @@ tape('components-line-215', t => {
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
   const Root = require('../src/components/root');
   const Label = require('../src/components/label');
-  const ShrinkingFlowBox = proxyquire(
-    '../src/components/shrinking-flow-box',
-    logTest
-  );
+  const FlowBox = proxyquire('../src/components/flow-box', logTest);
 
   const demo1 = ({x, y, width, height}) =>
     c(
       Root,
       {x, y, width, height, color: 'black'},
       c(
-        ShrinkingFlowBox,
-        {mode: 'horizontal', align: 'heft'},
+        FlowBox,
+        {sizing: 'shrink', mode: 'horizontal', align: 'heft'},
         c(Label, {font: 'SourceSansPro-Regular', size: 20, text: 'c'}),
         c(Label, {font: 'SourceSerifPro-Regular', size: 30, text: 'd'})
       )
@@ -65,18 +62,15 @@ tape('components-line-228', t => {
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
   const Root = require('../src/components/root');
   const Label = require('../src/components/label');
-  const ShrinkingFlowBox = proxyquire(
-    '../src/components/shrinking-flow-box',
-    logTest
-  );
+  const FlowBox = proxyquire('../src/components/flow-box', logTest);
 
   const demo1 = ({x, y, width, height}) =>
     c(
       Root,
       {x, y, width, height, color: 'black'},
       c(
-        ShrinkingFlowBox,
-        {mode: 'vertical', align: 'heft'},
+        FlowBox,
+        {sizing: 'shrink', mode: 'vertical', align: 'heft'},
         c(Label, {font: 'SourceSansPro-Regular', size: 20, text: 'c'}),
         c(Label, {font: 'SourceSerifPro-Regular', size: 30, text: 'd'})
       )
@@ -96,18 +90,15 @@ tape('components-line-236', t => {
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
   const Root = require('../src/components/root');
   const Label = require('../src/components/label');
-  const ShrinkingFlowBox = proxyquire(
-    '../src/components/shrinking-flow-box',
-    logTest
-  );
+  const FlowBox = proxyquire('../src/components/flow-box', logTest);
 
   const demo1 = ({x, y, width, height}) =>
     c(
       Root,
       {x, y, width, height, color: 'black'},
       c(
-        ShrinkingFlowBox,
-        {mode: 'diagone', align: 'left'},
+        FlowBox,
+        {sizing: 'shrink', mode: 'diagone', align: 'left'},
         c(Label, {
           font: 'SourceSansPro-Regular',
           size: 20,
@@ -137,18 +128,15 @@ tape('components-line-246', t => {
   const logTest = {'../log': t.ok}; // the test passes only if we trigger the error
   const Root = require('../src/components/root');
   const Label = require('../src/components/label');
-  const ShrinkingFlowBox = proxyquire(
-    '../src/components/shrinking-flow-box',
-    logTest
-  );
+  const FlowBox = proxyquire('../src/components/flow-box', logTest);
 
   const demo1 = ({x, y, width, height}) =>
     c(
       Root,
       {x, y, width, height, color: 'black'},
       c(
-        ShrinkingFlowBox,
-        {mode: 'invalid-mode', align: 'left'},
+        FlowBox,
+        {sizing: 'shrink', mode: 'invalid-mode', align: 'left'},
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'white',

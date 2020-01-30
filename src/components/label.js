@@ -13,8 +13,11 @@ class Label extends Layout {
 
   // TODO: add check to ensure labels have NO children
   // sends a child box up
-  size({text, size, font, sizeMode = 'xHeight'}, {renderContext, mode, cache}) {
-    if (mode !== 'shrink') {
+  size(
+    {text, size, font, sizeMode = 'xHeight'},
+    {renderContext, sizing, cache}
+  ) {
+    if (sizing !== 'shrink') {
       return;
     }
 

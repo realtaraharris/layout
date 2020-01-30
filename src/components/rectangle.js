@@ -8,8 +8,8 @@ class Rectangle extends Layout {
     super();
     this.box = {x: 0, y: 0, width: 20, height: 20};
   }
-  size(props, {mode, parent, childPosition}) {
-    if (mode === 'expand') {
+  size(props, {sizing, parent, childPosition}) {
+    if (sizing === 'expand') {
       const parentBox = parent.instance.childBoxes[childPosition];
 
       this.box.x = parentBox.x;
@@ -47,7 +47,7 @@ class Rectangle extends Layout {
     renderContext.fill();
   }
 
-  flowMode() {
+  sizing() {
     return 'expand';
   }
 }

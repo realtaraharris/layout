@@ -3,7 +3,7 @@ const {c} = require('../../../src/layout');
 const Root = require('../../../src/components/root');
 const Label = require('../../../src/components/label');
 const Margin = require('../../../src/components/margin');
-const ShrinkingFlowBox = require('../../../src/components/shrinking-flow-box');
+const FlowBox = require('../../../src/components/flow-box');
 const Button = require('../../../src/components/button');
 const log = require('../../../src/log');
 
@@ -12,8 +12,8 @@ module.exports = ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'black'},
     c(
-      ShrinkingFlowBox,
-      {mode: 'vertical', align: 'center'},
+      FlowBox,
+      {sizing: 'shrink', mode: 'vertical', align: 'center'},
       c(
         Button,
         {onInput: log, onClick: log},
@@ -31,8 +31,8 @@ module.exports = ({x, y, width, height}) => {
         )
       ),
       c(
-        ShrinkingFlowBox,
-        {mode: 'horizontal', align: 'center'},
+        FlowBox,
+        {sizing: 'shrink', mode: 'horizontal', align: 'center'},
         c(
           Button,
           {onInput: log, onClick: log},
@@ -99,8 +99,8 @@ module.exports = ({x, y, width, height}) => {
         )
       ),
       c(
-        ShrinkingFlowBox,
-        {mode: 'diagonal', align: 'center'},
+        FlowBox,
+        {sizing: 'shrink', mode: 'diagonal', align: 'center'},
         c(
           Button,
           {onInput: log, onClick: log},

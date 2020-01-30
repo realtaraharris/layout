@@ -318,8 +318,8 @@ class Text extends Layout {
     this.finalBoxes = [];
   }
 
-  size(props, {mode, parent, childPosition}) {
-    if (mode !== 'expand') {
+  size(props, {sizing, parent, childPosition}) {
+    if (sizing !== 'expand') {
       return;
     }
     const parentBox = parent.instance.childBoxes[childPosition];
@@ -333,9 +333,9 @@ class Text extends Layout {
 
   position(props, {renderContext, childBox, cache, parent, childPosition}) {
     const {width, height} = this.box;
-    // if (mode === 'shrink') {
+    // if (sizing === 'shrink') {
     // }
-    // if (mode === 'expand') {
+    // if (sizing === 'expand') {
     // }
     const parentBox = parent.instance.childBoxes[childPosition];
     this.box.x = parentBox.x;
@@ -353,7 +353,7 @@ class Text extends Layout {
     } = props;
     const {text, textHash, hyphenChar, tracking} = textContinuation();
 
-    // const {width} = mode === 'shrink' ? parent.instance.box : props;
+    // const {width} = sizing === 'shrink' ? parent.instance.box : props;
 
     const hash = encode().value(Object.assign({}, props, tracking, {textHash}));
 
@@ -534,7 +534,7 @@ class Text extends Layout {
     }
   }
 
-  flowMode() {
+  sizing() {
     return 'expand';
   }
 }

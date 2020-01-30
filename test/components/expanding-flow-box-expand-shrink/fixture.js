@@ -2,8 +2,7 @@
 
 const {c} = require('../../../src/layout');
 const Root = require('../../../src/components/root');
-const ExpandingFlowBox = require('../../../src/components/expanding-flow-box');
-const ShrinkingFlowBox = require('../../../src/components/shrinking-flow-box');
+const FlowBox = require('../../../src/components/flow-box');
 const Label = require('../../../src/components/label');
 
 module.exports = ({x, y, width, height}) => {
@@ -11,15 +10,17 @@ module.exports = ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'white'},
     c(
-      ExpandingFlowBox,
+      FlowBox,
       {
+        sizing: 'expand',
         mode: 'horizontal',
         color: 'gray',
         showBoxes: true
       },
       c(
-        ShrinkingFlowBox,
+        FlowBox,
         {
+          sizing: 'shrink',
           mode: 'horizontal',
           align: 'left',
           color: 'red',
@@ -42,12 +43,14 @@ module.exports = ({x, y, width, height}) => {
           showBoxes: true
         })
       ),
-      c(ExpandingFlowBox, {
+      c(FlowBox, {
+        sizing: 'expand',
         mode: 'horizontal',
         color: 'green',
         showBoxes: true
       }),
-      c(ExpandingFlowBox, {
+      c(FlowBox, {
+        sizing: 'expand',
         mode: 'horizontal',
         color: 'blue',
         showBoxes: true

@@ -4,8 +4,7 @@ const {c} = require('../../../src/layout');
 const Root = require('../../../src/components/root');
 const Label = require('../../../src/components/label');
 const Margin = require('../../../src/components/margin');
-const ExpandingFlowBox = require('../../../src/components/expanding-flow-box');
-const ShrinkingFlowBox = require('../../../src/components/shrinking-flow-box');
+const FlowBox = require('../../../src/components/flow-box');
 const Rectangle = require('../../../src/components/rectangle');
 
 module.exports = ({x, y, width, height}) => {
@@ -14,24 +13,32 @@ module.exports = ({x, y, width, height}) => {
     Root,
     {x, y, width, height, color: 'white'},
     c(
-      ExpandingFlowBox,
+      FlowBox,
       {
+        sizing: 'expand',
         mode: 'horizontal',
         align: 'left',
         showBoxes,
         color: 'red'
       },
       c(
-        ExpandingFlowBox,
+        FlowBox,
         {
+          sizing: 'expand',
           mode: 'vertical',
           align: 'left',
           showBoxes,
           color: 'blue'
         },
         c(
-          ShrinkingFlowBox,
-          {mode: 'vertical', align: 'left', color: 'green', showBoxes},
+          FlowBox,
+          {
+            sizing: 'shrink',
+            mode: 'vertical',
+            align: 'left',
+            color: 'green',
+            showBoxes
+          },
           c(
             Margin,
             {
@@ -69,16 +76,23 @@ module.exports = ({x, y, width, height}) => {
         })
       ),
       c(
-        ExpandingFlowBox,
+        FlowBox,
         {
+          sizing: 'expand',
           mode: 'vertical',
           align: 'left',
           showBoxes,
           color: 'blue'
         },
         c(
-          ShrinkingFlowBox,
-          {mode: 'vertical', align: 'left', color: 'red', showBoxes},
+          FlowBox,
+          {
+            sizing: 'shrink',
+            mode: 'vertical',
+            align: 'left',
+            color: 'red',
+            showBoxes
+          },
           c(
             Margin,
             {
@@ -108,16 +122,23 @@ module.exports = ({x, y, width, height}) => {
         })
       ),
       c(
-        ExpandingFlowBox,
+        FlowBox,
         {
+          sizing: 'expand',
           mode: 'vertical',
           align: 'left',
           showBoxes,
           color: 'blue'
         },
         c(
-          ShrinkingFlowBox,
-          {mode: 'vertical', align: 'left', color: 'red', showBoxes},
+          FlowBox,
+          {
+            sizing: 'shrink',
+            mode: 'vertical',
+            align: 'left',
+            color: 'red',
+            showBoxes
+          },
           c(
             Margin,
             {
