@@ -3,10 +3,6 @@
 const Layout = require('../components');
 
 class Box extends Layout {
-  constructor(props) {
-    super(props);
-  }
-
   size({width, height}) {
     this.box = {x: 0, y: 0, width, height};
     this.childBoxes = [{x: 0, y: 0, width, height}];

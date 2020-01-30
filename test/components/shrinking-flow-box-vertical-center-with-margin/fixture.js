@@ -19,7 +19,14 @@ module.exports = ({x, y, width, height}) => {
         {onInput: log, onClick: log},
         c(
           Margin,
-          {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 10,
+            bottom: 10,
+            left: 10,
+            right: 10,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSansPro-Regular',
             color: 'white',

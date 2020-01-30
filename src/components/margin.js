@@ -4,39 +4,63 @@ const Layout = require('../components');
 const PropTypes = require('introspective-prop-types');
 
 class Margin extends Layout {
-  size({top, right, bottom, left}, {children, sizing}) {
-    if (sizing !== 'shrink') {
-      return;
-    }
-
-    if (children.length > 1) {
-      console.error('too many kids!');
-    }
-    const childBox = children[0].instance.box;
-
-    this.box = {
-      x: 0,
-      y: 0,
-      width: childBox.width + left + right,
-      height: childBox.height + top + bottom
-    };
-
-    this.childBoxes = [
-      {
-        x: this.box.x + left,
-        y: this.box.y + top,
-        width: childBox.width,
-        height: childBox.height
+  size(props, {children, sizing}) {
+    const {top, right, bottom, left} = props;
+    if (sizing === 'shrink' && props.sizing === 'shrink') {
+      if (children.length > 1) {
+        console.error('too many kids!');
       }
-    ];
+      const childBox = children[0].instance.box;
+
+      this.box = {
+        x: 0,
+        y: 0,
+        width: childBox.width + left + right,
+        height: childBox.height + top + bottom
+      };
+
+      this.childBoxes = [
+        {
+          x: this.box.x + left,
+          y: this.box.y + top,
+          width: childBox.width,
+          height: childBox.height
+        }
+      ];
+    }
+
+    if (sizing === 'expand' && props.sizing === 'expand') {
+      const parentBox = parent.instance.childBoxes[childPosition];
+
+      this.box.x = parentBox.x;
+      this.box.y = parentBox.y;
+      this.box.width = parentBox.width;
+      this.box.height = parentBox.height;
+
+      this.childBoxes = [
+        {
+          x: this.box.x + left,
+          y: this.box.y + top,
+          width: this.box.width - left - right,
+          height: this.box.height - top - bottom
+        }
+      ];
+    }
   }
 
-  position({top, left}, {parent, childPosition}) {
+  position(props, {parent, childPosition}) {
     const parentBox = parent.instance.childBoxes[childPosition];
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
-    this.childBoxes[0].x = this.box.x + left;
-    this.childBoxes[0].y = this.box.y + top;
+
+    if (props.sizing === 'shrink') {
+      this.childBoxes[0].x = this.box.x + props.left;
+      this.childBoxes[0].y = this.box.y + props.top;
+    }
+    if (props.sizing === 'expand') {
+      this.childBoxes[0].x = this.box.x + props.left;
+      this.childBoxes[0].y = this.box.y + props.top;
+    }
   }
 
   render({showBoxes = false}, {renderContext}) {
@@ -62,9 +86,14 @@ class Margin extends Layout {
       this.box.height // + top + bottom
     );
   }
+
+  sizing() {
+    return this.props.sizing;
+  }
 }
 
 Margin.propTypes = {
+  sizing: PropTypes.oneOf(['expand', 'shrink']).isRequired,
   left: PropTypes.number.isRequired,
   right: PropTypes.number.isRequired,
   top: PropTypes.number.isRequired,

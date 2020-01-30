@@ -16,7 +16,7 @@ class Root extends Layout {
   }
 
   size() {
-    // no need to return anything here because the root node has no parent
+    // no need to do anything here because the root node has no parent
   }
 
   position({align, width, height}) {

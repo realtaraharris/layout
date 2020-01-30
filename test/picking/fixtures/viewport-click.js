@@ -19,7 +19,14 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
       {sizing: 'shrink', mode: 'horizontal', align: 'center'},
       c(
         Margin,
-        {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+        {
+          sizing: 'shrink',
+          top: 10,
+          bottom: 10,
+          left: 10,
+          right: 10,
+          showBoxes: true
+        },
         c(Label, {
           font: 'SourceSerifPro-Regular',
           color: 'white',
@@ -34,7 +41,14 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
         {sizing: 'shrink', mode: 'vertical', align: 'center'},
         c(
           Margin,
-          {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 10,
+            bottom: 10,
+            left: 10,
+            right: 10,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSerifPro-Regular',
             color: 'white',
@@ -46,7 +60,14 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
         ),
         c(
           Margin,
-          {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 10,
+            bottom: 10,
+            left: 10,
+            right: 10,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSerifPro-Regular',
             color: 'white',
@@ -72,7 +93,14 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
               {onInput: log, onClick: log},
               c(
                 Margin,
-                {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+                {
+                  sizing: 'shrink',
+                  top: 10,
+                  bottom: 10,
+                  left: 10,
+                  right: 10,
+                  showBoxes: true
+                },
                 c(Label, {
                   font: 'SourceSansPro-Regular',
                   color: 'white',
@@ -92,6 +120,7 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
                 c(
                   Margin,
                   {
+                    sizing: 'shrink',
                     top: 10,
                     bottom: 10,
                     left: 10,
@@ -110,7 +139,14 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
               ),
               c(
                 Margin,
-                {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+                {
+                  sizing: 'shrink',
+                  top: 10,
+                  bottom: 10,
+                  left: 10,
+                  right: 10,
+                  showBoxes: true
+                },
                 c(Label, {
                   font: 'SourceSansPro-Regular',
                   color: 'white',
@@ -122,7 +158,14 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
               ),
               c(
                 Margin,
-                {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+                {
+                  sizing: 'shrink',
+                  top: 10,
+                  bottom: 10,
+                  left: 10,
+                  right: 10,
+                  showBoxes: true
+                },
                 c(Label, {
                   font: 'SourceSansPro-Regular',
                   color: 'white',
@@ -135,6 +178,7 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
               c(
                 Margin,
                 {
+                  sizing: 'shrink',
                   top: 50,
                   bottom: 10,
                   left: 10,
@@ -152,7 +196,14 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
               ),
               c(
                 Margin,
-                {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+                {
+                  sizing: 'shrink',
+                  top: 10,
+                  bottom: 10,
+                  left: 10,
+                  right: 10,
+                  showBoxes: true
+                },
                 c(Label, {
                   font: 'SourceSansPro-Regular',
                   color: 'white',
@@ -172,6 +223,7 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
                 c(
                   Margin,
                   {
+                    sizing: 'shrink',
                     top: 10,
                     bottom: 10,
                     left: 10,

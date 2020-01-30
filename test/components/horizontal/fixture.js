@@ -57,6 +57,7 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
+            sizing: 'shrink',
             top: marginA,
             bottom: marginA,
             left: marginA,
@@ -79,7 +80,14 @@ module.exports = ({x, y, width, height}) => {
         {onInput: log, onClick: log},
         c(
           Margin,
-          {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSansPro-Regular',
             color: 'white',
@@ -95,7 +103,14 @@ module.exports = ({x, y, width, height}) => {
         {onInput: log, onClick: log},
         c(
           Margin,
-          {top: 0, bottom: 0, left: 0, right: 0, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSerifPro-Regular',
             color: 'white',

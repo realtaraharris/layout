@@ -1,8 +1,10 @@
 'use strict';
 
 class Layout {
-  constructor() {
+  constructor(props) {
+    this.props = props;
     this.box = {x: 0, y: 0, width: 0, height: 0};
+    this.childBoxes = [];
 
     this.intersect = this.intersect.bind(this);
   }

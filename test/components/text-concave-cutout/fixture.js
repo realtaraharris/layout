@@ -61,6 +61,7 @@ module.exports = ({x, y, width, height}) => {
       c(
         Margin,
         {
+          sizing: 'shrink',
           top: marginA,
           bottom: marginA,
           left: marginA,

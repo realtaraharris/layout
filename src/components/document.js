@@ -7,11 +7,6 @@ const log = require('../log');
 const PropTypes = require('introspective-prop-types');
 
 class Document extends Layout {
-  constructor() {
-    super();
-    this.childBoxes = [];
-  }
-
   size({mode}, {childBox, childCount}) {
     if (childCount === 0) {
       return {x: 0, y: 0, width: 0, height: 0};

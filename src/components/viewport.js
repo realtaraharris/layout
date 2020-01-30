@@ -3,11 +3,6 @@
 const Layout = require('../components');
 
 class Viewport extends Layout {
-  constructor() {
-    super();
-    this.childBoxes = [];
-  }
-
   size({width, height}) {
     this.box = {
       x: 0,

@@ -29,6 +29,7 @@ module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
         c(
           Margin,
           {
+            sizing: 'shrink',
             top: marginA,
             bottom: marginA,
             left: marginA,

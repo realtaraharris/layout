@@ -61,6 +61,7 @@ module.exports = ({x, y, width, height}) => {
           c(
             Margin,
             {
+              sizing: 'shrink',
               top: 0,
               bottom: 0,
               left: 0,
@@ -91,6 +92,7 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
+            sizing: 'shrink',
             top: 200,
             bottom: 0,
             left: 0,
@@ -128,6 +130,7 @@ module.exports = ({x, y, width, height}) => {
           c(
             Margin,
             {
+              sizing: 'shrink',
               top: 0,
               bottom: 0,
               left: 0,
@@ -177,6 +180,7 @@ module.exports = ({x, y, width, height}) => {
           c(
             Margin,
             {
+              sizing: 'shrink',
               top: 0,
               bottom: 0,
               left: 0,

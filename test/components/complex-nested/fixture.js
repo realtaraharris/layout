@@ -19,7 +19,14 @@ module.exports = ({x, y, width, height}) => {
         {onInput: log, onClick: log},
         c(
           Margin,
-          {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 10,
+            bottom: 10,
+            left: 10,
+            right: 10,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSansPro-Regular',
             color: 'white',
@@ -38,7 +45,14 @@ module.exports = ({x, y, width, height}) => {
           {onInput: log, onClick: log},
           c(
             Margin,
-            {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+            {
+              sizing: 'shrink',
+              top: 10,
+              bottom: 10,
+              left: 10,
+              right: 10,
+              showBoxes: true
+            },
             c(Label, {
               font: 'SourceSansPro-Regular',
               color: 'white',
@@ -51,7 +65,14 @@ module.exports = ({x, y, width, height}) => {
         ),
         c(
           Margin,
-          {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 10,
+            bottom: 10,
+            left: 10,
+            right: 10,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSansPro-Regular',
             color: 'white',
@@ -63,7 +84,14 @@ module.exports = ({x, y, width, height}) => {
         ),
         c(
           Margin,
-          {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 10,
+            bottom: 10,
+            left: 10,
+            right: 10,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSansPro-Regular',
             color: 'white',
@@ -75,7 +103,14 @@ module.exports = ({x, y, width, height}) => {
         ),
         c(
           Margin,
-          {top: 200, bottom: 10, left: 10, right: 100, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 200,
+            bottom: 10,
+            left: 10,
+            right: 100,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSansPro-Regular',
             color: 'white',
@@ -87,7 +122,14 @@ module.exports = ({x, y, width, height}) => {
         ),
         c(
           Margin,
-          {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+          {
+            sizing: 'shrink',
+            top: 10,
+            bottom: 10,
+            left: 10,
+            right: 10,
+            showBoxes: true
+          },
           c(Label, {
             font: 'SourceSansPro-Regular',
             color: 'white',
@@ -106,7 +148,14 @@ module.exports = ({x, y, width, height}) => {
           {onInput: log, onClick: log},
           c(
             Margin,
-            {top: 10, bottom: 10, left: 10, right: 10, showBoxes: true},
+            {
+              sizing: 'shrink',
+              top: 10,
+              bottom: 10,
+              left: 10,
+              right: 10,
+              showBoxes: true
+            },
             c(Label, {
               font: 'SourceSansPro-Regular',
               color: 'white',

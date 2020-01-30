@@ -39,7 +39,7 @@ module.exports = ({firstLabelEventHandler, secondLabelEventHandler}) => ({
         }),
         c(
           Margin,
-          {top: 10, bottom: 10, left: 10, right: 10},
+          {sizing: 'shrink', top: 10, bottom: 10, left: 10, right: 10},
           c(
             Viewport,
             {width: 200, height: 30, offsetX: 0, offsetY: 0},

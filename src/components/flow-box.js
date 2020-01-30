@@ -224,12 +224,6 @@ function positionExpanding(props, parentBox, childBoxes) {
 }
 
 class FlowBox extends Layout {
-  constructor(props) {
-    super(props);
-    this.props = props;
-    this.childBoxes = [];
-  }
-
   size(props, {sizing, children, parent, childPosition}) {
     if (sizing === 'shrink' && props.sizing === 'shrink') {
       const {box, childBoxes} = sizeShrinking(props, children);
