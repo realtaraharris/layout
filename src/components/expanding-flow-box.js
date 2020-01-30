@@ -21,7 +21,7 @@ function sizeExpanding(props, children, box) {
     shrinkChildCount++;
   }
 
-  let newChildBoxes = [];
+  let childBoxes = [];
   for (let child of children) {
     let width = 0;
     let height = 0;
@@ -38,7 +38,7 @@ function sizeExpanding(props, children, box) {
       height = (box.height - shrinkChildrenHeight) / denomHeight;
     }
 
-    newChildBoxes.push({
+    childBoxes.push({
       x: 0,
       y: 0,
       width,
@@ -46,10 +46,11 @@ function sizeExpanding(props, children, box) {
     });
   }
 
-  return newChildBoxes;
+  return childBoxes;
 }
 
-function positionExpanding(props, parentBox, box, childBoxes) {
+function positionExpanding(props, parentBox, childBoxes) {
+  let box = {};
   if (props.align === 'center') {
     const biggestBox = childBoxes.reduce(
       (accum, curr) => {
@@ -78,15 +79,25 @@ function positionExpanding(props, parentBox, box, childBoxes) {
   let _x = box.x;
   let _y = box.y;
 
-  for (let childBox of childBoxes) {
-    childBox.x = _x;
-    childBox.y = _y;
-    if (props.mode === 'horizontal') {
-      _x += childBox.width;
-    } else if (props.mode === 'vertical') {
-      _y += childBox.height;
-    }
-  }
+  return {
+    box,
+    childBoxes: childBoxes.map(childBox => {
+      const x = _x;
+      const y = _y;
+      if (props.mode === 'horizontal') {
+        _x += childBox.width;
+      } else if (props.mode === 'vertical') {
+        _y += childBox.height;
+      }
+
+      return {
+        x,
+        y,
+        width: childBox.width,
+        height: childBox.height
+      };
+    })
+  };
 }
 
 class ExpandingFlowBox extends Layout {
@@ -100,14 +111,27 @@ class ExpandingFlowBox extends Layout {
       return;
     }
 
-    this.box = Object.assign({}, parent.instance.childBoxes[childPosition]);
-
+    const childBox = parent.instance.childBoxes[childPosition];
+    this.box.x = childBox.x;
+    this.box.y = childBox.y;
+    this.box.width = childBox.width;
+    this.box.height = childBox.height;
     this.childBoxes = sizeExpanding(props, children, this.box);
   }
 
   position(props, {parent, childPosition}) {
-    const parentBox = parent.instance.childBoxes[childPosition];
-    positionExpanding(props, parentBox, this.box, this.childBoxes);
+    const childBox = parent.instance.childBoxes[childPosition];
+    const {box, childBoxes} = positionExpanding(
+      props,
+      childBox,
+      this.childBoxes
+    );
+
+    this.box.x = box.x;
+    this.box.y = box.y;
+    this.box.width = box.width || this.box.width;
+    this.box.height = box.height || this.box.height;
+    this.childBoxes = childBoxes;
   }
 
   render({color, showBoxes}, {renderContext}) {
