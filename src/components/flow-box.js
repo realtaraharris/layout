@@ -177,26 +177,12 @@ function positionExpanding(props, parentBox, childBoxes) {
     y: parentBox.y
   };
 
-  if (props.align === 'center') {
-    const biggestBox = childBoxes.reduce(
-      (accum, curr) => {
-        if (curr.height > accum.height) {
-          accum.height = curr.height;
-        }
-
-        if (curr.width > accum.width) {
-          accum.width = curr.width;
-        }
-
-        return accum;
-      },
-      {width: 0, height: 0}
-    );
-
-    box.x += (parentBox.width - biggestBox.width) / 2;
-    box.y += (parentBox.height - biggestBox.height) / 2;
-    box.width = biggestBox.width;
-    box.height = biggestBox.height;
+  if (props.align === 'center' && childBoxes.length === 1) {
+    const firstChildBox = childBoxes[0];
+    box.x += (parentBox.width - firstChildBox.width) / 2;
+    box.y += (parentBox.height - firstChildBox.height) / 2;
+    box.width = firstChildBox.width;
+    box.height = firstChildBox.height;
   }
 
   let _x = box.x;

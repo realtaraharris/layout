@@ -17,7 +17,7 @@ module.exports = ({x, y, width, height}) => {
       {
         sizing: 'expand',
         mode: 'horizontal',
-        align: 'left',
+        align: 'center',
         showBoxes,
         color: 'red'
       },
