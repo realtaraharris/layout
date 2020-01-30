@@ -1,6 +1,6 @@
 'use strict';
 
-class Layout {
+class Component {
   constructor(props) {
     this.props = props;
     this.box = {x: 0, y: 0, width: 0, height: 0};
@@ -35,12 +35,12 @@ class Layout {
   }
 }
 
-module.exports = Layout;
+module.exports = Component;
 
 /**
  * supplies a list of line segments + a way of finding intersections
  */
-// class Grid extends Layout {
+// class Grid extends Component {
 //   size () {}
 //   position () {}
 //   render: () {}

@@ -1,11 +1,11 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 const {measureText, fillText} = require('../font');
 const encode = require('hashcode').hashCode;
 const PropTypes = require('introspective-prop-types');
 
-class Label extends Layout {
+class Label extends Component {
   constructor(props) {
     super(props);
     this.hash = encode().value(props);

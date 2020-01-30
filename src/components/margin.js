@@ -1,9 +1,9 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 const PropTypes = require('introspective-prop-types');
 
-class Margin extends Layout {
+class Margin extends Component {
   size(props, {children, sizing, parentBox}) {
     const {top, right, bottom, left} = props;
     if (sizing === 'shrink' && props.sizing === 'shrink') {

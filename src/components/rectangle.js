@@ -1,9 +1,9 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 const {roundRect} = require('../draw');
 
-class Rectangle extends Layout {
+class Rectangle extends Component {
   size(props, {sizing, parentBox}) {
     if (sizing === 'expand') {
       this.box.x = parentBox.x;

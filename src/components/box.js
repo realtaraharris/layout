@@ -1,8 +1,8 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 
-class Box extends Layout {
+class Box extends Component {
   size({width, height}) {
     this.box = {x: 0, y: 0, width, height};
     this.childBoxes = [{x: 0, y: 0, width, height}];

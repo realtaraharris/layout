@@ -2,11 +2,11 @@
 
 // TODO! MOST OF THIS CODE NEEDS TO GET RIPPED OUT. it's just a quick copy-paste to validate an idea
 
-const Layout = require('../components');
+const Component = require('../component');
 const log = require('../log');
 const PropTypes = require('introspective-prop-types');
 
-class Page extends Layout {
+class Page extends Component {
   constructor() {
     super();
     this.childBoxes = [];

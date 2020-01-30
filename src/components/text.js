@@ -1,6 +1,6 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 const {insertSorted} = require('../geometry');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 const {measureText, fillText} = require('../font');
@@ -310,7 +310,7 @@ function typesetLine(
   return {result, debugBoxes};
 }
 
-class Text extends Layout {
+class Text extends Component {
   constructor(props) {
     super(props);
     this.childBoxes = [];

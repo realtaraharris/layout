@@ -1,8 +1,8 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 
-class Button extends Layout {
+class Button extends Component {
   size(props, {children, sizing}) {
     if (sizing !== 'shrink') {
       return;

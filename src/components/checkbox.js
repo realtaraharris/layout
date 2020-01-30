@@ -1,9 +1,9 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 const {roundRect} = require('../draw');
 
-class Checkbox extends Layout {
+class Checkbox extends Component {
   size() {
     this.box = {
       x: 0,

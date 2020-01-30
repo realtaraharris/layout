@@ -1,8 +1,8 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 
-class Offset extends Layout {
+class Offset extends Component {
   constructor(props) {
     super(props);
   }

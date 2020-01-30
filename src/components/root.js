@@ -1,9 +1,9 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 const PropTypes = require('introspective-prop-types');
 
-class Root extends Layout {
+class Root extends Component {
   constructor(props) {
     super(props);
     this.box.x = props.x;

@@ -1,6 +1,6 @@
 'use strict';
 
-const Layout = require('../components');
+const Component = require('../component');
 const log = require('../log');
 const PropTypes = require('introspective-prop-types');
 
@@ -223,7 +223,7 @@ function positionExpanding(props, parentBox, childBoxes) {
   };
 }
 
-class FlowBox extends Layout {
+class FlowBox extends Component {
   size(props, {sizing, children, parentBox}) {
     if (sizing === 'shrink' && props.sizing === 'shrink') {
       const {box, childBoxes} = sizeShrinking(props, children);
