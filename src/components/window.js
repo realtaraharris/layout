@@ -3,7 +3,6 @@
 const Layout = require('../components');
 
 class Window extends Layout {
-  // TODO: add check to ensure labels have NO children
   size() {
     this.box = {x: 0, y: 0, width: 0, height: 0};
     this.childBoxes = [{x: 0, y: 0, width: 0, height: 0}];

@@ -12,7 +12,6 @@ class Label extends Layout {
   }
 
   // TODO: add check to ensure labels have NO children
-  // sends a child box up
   size(
     {text, size, font, sizeMode = 'xHeight'},
     {renderContext, sizing, cache}
