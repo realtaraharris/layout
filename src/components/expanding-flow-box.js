@@ -50,7 +50,11 @@ function sizeExpanding(props, children, box) {
 }
 
 function positionExpanding(props, parentBox, childBoxes) {
-  let box = {};
+  let box = {
+    x: parentBox.x,
+    y: parentBox.y
+  };
+
   if (props.align === 'center') {
     const biggestBox = childBoxes.reduce(
       (accum, curr) => {
@@ -67,13 +71,10 @@ function positionExpanding(props, parentBox, childBoxes) {
       {width: 0, height: 0}
     );
 
-    box.x = parentBox.x + (parentBox.width - biggestBox.width) / 2;
-    box.y = parentBox.y + (parentBox.height - biggestBox.height) / 2;
+    box.x += (parentBox.width - biggestBox.width) / 2;
+    box.y += (parentBox.height - biggestBox.height) / 2;
     box.width = biggestBox.width;
     box.height = biggestBox.height;
-  } else {
-    box.x = parentBox.x;
-    box.y = parentBox.y;
   }
 
   let _x = box.x;
