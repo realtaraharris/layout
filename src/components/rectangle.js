@@ -4,10 +4,8 @@ const Layout = require('../components');
 const {roundRect} = require('../draw');
 
 class Rectangle extends Layout {
-  size(props, {sizing, parent, childPosition}) {
+  size(props, {sizing, parentBox}) {
     if (sizing === 'expand') {
-      const parentBox = parent.instance.childBoxes[childPosition];
-
       this.box.x = parentBox.x;
       this.box.y = parentBox.y;
       this.box.width = parentBox.width;
@@ -15,9 +13,7 @@ class Rectangle extends Layout {
     }
   }
 
-  position(props, {parent, childPosition}) {
-    const parentBox = parent.instance.childBoxes[childPosition];
-
+  position(props, {parentBox}) {
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
   }

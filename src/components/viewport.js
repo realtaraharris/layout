@@ -21,10 +21,8 @@ class Viewport extends Layout {
     ];
   }
 
-  position({offsetX, offsetY}, {parent, childPosition, children}) {
+  position({offsetX, offsetY}, {children, parentBox}) {
     const child = children[0]; // TODO: make sure you have a child!
-
-    const parentBox = parent.instance.childBoxes[childPosition];
 
     const absX = (this.box.width - child.instance.box.width) * offsetX;
     const absY = (this.box.height - child.instance.box.height) * offsetY;

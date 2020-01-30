@@ -30,8 +30,7 @@ class Button extends Layout {
     ];
   }
 
-  position(props, {parent, childPosition}) {
-    const parentBox = parent.instance.childBoxes[childPosition];
+  position(props, {parentBox}) {
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
     this.childBoxes[0].x = this.box.x;

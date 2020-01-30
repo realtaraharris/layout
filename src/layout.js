@@ -170,22 +170,6 @@ function layout(renderContext, treeRoot, cache) {
   walkTreeReverseBreadthFirst(
     treeRoot,
     0,
-    ({component, parent, childPosition, depth}) =>
-      component.instance.size(component.props, {
-        renderContext,
-        cache,
-        parent,
-        children: component.children,
-        childPosition,
-        sizing: 'shrink',
-        depth
-      })
-  );
-
-  // second pass: calculate expanding box sizes
-  walkTreeBreadthFirst(
-    treeRoot,
-    0,
     ({component, parent, childPosition, depth}) => {
       component.instance.size(component.props, {
         renderContext,
@@ -193,6 +177,26 @@ function layout(renderContext, treeRoot, cache) {
         parent,
         children: component.children,
         childPosition,
+        // parentBox, // NB: no parentBox is available because we haven't created it yet!
+        sizing: 'shrink',
+        depth
+      });
+    }
+  );
+
+  // second pass: calculate expanding box sizes
+  walkTreeBreadthFirst(
+    treeRoot,
+    0,
+    ({component, parent, childPosition, depth}) => {
+      const parentBox = parent && parent.instance.childBoxes[childPosition];
+      component.instance.size(component.props, {
+        renderContext,
+        cache,
+        parent,
+        children: component.children,
+        childPosition,
+        parentBox,
         sizing: 'expand',
         depth
       });
@@ -204,12 +208,14 @@ function layout(renderContext, treeRoot, cache) {
     treeRoot,
     0,
     ({component, parent, childPosition, depth}) => {
+      const parentBox = parent && parent.instance.childBoxes[childPosition];
       component.instance.position(component.props, {
         renderContext,
         cache,
         parent,
         children: component.children,
         childPosition,
+        parentBox,
         positioning: '',
         depth
       });

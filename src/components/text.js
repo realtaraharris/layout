@@ -318,11 +318,10 @@ class Text extends Layout {
     this.finalBoxes = [];
   }
 
-  size(props, {sizing, parent, childPosition}) {
+  size(props, {sizing, parentBox}) {
     if (sizing !== 'expand') {
       return;
     }
-    const parentBox = parent.instance.childBoxes[childPosition];
     this.box = {
       x: 0,
       y: 0,
@@ -331,13 +330,12 @@ class Text extends Layout {
     };
   }
 
-  position(props, {renderContext, childBox, cache, parent, childPosition}) {
+  position(props, {renderContext, childBox, cache, parent, parentBox}) {
     const {width, height} = this.box;
     // if (sizing === 'shrink') {
     // }
     // if (sizing === 'expand') {
     // }
-    const parentBox = parent.instance.childBoxes[childPosition];
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
 

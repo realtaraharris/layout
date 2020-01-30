@@ -11,8 +11,7 @@ class Offset extends Layout {
     this.box = {x: 0, y: 0, width: 0, height: 0};
   }
 
-  position({x, y}, {parent, childPosition}) {
-    const parentBox = parent.instance.childBoxes[childPosition];
+  position({x, y}, {parentBox}) {
     this.box.x = parentBox.x + x;
     this.box.y = parentBox.y + y;
 

@@ -224,26 +224,23 @@ function positionExpanding(props, parentBox, childBoxes) {
 }
 
 class FlowBox extends Layout {
-  size(props, {sizing, children, parent, childPosition}) {
+  size(props, {sizing, children, parentBox}) {
     if (sizing === 'shrink' && props.sizing === 'shrink') {
       const {box, childBoxes} = sizeShrinking(props, children);
       this.box = box;
       this.childBoxes = childBoxes;
     } else if (sizing === 'expand' && props.sizing === 'expand') {
-      const childBox = parent.instance.childBoxes[childPosition];
-      this.box.x = childBox.x;
-      this.box.y = childBox.y;
-      this.box.width = childBox.width;
-      this.box.height = childBox.height;
+      this.box.x = parentBox.x;
+      this.box.y = parentBox.y;
+      this.box.width = parentBox.width;
+      this.box.height = parentBox.height;
       this.childBoxes = sizeExpanding(props, children, this.box);
     } else {
       // log('invalid props.sizing and/or sizing in FlowBox:', props.sizing, sizing);
     }
   }
 
-  position(props, {parent, childPosition}) {
-    const parentBox = parent.instance.childBoxes[childPosition];
-
+  position(props, {parentBox}) {
     if (props.sizing === 'shrink') {
       this.box.x = parentBox.x;
       this.box.y = parentBox.y;

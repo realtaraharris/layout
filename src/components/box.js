@@ -8,9 +8,7 @@ class Box extends Layout {
     this.childBoxes = [{x: 0, y: 0, width, height}];
   }
 
-  position(props, {parent, childPosition}) {
-    const parentBox = parent.instance.childBoxes[childPosition];
-
+  position(props, {parentBox}) {
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
 

@@ -4,7 +4,7 @@ const Layout = require('../components');
 const PropTypes = require('introspective-prop-types');
 
 class Margin extends Layout {
-  size(props, {children, sizing}) {
+  size(props, {children, sizing, parentBox}) {
     const {top, right, bottom, left} = props;
     if (sizing === 'shrink' && props.sizing === 'shrink') {
       if (children.length > 1) {
@@ -30,8 +30,6 @@ class Margin extends Layout {
     }
 
     if (sizing === 'expand' && props.sizing === 'expand') {
-      const parentBox = parent.instance.childBoxes[childPosition];
-
       this.box.x = parentBox.x;
       this.box.y = parentBox.y;
       this.box.width = parentBox.width;
@@ -48,8 +46,7 @@ class Margin extends Layout {
     }
   }
 
-  position(props, {parent, childPosition}) {
-    const parentBox = parent.instance.childBoxes[childPosition];
+  position(props, {parentBox}) {
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
 
