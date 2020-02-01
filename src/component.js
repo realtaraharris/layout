@@ -1,10 +1,13 @@
 'use strict';
 
 class Component {
-  constructor(props) {
+  constructor(props, childCount) {
     this.props = props;
     this.box = {x: 0, y: 0, width: 0, height: 0};
     this.childBoxes = [];
+    for (let i = 0; i < childCount; i++) {
+      this.childBoxes.push({x: 0, y: 0, width: 0, height: 0});
+    }
 
     this.intersect = this.intersect.bind(this);
   }
@@ -30,7 +33,11 @@ class Component {
     };
   }
 
-  sizing() {
+  sizingVertical() {
+    return 'shrink';
+  }
+
+  sizingHorizontal() {
     return 'shrink';
   }
 }

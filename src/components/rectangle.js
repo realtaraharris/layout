@@ -39,7 +39,11 @@ class Rectangle extends Component {
     renderContext.fill();
   }
 
-  sizing() {
+  sizingVertical() {
+    return 'expand';
+  }
+
+  sizingHorizontal() {
     return 'expand';
   }
 }

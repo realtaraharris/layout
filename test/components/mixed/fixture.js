@@ -10,18 +10,29 @@ module.exports = ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'shrink', mode: 'horizontal', align: 'left'},
+      {
+        sizingHorizontal: 'shrink',
+        sizingVertical: 'shrink',
+        alignVertical: 'top',
+        alignHorizontal: 'left',
+        stackChildren: 'horizontal'
+      },
       c(
         FlowBox,
-        {sizing: 'shrink', mode: 'vertical', align: 'left'},
+        {
+          sizingHorizontal: 'shrink',
+          sizingVertical: 'shrink',
+          alignVertical: 'top',
+          alignHorizontal: 'left',
+          stackChildren: 'vertical'
+        },
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'white',
           size: 100,
           sizeMode: 'capHeight',
           text: 'A',
-          showBoxes: false,
-          done: () => {}
+          showBoxes: false
         }),
         c(Label, {
           font: 'SourceSansPro-Regular',
@@ -29,8 +40,7 @@ module.exports = ({x, y, width, height}) => {
           size: 100,
           sizeMode: 'capHeight',
           text: 'B',
-          showBoxes: false,
-          done: () => {}
+          showBoxes: false
         })
       ),
       c(Label, {

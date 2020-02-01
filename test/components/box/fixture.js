@@ -14,17 +14,21 @@ module.exports = ({x, y, width, height}) => {
     c(
       FlowBox,
       {
-        sizing: 'expand',
-        mode: 'horizontal',
-        align: 'center',
+        sizingVertical: 'expand',
+        sizingHorizontal: 'expand',
+        alignVertical: 'center',
+        alignHorizontal: 'center',
+        stackChildren: 'horizontal',
         showBoxes: true
       },
       c(
         FlowBox,
         {
-          sizing: 'shrink',
-          mode: 'vertical',
-          align: 'right',
+          sizingVertical: 'shrink',
+          sizingHorizontal: 'shrink',
+          alignVertical: 'center',
+          alignHorizontal: 'right',
+          stackChildren: 'vertical',
           showBoxes: false
         },
         c(Label, {

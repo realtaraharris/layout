@@ -16,11 +16,18 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'shrink', mode: 'horizontal', align: 'center'},
+      {
+        sizingHorizontal: 'shrink',
+        sizingVertical: 'shrink',
+        alignVertical: 'center',
+        alignHorizontal: 'center',
+        stackChildren: 'horizontal'
+      },
       c(
         Margin,
         {
-          sizing: 'shrink',
+          sizingHorizontal: 'shrink',
+          sizingVertical: 'shrink',
           top: 10,
           bottom: 10,
           left: 10,
@@ -38,11 +45,18 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
       ),
       c(
         FlowBox,
-        {sizing: 'shrink', mode: 'vertical', align: 'center'},
+        {
+          sizingHorizontal: 'shrink',
+          sizingVertical: 'shrink',
+          alignVertical: 'center',
+          alignHorizontal: 'center',
+          stackChildren: 'vertical'
+        },
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingHorizontal: 'shrink',
+            sizingVertical: 'shrink',
             top: 10,
             bottom: 10,
             left: 10,
@@ -61,7 +75,8 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingHorizontal: 'shrink',
+            sizingVertical: 'shrink',
             top: 10,
             bottom: 10,
             left: 10,
@@ -87,14 +102,21 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
           },
           c(
             FlowBox,
-            {sizing: 'shrink', mode: 'vertical', align: 'center'},
+            {
+              sizingHorizontal: 'shrink',
+              sizingVertical: 'shrink',
+              alignVertical: 'center',
+              alignHorizontal: 'center',
+              stackChildren: 'vertical'
+            },
             c(
               Button,
               {onInput: log, onClick: log},
               c(
                 Margin,
                 {
-                  sizing: 'shrink',
+                  sizingHorizontal: 'shrink',
+                  sizingVertical: 'shrink',
                   top: 10,
                   bottom: 10,
                   left: 10,
@@ -113,14 +135,21 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
             ),
             c(
               FlowBox,
-              {sizing: 'shrink', mode: 'horizontal', align: 'center'},
+              {
+                sizingHorizontal: 'shrink',
+                sizingVertical: 'shrink',
+                alignVertical: 'center',
+                alignHorizontal: 'center',
+                stackChildren: 'horizontal'
+              },
               c(
                 Button,
                 {onInput: log, onClick: onLabelClick},
                 c(
                   Margin,
                   {
-                    sizing: 'shrink',
+                    sizingHorizontal: 'shrink',
+                    sizingVertical: 'shrink',
                     top: 10,
                     bottom: 10,
                     left: 10,
@@ -140,7 +169,8 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
               c(
                 Margin,
                 {
-                  sizing: 'shrink',
+                  sizingHorizontal: 'shrink',
+                  sizingVertical: 'shrink',
                   top: 10,
                   bottom: 10,
                   left: 10,
@@ -159,7 +189,8 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
               c(
                 Margin,
                 {
-                  sizing: 'shrink',
+                  sizingHorizontal: 'shrink',
+                  sizingVertical: 'shrink',
                   top: 10,
                   bottom: 10,
                   left: 10,
@@ -178,7 +209,8 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
               c(
                 Margin,
                 {
-                  sizing: 'shrink',
+                  sizingHorizontal: 'shrink',
+                  sizingVertical: 'shrink',
                   top: 50,
                   bottom: 10,
                   left: 10,
@@ -197,7 +229,8 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
               c(
                 Margin,
                 {
-                  sizing: 'shrink',
+                  sizingHorizontal: 'shrink',
+                  sizingVertical: 'shrink',
                   top: 10,
                   bottom: 10,
                   left: 10,
@@ -216,14 +249,21 @@ module.exports = ({onLabelClick}) => ({x, y, width, height}) => {
             ),
             c(
               FlowBox,
-              {sizing: 'shrink', mode: 'diagonal', align: 'center'},
+              {
+                sizingHorizontal: 'shrink',
+                sizingVertical: 'shrink',
+                alignVertical: 'center',
+                alignHorizontal: 'center',
+                stackChildren: 'diagonal'
+              },
               c(
                 Button,
                 {onInput: log, onClick: log},
                 c(
                   Margin,
                   {
-                    sizing: 'shrink',
+                    sizingHorizontal: 'shrink',
+                    sizingVertical: 'shrink',
                     top: 10,
                     bottom: 10,
                     left: 10,

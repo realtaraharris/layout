@@ -41,7 +41,13 @@ tape('components-line-215', t => {
       {x, y, width, height, color: 'black'},
       c(
         FlowBox,
-        {sizing: 'shrink', mode: 'horizontal', align: 'heft'},
+        {
+          sizingHorizontal: 'shrink',
+          sizingVertical: 'shrink',
+          alignVertical: 'top',
+          alignHorizontal: 'heft',
+          stackChildren: 'horizontal'
+        },
         c(Label, {font: 'SourceSansPro-Regular', size: 20, text: 'c'}),
         c(Label, {font: 'SourceSerifPro-Regular', size: 30, text: 'd'})
       )
@@ -70,7 +76,13 @@ tape('components-line-228', t => {
       {x, y, width, height, color: 'black'},
       c(
         FlowBox,
-        {sizing: 'shrink', mode: 'vertical', align: 'heft'},
+        {
+          sizingHorizontal: 'shrink',
+          sizingVertical: 'shrink',
+          alignVertical: 'top',
+          alignHorizontal: 'heft',
+          stackChildren: 'vertical'
+        },
         c(Label, {font: 'SourceSansPro-Regular', size: 20, text: 'c'}),
         c(Label, {font: 'SourceSerifPro-Regular', size: 30, text: 'd'})
       )
@@ -98,7 +110,13 @@ tape('components-line-236', t => {
       {x, y, width, height, color: 'black'},
       c(
         FlowBox,
-        {sizing: 'shrink', mode: 'diagone', align: 'left'},
+        {
+          sizingHorizontal: 'shrink',
+          sizingVertical: 'shrink',
+          alignVertical: 'top',
+          alignHorizontal: 'left',
+          stackChildren: 'diagone'
+        },
         c(Label, {
           font: 'SourceSansPro-Regular',
           size: 20,
@@ -136,7 +154,13 @@ tape('components-line-246', t => {
       {x, y, width, height, color: 'black'},
       c(
         FlowBox,
-        {sizing: 'shrink', mode: 'invalid-mode', align: 'left'},
+        {
+          sizingHorizontal: 'shrink',
+          sizingVertical: 'shrink',
+          alignVertical: 'top',
+          alignHorizontal: 'left',
+          stackChildren: 'invalid-mode'
+        },
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'white',

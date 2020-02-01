@@ -40,7 +40,13 @@ module.exports = ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'shrink', mode: 'vertical', align: 'left'},
+      {
+        sizingHorizontal: 'shrink',
+        sizingVertical: 'shrink',
+        alignVertical: 'top',
+        alignHorizontal: 'left',
+        stackChildren: 'vertical'
+      },
       c(Label, {
         font: 'SourceSansPro-Regular',
         color: 'white',

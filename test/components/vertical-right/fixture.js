@@ -14,7 +14,13 @@ module.exports = ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'shrink', mode: 'vertical', align: 'right'},
+      {
+        sizingHorizontal: 'shrink',
+        sizingVertical: 'shrink',
+        alignVertical: 'center',
+        alignHorizontal: 'right',
+        stackChildren: 'vertical'
+      },
       c(Label, {
         font: 'SourceSansPro-Regular',
         color: 'white',
@@ -57,7 +63,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingVertical: 'shrink',
+            sizingHorizontal: 'shrink',
             top: marginA,
             bottom: marginA,
             left: marginA,
@@ -81,7 +88,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingVertical: 'shrink',
+            sizingHorizontal: 'shrink',
             top: 10,
             bottom: 10,
             left: 10,
@@ -104,7 +112,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingVertical: 'shrink',
+            sizingHorizontal: 'shrink',
             top: 0,
             bottom: 0,
             left: 0,

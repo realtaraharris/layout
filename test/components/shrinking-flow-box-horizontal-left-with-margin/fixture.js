@@ -12,20 +12,26 @@ module.exports = ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'shrink', mode: 'horizontal', align: 'left'},
+      {
+        sizingHorizontal: 'shrink',
+        sizingVertical: 'shrink',
+        alignVertical: 'top',
+        alignHorizontal: 'left',
+        stackChildren: 'horizontal'
+      },
       c(Label, {
         font: 'SourceSansPro-Regular',
         color: 'white',
         size: 90,
         text: 'Push Me',
         sizeMode: 'capHeight',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(
         Margin,
         {
-          sizing: 'shrink',
+          sizingVertical: 'shrink',
+          sizingHorizontal: 'shrink',
           top: marginA,
           bottom: marginA,
           left: marginA,
@@ -38,8 +44,7 @@ module.exports = ({x, y, width, height}) => {
           text: 'A',
           sizeMode: 'capHeight',
           showBoxes: false,
-          color: 'white',
-          done: () => {}
+          color: 'white'
         })
       )
     )

@@ -13,18 +13,22 @@ module.exports = ({x, y, width, height}) => {
     c(
       FlowBox,
       {
-        sizing: 'expand',
-        mode: 'horizontal',
-        align: 'left',
+        sizingHorizontal: 'expand',
+        sizingVertical: 'expand',
+        alignVertical: 'center',
+        alignHorizontal: 'left',
+        stackChildren: 'horizontal',
         showBoxes,
         color: 'red'
       },
       c(
         FlowBox,
         {
-          sizing: 'expand',
-          mode: 'vertical',
-          align: 'left',
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
+          alignVertical: 'center',
+          alignHorizontal: 'left',
+          stackChildren: 'vertical',
           showBoxes,
           color: 'blue'
         },
@@ -40,9 +44,11 @@ module.exports = ({x, y, width, height}) => {
       c(
         FlowBox,
         {
-          sizing: 'expand',
-          mode: 'vertical',
-          align: 'left',
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
+          alignVertical: 'center',
+          alignHorizontal: 'left',
+          stackChildren: 'vertical',
           showBoxes,
           color: 'blue'
         },
@@ -58,9 +64,11 @@ module.exports = ({x, y, width, height}) => {
       c(
         FlowBox,
         {
-          sizing: 'expand',
-          mode: 'vertical',
-          align: 'left',
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
+          alignVertical: 'center',
+          alignHorizontal: 'left',
+          stackChildren: 'vertical',
           showBoxes,
           color: 'blue'
         },

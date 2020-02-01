@@ -13,14 +13,21 @@ module.exports = ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'shrink', mode: 'vertical', align: 'center'},
+      {
+        sizingHorizontal: 'shrink',
+        sizingVertical: 'shrink',
+        alignVertical: 'center',
+        alignHorizontal: 'left',
+        stackChildren: 'vertical'
+      },
       c(
         Button,
         {onInput: log, onClick: log},
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingHorizontal: 'shrink',
+            sizingVertical: 'shrink',
             top: 10,
             bottom: 10,
             left: 10,

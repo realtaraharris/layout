@@ -13,7 +13,13 @@ module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'shrink', mode: 'vertical', align: 'center'},
+      {
+        sizingHorizontal: 'shrink',
+        sizingVertical: 'shrink',
+        alignVertical: 'center',
+        alignHorizontal: 'center',
+        stackChildren: 'vertical'
+      },
       c(Label, {
         font: 'SourceSansPro-Regular',
         color: 'white',
@@ -29,7 +35,8 @@ module.exports = ({onButtonClick, onLabelClick}) => ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingHorizontal: 'shrink',
+            sizingVertical: 'shrink',
             top: marginA,
             bottom: marginA,
             left: marginA,

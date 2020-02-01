@@ -532,7 +532,10 @@ class Text extends Component {
     }
   }
 
-  sizing() {
+  sizingVertical() {
+    return 'expand';
+  }
+  sizingHorizontal() {
     return 'expand';
   }
 }

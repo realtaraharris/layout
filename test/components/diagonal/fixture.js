@@ -14,15 +14,20 @@ module.exports = ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'shrink', mode: 'diagonal', align: 'left'},
+      {
+        sizingHorizontal: 'shrink',
+        sizingVertical: 'shrink',
+        alignVertical: 'top',
+        alignHorizontal: 'left',
+        stackChildren: 'diagonal'
+      },
       c(Label, {
         font: 'SourceSansPro-Regular',
         color: 'white',
         size: 20,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(Label, {
         font: 'SourceSansPro-Regular',
@@ -30,8 +35,7 @@ module.exports = ({x, y, width, height}) => {
         size: 20,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(Label, {
         font: 'SourceSansPro-Regular',
@@ -39,8 +43,7 @@ module.exports = ({x, y, width, height}) => {
         size: 20,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(Label, {
         font: 'SourceSansPro-Regular',
@@ -48,8 +51,7 @@ module.exports = ({x, y, width, height}) => {
         size: 20,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(
         Button,
@@ -57,7 +59,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingHorizontal: 'shrink',
+            sizingVertical: 'shrink',
             top: marginA,
             bottom: marginA,
             left: marginA,
@@ -66,15 +69,20 @@ module.exports = ({x, y, width, height}) => {
           },
           c(
             FlowBox,
-            {sizing: 'shrink', mode: 'vertical', align: 'left'},
+            {
+              sizingHorizontal: 'shrink',
+              sizingVertical: 'shrink',
+              alignVertical: 'top',
+              alignHorizontal: 'left',
+              stackChildren: 'vertical'
+            },
             c(Label, {
               font: 'SourceSansPro-Regular',
               color: 'white',
               size: 100,
               sizeMode: 'capHeight',
               text: 'A',
-              showBoxes: false,
-              done: () => {}
+              showBoxes: false
             }),
             c(Label, {
               font: 'SourceSansPro-Regular',
@@ -82,8 +90,7 @@ module.exports = ({x, y, width, height}) => {
               size: 100,
               sizeMode: 'capHeight',
               text: 'A',
-              showBoxes: false,
-              done: () => {}
+              showBoxes: false
             })
           )
         )
@@ -94,7 +101,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingHorizontal: 'shrink',
+            sizingVertical: 'shrink',
             top: marginA,
             bottom: marginA,
             left: marginA,
@@ -117,7 +125,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingHorizontal: 'shrink',
+            sizingVertical: 'shrink',
             top: marginA,
             bottom: marginA,
             left: marginA,

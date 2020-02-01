@@ -34,34 +34,41 @@ module.exports = ({x, y, width, height}) => {
     c(
       FlowBox,
       {
-        sizing: 'expand',
-        mode: 'horizontal',
-        align: 'left',
+        sizingHorizontal: 'expand',
+        sizingVertical: 'expand',
+        alignVertical: 'center',
+        alignHorizontal: 'left',
+        stackChildren: 'horizontal',
         showBoxes,
         color: 'red'
       },
       c(
         FlowBox,
         {
-          sizing: 'expand',
-          mode: 'vertical',
-          align: 'left',
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
+          alignVertical: 'center',
+          alignHorizontal: 'left',
+          stackChildren: 'vertical',
           showBoxes,
           color: 'blue'
         },
         c(
           FlowBox,
           {
-            sizing: 'shrink',
-            mode: 'vertical',
-            align: 'left',
+            sizingHorizontal: 'expand',
+            sizingVertical: 'shrink',
+            alignVertical: 'center',
+            alignHorizontal: 'left',
+            stackChildren: 'vertical',
             color: 'green',
             showBoxes
           },
           c(
             Margin,
             {
-              sizing: 'shrink',
+              sizingVertical: 'shrink',
+              sizingHorizontal: 'shrink',
               top: 0,
               bottom: 0,
               left: 0,
@@ -92,7 +99,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingVertical: 'shrink',
+            sizingHorizontal: 'shrink',
             top: 200,
             bottom: 0,
             left: 0,
@@ -112,25 +120,30 @@ module.exports = ({x, y, width, height}) => {
       c(
         FlowBox,
         {
-          sizing: 'expand',
-          mode: 'vertical',
-          align: 'left',
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
+          alignVertical: 'center',
+          alignHorizontal: 'left',
+          stackChildren: 'vertical',
           showBoxes,
           color: 'blue'
         },
         c(
           FlowBox,
           {
-            sizing: 'shrink',
-            mode: 'vertical',
-            align: 'left',
+            sizingHorizontal: 'expand',
+            sizingVertical: 'shrink',
+            alignVertical: 'center',
+            alignHorizontal: 'left',
+            stackChildren: 'vertical',
             color: 'red',
             showBoxes
           },
           c(
             Margin,
             {
-              sizing: 'shrink',
+              sizingVertical: 'shrink',
+              sizingHorizontal: 'shrink',
               top: 0,
               bottom: 0,
               left: 0,
@@ -162,25 +175,30 @@ module.exports = ({x, y, width, height}) => {
       c(
         FlowBox,
         {
-          sizing: 'expand',
-          mode: 'vertical',
-          align: 'left',
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
+          alignVertical: 'center',
+          alignHorizontal: 'left',
+          stackChildren: 'vertical',
           showBoxes,
           color: 'blue'
         },
         c(
           FlowBox,
           {
-            sizing: 'shrink',
-            mode: 'vertical',
-            align: 'left',
+            sizingHorizontal: 'expand',
+            sizingVertical: 'shrink',
+            alignVertical: 'center',
+            alignHorizontal: 'left',
+            stackChildren: 'vertical',
             color: 'red',
             showBoxes
           },
           c(
             Margin,
             {
-              sizing: 'shrink',
+              sizingVertical: 'shrink',
+              sizingHorizontal: 'shrink',
               top: 0,
               bottom: 0,
               left: 0,

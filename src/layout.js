@@ -15,12 +15,13 @@ function c(componentOrFunction, props, ...children) {
     ? Object.assign({}, connectedProps, props)
     : props;
 
+  const filteredChildren = children.filter(Boolean);
   return {
     Component,
-    instance: new Component(finalProps),
+    instance: new Component(finalProps, filteredChildren.length),
     props: finalProps,
     parent: Component,
-    children: children.filter(Boolean)
+    children: filteredChildren
   };
 }
 

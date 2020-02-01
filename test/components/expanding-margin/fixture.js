@@ -12,11 +12,19 @@ module.exports = ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'expand', mode: 'horizontal', align: 'left'},
+      {
+        sizingHorizontal: 'expand',
+        sizingVertical: 'expand',
+        alignVertical: 'top',
+        alignHorizontal: 'left',
+        stackChildren: 'horizontal',
+        showBoxes: true
+      },
       c(
         Margin,
         {
-          sizing: 'expand',
+          sizingVertical: 'expand',
+          sizingHorizontal: 'expand',
           top: marginA,
           bottom: marginA,
           left: marginA,
@@ -35,7 +43,8 @@ module.exports = ({x, y, width, height}) => {
       c(
         Margin,
         {
-          sizing: 'shrink',
+          sizingVertical: 'shrink',
+          sizingHorizontal: 'shrink',
           top: marginA,
           bottom: marginA,
           left: marginA,

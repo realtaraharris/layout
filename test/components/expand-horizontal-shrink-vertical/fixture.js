@@ -17,9 +17,9 @@ module.exports = ({x, y, width, height}) => {
       {
         sizingHorizontal: 'expand',
         sizingVertical: 'expand',
-        alignVertical: 'center',
-        alignHorizontal: 'left',
         stackChildren: 'horizontal',
+        alignVertical: 'center',
+        alignHorizontal: 'center',
         showBoxes,
         color: 'red'
       },
@@ -28,9 +28,9 @@ module.exports = ({x, y, width, height}) => {
         {
           sizingHorizontal: 'expand',
           sizingVertical: 'expand',
-          alignVertical: 'center',
-          alignHorizontal: 'left',
           stackChildren: 'vertical',
+          alignVertical: 'top',
+          alignHorizontal: 'left',
           showBoxes,
           color: 'blue'
         },
@@ -39,9 +39,9 @@ module.exports = ({x, y, width, height}) => {
           {
             sizingHorizontal: 'expand',
             sizingVertical: 'shrink',
-            alignVertical: 'center',
-            alignHorizontal: 'left',
             stackChildren: 'vertical',
+            alignVertical: 'left',
+            alignHorizontal: 'left',
             color: 'green',
             showBoxes
           },
@@ -49,7 +49,7 @@ module.exports = ({x, y, width, height}) => {
             Margin,
             {
               sizingVertical: 'shrink',
-              sizingHorizontal: 'shrink',
+              sizingHorizontal: 'expand',
               top: 0,
               bottom: 0,
               left: 0,
@@ -88,20 +88,20 @@ module.exports = ({x, y, width, height}) => {
         {
           sizingHorizontal: 'expand',
           sizingVertical: 'expand',
-          alignVertical: 'center',
-          alignHorizontal: 'left',
           stackChildren: 'vertical',
+          alignVertical: 'top',
+          alignHorizontal: 'left',
           showBoxes,
           color: 'blue'
         },
         c(
           FlowBox,
           {
-            sizingHorizontal: 'expand',
+            sizingHorizontal: 'shrink',
             sizingVertical: 'shrink',
-            alignVertical: 'center',
+            stackChildren: 'horizontal',
+            alignVertical: 'top',
             alignHorizontal: 'left',
-            stackChildren: 'vertical',
             color: 'red',
             showBoxes
           },
@@ -109,7 +109,7 @@ module.exports = ({x, y, width, height}) => {
             Margin,
             {
               sizingVertical: 'shrink',
-              sizingHorizontal: 'shrink',
+              sizingHorizontal: 'expand',
               top: 0,
               bottom: 0,
               left: 0,
@@ -128,58 +128,6 @@ module.exports = ({x, y, width, height}) => {
         ),
         c(Rectangle, {
           color: 'orange',
-          topLeft: 0,
-          topRight: 0,
-          bottomLeft: 0,
-          bottomRight: 0,
-          showBoxes
-        })
-      ),
-      c(
-        FlowBox,
-        {
-          sizingHorizontal: 'expand',
-          sizingVertical: 'expand',
-          alignVertical: 'center',
-          alignHorizontal: 'left',
-          stackChildren: 'vertical',
-          showBoxes,
-          color: 'blue'
-        },
-        c(
-          FlowBox,
-          {
-            sizingHorizontal: 'expand',
-            sizingVertical: 'shrink',
-            alignVertical: 'center',
-            alignHorizontal: 'left',
-            stackChildren: 'vertical',
-            color: 'red',
-            showBoxes
-          },
-          c(
-            Margin,
-            {
-              sizingVertical: 'shrink',
-              sizingHorizontal: 'shrink',
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              showBoxes
-            },
-            c(Label, {
-              font: 'SourceSerifPro-Regular',
-              color: 'black',
-              size: 30,
-              sizeMode: 'capHeight',
-              text: 'Third Heading',
-              showBoxes
-            })
-          )
-        ),
-        c(Rectangle, {
-          color: 'red',
           topLeft: 0,
           topRight: 0,
           bottomLeft: 0,

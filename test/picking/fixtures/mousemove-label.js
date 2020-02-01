@@ -27,7 +27,13 @@ module.exports = ({firstLabelEventHandler, secondLabelEventHandler}) => ({
       },
       c(
         FlowBox,
-        {sizing: 'shrink', mode: 'horizontal', align: 'center'},
+        {
+          sizingHorizontal: 'shrink',
+          sizingVertical: 'shrink',
+          alignVertical: 'center',
+          alignHorizontal: 'center',
+          stackChildren: 'horizontal'
+        },
         c(Label, {
           font: 'SourceSansPro-Regular',
           color: 'white',
@@ -39,7 +45,14 @@ module.exports = ({firstLabelEventHandler, secondLabelEventHandler}) => ({
         }),
         c(
           Margin,
-          {sizing: 'shrink', top: 10, bottom: 10, left: 10, right: 10},
+          {
+            sizingHorizontal: 'shrink',
+            sizingVertical: 'shrink',
+            top: 10,
+            bottom: 10,
+            left: 10,
+            right: 10
+          },
           c(
             Viewport,
             {width: 200, height: 30, offsetX: 0, offsetY: 0},

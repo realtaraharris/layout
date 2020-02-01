@@ -14,15 +14,21 @@ module.exports = ({x, y, width, height}) => {
     {x, y, width, height, color: 'black'},
     c(
       FlowBox,
-      {sizing: 'shrink', mode: 'vertical', align: 'center'},
+      {
+        sizingHorizontal: 'shrink',
+        sizingVertical: 'shrink',
+        alignVertical: 'top',
+        alignHorizontal: 'center',
+        stackChildren: 'vertical',
+        align: 'center'
+      },
       c(Label, {
         font: 'SourceSansPro-Regular',
         color: 'white',
         size: 20,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(Label, {
         font: 'SourceSansPro-Regular',
@@ -30,8 +36,7 @@ module.exports = ({x, y, width, height}) => {
         size: 20,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(Label, {
         font: 'SourceSansPro-Regular',
@@ -39,8 +44,7 @@ module.exports = ({x, y, width, height}) => {
         size: 20,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(Label, {
         font: 'SourceSansPro-Regular',
@@ -48,8 +52,7 @@ module.exports = ({x, y, width, height}) => {
         size: 20,
         sizeMode: 'capHeight',
         text: 'Push Me',
-        showBoxes: false,
-        done: () => {}
+        showBoxes: false
       }),
       c(
         Button,
@@ -57,7 +60,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingVertical: 'shrink',
+            sizingHorizontal: 'shrink',
             top: marginA,
             bottom: marginA,
             left: marginA,
@@ -70,8 +74,7 @@ module.exports = ({x, y, width, height}) => {
             size: 100,
             sizeMode: 'capHeight',
             text: 'A',
-            showBoxes: false,
-            done: () => {}
+            showBoxes: false
           })
         )
       ),
@@ -81,7 +84,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingVertical: 'shrink',
+            sizingHorizontal: 'shrink',
             top: 10,
             bottom: 10,
             left: 10,
@@ -104,7 +108,8 @@ module.exports = ({x, y, width, height}) => {
         c(
           Margin,
           {
-            sizing: 'shrink',
+            sizingVertical: 'shrink',
+            sizingHorizontal: 'shrink',
             top: 0,
             bottom: 0,
             left: 0,
