@@ -310,6 +310,172 @@ function typesetLine(
   return {result, debugBoxes};
 }
 
+function fuck(props, cache, childBox, renderContext, parent, that) {
+  const {width, height} = that.box;
+
+  const {
+    size,
+    sizeMode,
+    polygons,
+    overflow,
+    font,
+    lineHeight = 20,
+    showBoxes,
+    textContinuation
+  } = props;
+  const {text, textHash, hyphenChar, tracking} = textContinuation();
+
+  // const {width} = sizing === 'shrink' ? parent.instance.box : props;
+
+  // TODO: previously we hashed the tracking value. but we should hash the box!
+  const hash = encode().value(Object.assign({}, props, {textHash}));
+  console.log({hash, tracking});
+
+  // query the cache. if we have an entry in there, we can skip all this
+  const cachedState = cache[hash];
+  if (cachedState) {
+    that.childBoxes = cachedState.childBoxes;
+    that.tokens = cachedState.tokens;
+    that.finalBoxes = cachedState.finalBoxes;
+    that.debugBoxes = cachedState.debugBoxes;
+    return cachedState.returnValue;
+  }
+  console.log('cachedState:', cachedState);
+  tracking.lastLineVisited = 0;
+
+  that.childBoxes.push(childBox);
+
+  that.tokens = split(
+    renderContext,
+    text,
+    renderContext.fonts[font],
+    font,
+    size,
+    sizeMode,
+    hyphenChar
+  );
+
+  const f = renderContext.fonts[font];
+  const dashMeasurements = measureText(
+    renderContext,
+    f,
+    font,
+    '-',
+    size,
+    sizeMode
+  );
+
+  const dashWidth = dashMeasurements.width;
+  const spaceWidth = measureText(renderContext, f, font, ' ', size, sizeMode)
+    .width;
+
+  let maxY = 0;
+
+  let lineIndex = 0;
+  that.finalBoxes = [];
+  that.debugBoxes = [];
+
+  if (polygons) {
+    const textHeight = 1e6; // TODO: get rid of this?!
+    const framePolygons = fromPolygons([
+      [
+        [0, 0],
+        [width, 0],
+        [width, textHeight],
+        [0, textHeight]
+      ]
+    ]);
+    let foo = framePolygons['subtract'](polygons);
+
+    let [, , , maxYY] = polysToBoundingBox(foo.toPolygons());
+    maxY = maxYY;
+    for (;;) {
+      const lineBoxes = getLineBoxes(lineIndex, lineHeight, width, foo);
+      for (let x = 0; x < lineBoxes.length; x++) {
+        const {result, debugBoxes} = typesetLine(
+          that.box, // why?
+          lineBoxes[x],
+          that.tokens,
+          tracking,
+          lineHeight,
+          spaceWidth,
+          dashWidth,
+          showBoxes
+        );
+
+        // keep these next two things seprate from each other. finalBoxes are
+        // used to lay the words out, so if these two were stored together, the
+        // debug layout view would would have jumbled words
+        that.finalBoxes.push(...result);
+        that.debugBoxes.push(...debugBoxes);
+      }
+
+      const currentY = lineIndex * lineHeight;
+      if (currentY > maxY) {
+        break;
+      }
+      if (tracking.tokenCursor === that.tokens.length) {
+        maxY = currentY + lineHeight;
+        break;
+      }
+      lineIndex++;
+    }
+  }
+
+  if (overflow !== 'clip') {
+    for (;;) {
+      const subLineBox = getLineBox(lineIndex, lineHeight, width);
+      const {result, debugBoxes} = typesetLine(
+        that.box,
+        subLineBox,
+        that.tokens,
+        tracking,
+        lineHeight,
+        spaceWidth,
+        dashWidth,
+        showBoxes
+      );
+      that.finalBoxes.push(...result);
+      that.debugBoxes.push(...debugBoxes);
+
+      const currentY = lineIndex * lineHeight;
+      if (!props.autoSizeHeight && currentY >= height - lineHeight) {
+        break;
+      }
+      if (tracking.tokenCursor === that.tokens.length) {
+        maxY = currentY + lineHeight;
+        break;
+      }
+      lineIndex++;
+    }
+  }
+
+  const finalHeight = maxY - lineHeight + dashMeasurements.height;
+  console.log(`that.box.height:`, that.box.height);
+  if (props.autoSizeHeight && that.box.height === 0) {
+    that.box.height = finalHeight;
+  }
+
+  console.log({finalHeight});
+  // that.box = Object.assign({}, {width, height: finalHeight});
+
+  const returnValue = {
+    width,
+    height: parent.instance.box.height
+  }; //finalHeight};
+
+  // if we're down here, we have things we need to add to the cache
+  cache[hash] = {
+    childBoxes: that.childBoxes,
+    tokens: that.tokens,
+    finalBoxes: that.finalBoxes,
+    debugBoxes: that.debugBoxes,
+    returnValue: returnValue
+  };
+
+  return returnValue;
+}
+
 class Text extends Component {
   constructor(props) {
     super(props);
@@ -318,179 +484,28 @@ class Text extends Component {
     this.finalBoxes = [];
   }
 
-  size(props, {sizing, parentBox}) {
+  size(props, {sizing, parentBox, cache, parent, childBox, renderContext}) {
+    console.log('sizing Text', sizing, this.box);
     if (sizing !== 'expand') {
       return;
     }
-    this.box = {
-      x: 0,
-      y: 0,
-      width: parentBox.width,
-      height: parentBox.height
-    };
+
+    if (props.autoSizeHeight) {
+      this.box.width = parentBox.width;
+      fuck(props, cache, childBox, renderContext, parent, this);
+    } else {
+      this.box = {
+        // x: 0,
+        // y: 0,
+        width: parentBox.width,
+        height: parentBox.height
+      };
+    }
   }
 
   position(props, {renderContext, childBox, cache, parent, parentBox}) {
-    const {width, height} = this.box;
-    // if (sizing === 'shrink') {
-    // }
-    // if (sizing === 'expand') {
-    // }
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
-
-    const {
-      size,
-      sizeMode,
-      polygons,
-      overflow,
-      font,
-      lineHeight = 20,
-      showBoxes,
-      textContinuation
-    } = props;
-    const {text, textHash, hyphenChar, tracking} = textContinuation();
-
-    // const {width} = sizing === 'shrink' ? parent.instance.box : props;
-
-    const hash = encode().value(Object.assign({}, props, tracking, {textHash}));
-
-    // query the cache. if we have an entry in there, we can skip all this
-    const cachedState = cache[hash];
-    if (cachedState) {
-      this.childBoxes = cachedState.childBoxes;
-      this.tokens = cachedState.tokens;
-      this.finalBoxes = cachedState.finalBoxes;
-      this.debugBoxes = cachedState.debugBoxes;
-      return cachedState.returnValue;
-    }
-    tracking.lastLineVisited = 0;
-
-    this.childBoxes.push(childBox);
-
-    this.tokens = split(
-      renderContext,
-      text,
-      renderContext.fonts[font],
-      font,
-      size,
-      sizeMode,
-      hyphenChar
-    );
-
-    const f = renderContext.fonts[font];
-    const dashMeasurements = measureText(
-      renderContext,
-      f,
-      font,
-      '-',
-      size,
-      sizeMode
-    );
-
-    const dashWidth = dashMeasurements.width;
-    const spaceWidth = measureText(renderContext, f, font, ' ', size, sizeMode)
-      .width;
-
-    let maxY = 0;
-
-    let lineIndex = 0;
-    this.finalBoxes = [];
-    this.debugBoxes = [];
-
-    if (polygons) {
-      const textHeight = 1e6; // TODO: get rid of this?!
-      const framePolygons = fromPolygons([
-        [
-          [0, 0],
-          [width, 0],
-          [width, textHeight],
-          [0, textHeight]
-        ]
-      ]);
-      let foo = framePolygons['subtract'](polygons);
-
-      let [, , , maxYY] = polysToBoundingBox(foo.toPolygons());
-      maxY = maxYY;
-      for (;;) {
-        const lineBoxes = getLineBoxes(lineIndex, lineHeight, width, foo);
-        for (let x = 0; x < lineBoxes.length; x++) {
-          const {result, debugBoxes} = typesetLine(
-            this.box, // why?
-            lineBoxes[x],
-            this.tokens,
-            tracking,
-            lineHeight,
-            spaceWidth,
-            dashWidth,
-            showBoxes
-          );
-
-          // keep these next two things seprate from each other. finalBoxes are
-          // used to lay the words out, so if these two were stored together, the
-          // debug layout view would would have jumbled words
-          this.finalBoxes.push(...result);
-          this.debugBoxes.push(...debugBoxes);
-        }
-
-        const currentY = lineIndex * lineHeight;
-        if (currentY > maxY) {
-          break;
-        }
-        if (tracking.tokenCursor === this.tokens.length) {
-          maxY = currentY + lineHeight;
-          break;
-        }
-        lineIndex++;
-      }
-    }
-
-    if (overflow !== 'clip') {
-      for (;;) {
-        const subLineBox = getLineBox(lineIndex, lineHeight, width);
-        const {result, debugBoxes} = typesetLine(
-          this.box,
-          subLineBox,
-          this.tokens,
-          tracking,
-          lineHeight,
-          spaceWidth,
-          dashWidth,
-          showBoxes
-        );
-        this.finalBoxes.push(...result);
-        this.debugBoxes.push(...debugBoxes);
-
-        const currentY = lineIndex * lineHeight;
-        if (currentY >= height - lineHeight) {
-          break;
-        }
-        if (tracking.tokenCursor === this.tokens.length) {
-          maxY = currentY + lineHeight;
-          break;
-        }
-        lineIndex++;
-      }
-    }
-
-    // const finalHeight = maxY - lineHeight + dashMeasurements.height;
-    // this.box = Object.assign({}, {width, height: finalHeight});
-
-    const returnValue = {
-      width,
-      height: parent.instance.box.height
-    }; //finalHeight};
-
-    // if we're down here, we have things we need to add to the cache
-    cache[hash] = {
-      childBoxes: this.childBoxes,
-      tokens: this.tokens,
-      finalBoxes: this.finalBoxes,
-      debugBoxes: this.debugBoxes,
-      returnValue: returnValue
-    };
-
-    return returnValue;
   }
 
   render({font, size, color, showBoxes = false}, {renderContext}) {

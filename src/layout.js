@@ -125,43 +125,44 @@ function render(renderContext, component) {
 }
 
 function layout(renderContext, treeRoot, cache) {
-  // first pass: calculate shrinking box sizes
-  walkTreeReverseBreadthFirst(
-    treeRoot,
-    0,
-    ({component, parent, childPosition, depth}) => {
-      component.instance.size(component.props, {
-        renderContext,
-        cache,
-        parent,
-        children: component.children,
-        childPosition,
-        // parentBox, // NB: no parentBox is available because we haven't created it yet!
-        sizing: 'shrink',
-        depth
-      });
-    }
-  );
+  for (let i = 0; i < 2; i++) {
+    // first pass: calculate shrinking box sizes
+    walkTreeReverseBreadthFirst(
+      treeRoot,
+      0,
+      ({component, parent, childPosition, depth}) => {
+        component.instance.size(component.props, {
+          renderContext,
+          cache,
+          parent,
+          children: component.children,
+          childPosition,
+          // parentBox, // NB: no parentBox is available because we haven't created it yet!
+          sizing: 'shrink',
+          depth
+        });
+      }
+    );
 
-  // second pass: calculate expanding box sizes
-  walkTreeBreadthFirst(
-    treeRoot,
-    0,
-    ({component, parent, childPosition, depth}) => {
-      const parentBox = parent && parent.instance.childBoxes[childPosition];
-      component.instance.size(component.props, {
-        renderContext,
-        cache,
-        parent,
-        children: component.children,
-        childPosition,
-        parentBox,
-        sizing: 'expand',
-        depth
-      });
-    }
-  );
-
+    // second pass: calculate expanding box sizes
+    walkTreeBreadthFirst(
+      treeRoot,
+      0,
+      ({component, parent, childPosition, depth}) => {
+        const parentBox = parent && parent.instance.childBoxes[childPosition];
+        component.instance.size(component.props, {
+          renderContext,
+          cache,
+          parent,
+          children: component.children,
+          childPosition,
+          parentBox,
+          sizing: 'expand',
+          depth
+        });
+      }
+    );
+  }
   // third pass: calculate box positions
   walkTreeBreadthFirst(
     treeRoot,
