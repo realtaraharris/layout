@@ -235,11 +235,12 @@ function click(treeRoot, rawEvent, eventName) {
 
 function copyTree(oldTree) {
   const props = oldTree.props;
+  const children = oldTree.children.map(child => copyTree(child, oldTree));
   return {
     Component: oldTree.Component,
-    instance: new oldTree.Component(props),
+    instance: new oldTree.Component(props, children.length),
     props,
-    children: oldTree.children.map(child => copyTree(child, oldTree))
+    children
   };
 }
 
