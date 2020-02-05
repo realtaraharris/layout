@@ -125,6 +125,8 @@ function render(renderContext, component) {
 }
 
 function layout(renderContext, treeRoot, cache) {
+  let shrinkSizeDeps = [];
+  let expandSizeDeps = [];
   for (let i = 0; i < 2; i++) {
     // first pass: calculate shrinking box sizes
     walkTreeReverseBreadthFirst(
@@ -139,7 +141,9 @@ function layout(renderContext, treeRoot, cache) {
           childPosition,
           // parentBox, // NB: no parentBox is available because we haven't created it yet!
           sizing: 'shrink',
-          depth
+          depth,
+          shrinkSizeDeps,
+          expandSizeDeps
         });
       }
     );
@@ -158,7 +162,9 @@ function layout(renderContext, treeRoot, cache) {
           childPosition,
           parentBox,
           sizing: 'expand',
-          depth
+          depth,
+          shrinkSizeDeps,
+          expandSizeDeps
         });
       }
     );

@@ -15,58 +15,75 @@ const {
 } = require('../shrinking-expanding');
 
 class FlowBox extends Component {
-  size(props, {sizing, children, parentBox}) {
-    const shrinkVertical = props.sizingVertical === 'shrink';
-    const shrinkHorizontal = props.sizingHorizontal === 'shrink';
-    const expandVertical = props.sizingVertical === 'expand';
-    const expandHorizontal = props.sizingHorizontal === 'expand';
+  size(
+    props,
+    {sizing, children, parent, parentBox, shrinkSizeDeps, expandSizeDeps}
+  ) {
+    const shrinkVertical =
+      sizing === 'shrink' && props.sizingVertical === 'shrink';
+    const shrinkHorizontal =
+      sizing === 'shrink' && props.sizingHorizontal === 'shrink';
+    const expandVertical =
+      sizing === 'expand' && props.sizingVertical === 'expand';
+    const expandHorizontal =
+      sizing === 'expand' && props.sizingHorizontal === 'expand';
 
-    if (sizing === 'shrink' && shrinkVertical) {
-      const {box, childBoxes} = sizeShrinkVertical(props, children);
-      this.box.y = box.y;
-      this.box.height = box.height;
+    if (shrinkVertical) {
+      const {height, childHeights, dependents} = sizeShrinkVertical(
+        props,
+        children
+      );
+      this.box.height = height;
       for (let i = 0; i < this.childBoxes.length; i++) {
-        const childBox = this.childBoxes[i];
-        const newChildBox = childBoxes[i];
-        childBox.y = newChildBox.y;
-        childBox.height = newChildBox.height;
+        this.childBoxes[i].height = childHeights[i];
       }
+
+      shrinkSizeDeps.push(...dependents);
     }
 
-    if (sizing === 'shrink' && shrinkHorizontal) {
-      const {box, childBoxes} = sizeShrinkHorizontal(props, children);
-      this.box.x = box.x;
-      this.box.width = box.width;
+    if (shrinkHorizontal) {
+      const {width, childWidths, dependents} = sizeShrinkHorizontal(
+        props,
+        children
+      );
+      this.box.width = width;
       for (let i = 0; i < this.childBoxes.length; i++) {
-        const childBox = this.childBoxes[i];
-        const newChildBox = childBoxes[i];
-        childBox.x = newChildBox.x;
-        childBox.width = newChildBox.width;
+        this.childBoxes[i].width = childWidths[i];
       }
+
+      shrinkSizeDeps.push(...dependents);
     }
 
-    if (sizing === 'expand' && expandVertical) {
-      this.box.y = parentBox.y;
+    if (expandVertical) {
+      expandSizeDeps.push(parent);
       this.box.height = parentBox.height;
-      const childBoxes = sizeExpandingVertical(props, children, this.box);
+
+      const {childHeights, dependents} = sizeExpandingVertical(
+        props,
+        children,
+        this.box
+      );
       for (let i = 0; i < this.childBoxes.length; i++) {
-        const childBox = this.childBoxes[i];
-        const newChildBox = childBoxes[i];
-        childBox.y = newChildBox.y;
-        childBox.height = newChildBox.height;
+        this.childBoxes[i].height = childHeights[i];
       }
+
+      expandSizeDeps.push(...dependents);
     }
 
-    if (sizing === 'expand' && expandHorizontal) {
-      this.box.x = parentBox.x;
+    if (expandHorizontal) {
+      expandSizeDeps.push(parent);
       this.box.width = parentBox.width;
-      const childBoxes = sizeExpandingHorizontal(props, children, this.box);
+
+      const {childWidths, dependents} = sizeExpandingHorizontal(
+        props,
+        children,
+        this.box
+      );
       for (let i = 0; i < this.childBoxes.length; i++) {
-        const childBox = this.childBoxes[i];
-        const newChildBox = childBoxes[i];
-        childBox.x = newChildBox.x;
-        childBox.width = newChildBox.width;
+        this.childBoxes[i].width = childWidths[i];
       }
+
+      expandSizeDeps.push(...dependents);
     }
   }
 

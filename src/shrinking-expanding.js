@@ -5,61 +5,51 @@ const log = require('./log');
 function sizeShrinkVertical(props, children) {
   let _h = 0;
   let tallest = 0;
+  let childHeights = [];
+  let dependents = [];
 
-  let childBoxes = [];
   for (let child of children) {
     const {box} = child.instance;
-
-    switch (props.stackChildren) {
-      case 'vertical':
-        _h += box.height;
-        break;
-      case 'horizontal':
-        if (box.height > tallest) {
-          tallest = box.height;
-          _h = box.height; // set the height to the _last_ box's height
-        }
-        break;
-      case 'diagonal':
-        _h += box.height;
-        break;
-      default:
-        log('invalid layout mode:', props.stackChildren);
+    if (props.stackChildren === 'vertical') {
+      dependents.push(child);
+      _h += box.height;
+    } else if (props.stackChildren === 'horizontal' && box.height > tallest) {
+      dependents = [child];
+      tallest = box.height;
+      _h = box.height; // set the height to the _last_ box's height
+    } else if (props.stackChildren === 'diagonal') {
+      dependents.push(child);
+      _h += box.height;
     }
-    childBoxes.push({y: 0, height: box.height});
+    childHeights.push(box.height);
   }
 
-  return {box: {y: 0, height: _h}, childBoxes};
+  return {height: _h, childHeights, dependents};
 }
 
 function sizeShrinkHorizontal(props, children) {
   let _w = 0;
   let widest = 0;
+  let childWidths = [];
+  let dependents = [];
 
-  let childBoxes = [];
   for (let child of children) {
     const {box} = child.instance;
-
-    switch (props.stackChildren) {
-      case 'vertical':
-        if (box.width > widest) {
-          widest = box.width;
-          _w = box.width; // set the width to the _last_ box's width
-        }
-        break;
-      case 'horizontal':
-        _w += box.width;
-        break;
-      case 'diagonal':
-        _w += box.width;
-        break;
-      default:
-        log('invalid layout mode:', props.stackChildren);
+    if (props.stackChildren === 'vertical' && box.width > widest) {
+      dependents = [child];
+      widest = box.width;
+      _w = box.width; // set the width to the _last_ box's width
+    } else if (props.stackChildren === 'horizontal') {
+      dependents.push(child);
+      _w += box.width;
+    } else if (props.stackChildren === 'diagonal') {
+      dependents.push(child);
+      _w += box.width;
     }
-    childBoxes.push({x: 0, width: box.width});
+    childWidths.push(box.width);
   }
 
-  return {box: {x: 0, width: _w}, childBoxes};
+  return {width: _w, childWidths, dependents};
 }
 
 function positionShrinkVertical(props, parentBox, childBoxes) {
@@ -162,6 +152,7 @@ function positionShrinkHorizontal(props, parentBox, childBoxes) {
 function sizeExpandingVertical(props, children, box) {
   let shrinkChildCount = 0;
   let shrinkChildrenHeight = 0;
+  let dependents = [];
 
   for (let child of children) {
     if (child.instance.sizingVertical() !== 'shrink') {
@@ -169,12 +160,13 @@ function sizeExpandingVertical(props, children, box) {
     }
 
     if (props.stackChildren === 'vertical') {
+      dependents.push(child);
       shrinkChildrenHeight += child.instance.box.height;
     }
     shrinkChildCount++;
   }
 
-  let childBoxes = [];
+  let childHeights = [];
   for (let child of children) {
     let height = 0;
     if (child.instance.sizingVertical() === 'shrink') {
@@ -188,15 +180,17 @@ function sizeExpandingVertical(props, children, box) {
       height = (box.height - shrinkChildrenHeight) / denomHeight;
     }
 
-    childBoxes.push({y: 0, height});
+    dependents.push(child);
+    childHeights.push(height);
   }
 
-  return childBoxes;
+  return {childHeights, dependents};
 }
 
 function sizeExpandingHorizontal(props, children, box) {
   let shrinkChildCount = 0;
   let shrinkChildrenWidth = 0;
+  let dependents = [];
 
   for (let child of children) {
     if (child.instance.sizingHorizontal() !== 'shrink') {
@@ -204,12 +198,13 @@ function sizeExpandingHorizontal(props, children, box) {
     }
 
     if (props.stackChildren === 'horizontal') {
+      dependents.push(child);
       shrinkChildrenWidth += child.instance.box.width;
     }
     shrinkChildCount++;
   }
 
-  let childBoxes = [];
+  let childWidths = [];
   for (let child of children) {
     let width = 0;
     if (child.instance.sizingHorizontal() === 'shrink') {
@@ -223,10 +218,11 @@ function sizeExpandingHorizontal(props, children, box) {
       width = (box.width - shrinkChildrenWidth) / denomWidth;
     }
 
-    childBoxes.push({y: 0, width});
+    dependents.push(child);
+    childWidths.push(width);
   }
 
-  return childBoxes;
+  return {childWidths, dependents};
 }
 
 function getTallestBox(childBoxes) {
