@@ -1,5 +1,8 @@
 'use strict';
 
+const {DepGraph} = require('dependency-graph');
+const encode = require('hashcode').hashCode;
+
 function c(componentOrFunction, props, ...children) {
   const type = typeof componentOrFunction;
 
@@ -16,25 +19,33 @@ function c(componentOrFunction, props, ...children) {
     : props;
 
   const filteredChildren = children.filter(Boolean);
-  return {
+  const instance = new Component(finalProps, filteredChildren.length);
+  const hash = encode().value(finalProps);
+
+  const result = {
     Component,
-    instance: new Component(finalProps, filteredChildren.length),
+    instance,
     props: finalProps,
-    parent: Component,
-    children: filteredChildren
+    children: filteredChildren,
+    name: `${Component.name}-${hash}` // TODO: add depth, breadth
   };
+
+  for (let child of result.children) {
+    child.parent = result;
+  }
+
+  return result;
 }
 
 function walkTreeBreadthFirst(treeRoot, depth, callback) {
-  const queue = [{component: treeRoot, parent: null, depth}];
+  const queue = [{component: treeRoot, depth}];
 
   while (queue.length > 0) {
-    const {component, parent, childPosition} = queue.shift();
-    callback({component, parent, childPosition, depth});
+    const {component, childPosition} = queue.shift();
+    callback({component, childPosition, depth});
     queue.push(
       ...component.children.map((c, index) => ({
         component: c,
-        parent: component,
         childPosition: index,
         depth: ++depth
       }))
@@ -43,7 +54,7 @@ function walkTreeBreadthFirst(treeRoot, depth, callback) {
 }
 
 function walkTreeReverseBreadthFirst(treeRoot, depth, callback) {
-  const queue = [{component: treeRoot, parent: null, childPosition: 0, depth}];
+  const queue = [{component: treeRoot, childPosition: 0, depth}];
   const stack = [];
 
   while (queue.length > 0) {
@@ -52,7 +63,6 @@ function walkTreeReverseBreadthFirst(treeRoot, depth, callback) {
     queue.push(
       ...item.component.children.map((component, childPosition) => ({
         component,
-        parent: item.component,
         childPosition,
         depth: ++depth
       }))
@@ -124,62 +134,76 @@ function render(renderContext, component) {
   }
 }
 
+class ShinyDepGraph extends DepGraph {
+  addNodeAndDependency(newNode, componentName) {
+    this.addNode(newNode.name, newNode);
+    this.addDependency(componentName, newNode.name);
+  }
+}
+
+const MAX_RETRIES = 2;
 function layout(renderContext, treeRoot, cache) {
-  let shrinkSizeDeps = [];
-  let expandSizeDeps = [];
-  for (let i = 0; i < 2; i++) {
+  const redoList = [treeRoot];
+  let retries = 0;
+
+  while (redoList.length > 0 && retries < MAX_RETRIES) {
+    const subtree = redoList.pop();
+
+    const shrinkSizeDeps = new ShinyDepGraph();
+    const expandSizeDeps = new ShinyDepGraph();
+
     // first pass: calculate shrinking box sizes
     walkTreeReverseBreadthFirst(
-      treeRoot,
+      subtree,
       0,
-      ({component, parent, childPosition, depth}) => {
+      ({component, childPosition, depth}) => {
         component.instance.size(component.props, {
           renderContext,
           cache,
-          parent,
-          children: component.children,
+          component,
           childPosition,
           // parentBox, // NB: no parentBox is available because we haven't created it yet!
           sizing: 'shrink',
           depth,
           shrinkSizeDeps,
-          expandSizeDeps
+          expandSizeDeps,
+          redoList
         });
       }
     );
 
     // second pass: calculate expanding box sizes
-    walkTreeBreadthFirst(
-      treeRoot,
-      0,
-      ({component, parent, childPosition, depth}) => {
-        const parentBox = parent && parent.instance.childBoxes[childPosition];
-        component.instance.size(component.props, {
-          renderContext,
-          cache,
-          parent,
-          children: component.children,
-          childPosition,
-          parentBox,
-          sizing: 'expand',
-          depth,
-          shrinkSizeDeps,
-          expandSizeDeps
-        });
-      }
-    );
+    walkTreeBreadthFirst(subtree, 0, ({component, childPosition, depth}) => {
+      const parentBox =
+        component.parent && component.parent.instance.childBoxes[childPosition];
+      component.instance.size(component.props, {
+        renderContext,
+        cache,
+        component,
+        childPosition,
+        parentBox,
+        sizing: 'expand',
+        depth,
+        shrinkSizeDeps,
+        expandSizeDeps,
+        redoList
+      });
+    });
+
+    retries++;
   }
+
   // third pass: calculate box positions
   walkTreeBreadthFirst(
     treeRoot,
     0,
     ({component, parent, childPosition, depth}) => {
-      const parentBox = parent && parent.instance.childBoxes[childPosition];
+      const parentBox =
+        component.parent && component.parent.instance.childBoxes[childPosition];
       component.instance.position(component.props, {
         renderContext,
         cache,
-        parent,
-        children: component.children,
+        component,
         childPosition,
         parentBox,
         positioning: '',

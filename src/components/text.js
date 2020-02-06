@@ -484,10 +484,33 @@ class Text extends Component {
     this.finalBoxes = [];
   }
 
-  size(props, {sizing, parentBox, cache, parent, childBox, renderContext}) {
+  size(
+    props,
+    {
+      sizing,
+      parentBox,
+      cache,
+      childBox,
+      renderContext,
+      expandSizeDeps,
+      shrinkSizeDeps,
+      component,
+      redoList
+    }
+  ) {
+    const {parent, children} = component;
     console.log('sizing Text', sizing, this.box);
     if (sizing !== 'expand') {
       return;
+    }
+    expandSizeDeps.addNode(component.name, component);
+
+    if (this.box.width === 0) {
+      const deps = shrinkSizeDeps.dependantsOf(component.name);
+
+      const rootAncestorName = deps[0];
+      const rootAncestor = shrinkSizeDeps.getNodeData(rootAncestorName);
+      redoList.push(rootAncestor);
     }
 
     if (props.autoSizeHeight) {
@@ -495,15 +518,13 @@ class Text extends Component {
       fuck(props, cache, childBox, renderContext, parent, this);
     } else {
       this.box = {
-        // x: 0,
-        // y: 0,
         width: parentBox.width,
         height: parentBox.height
       };
     }
   }
 
-  position(props, {renderContext, childBox, cache, parent, parentBox}) {
+  position(props, {renderContext, childBox, cache, parentBox}) {
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
   }

@@ -3,10 +3,12 @@
 const Component = require('../component');
 
 class Button extends Component {
-  size(props, {children, sizing}) {
+  size(props, {component, sizing}) {
     if (sizing !== 'shrink') {
       return;
     }
+
+    const {children} = component;
 
     if (children.length > 1) {
       console.error('too many kids!');

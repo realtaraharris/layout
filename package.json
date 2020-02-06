@@ -34,6 +34,7 @@
     "@stryker-mutator/javascript-mutator": "^2.0.0",
     "browserify-istanbul": "^3.0.1",
     "canvas": "^2.6.1",
+    "dependency-graph": "^0.8.1",
     "eslint": "^6.3.0",
     "eslint-watch": "^6.0.1",
     "hyphen": "^1.1.1",

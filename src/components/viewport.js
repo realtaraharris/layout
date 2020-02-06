@@ -21,7 +21,8 @@ class Viewport extends Component {
     ];
   }
 
-  position({offsetX, offsetY}, {children, parentBox}) {
+  position({offsetX, offsetY}, {component, parentBox}) {
+    const {children} = component;
     const child = children[0]; // TODO: make sure you have a child!
 
     const absX = (this.box.width - child.instance.box.width) * offsetX;

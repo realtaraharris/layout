@@ -15,10 +15,9 @@ const {
 } = require('../shrinking-expanding');
 
 class FlowBox extends Component {
-  size(
-    props,
-    {sizing, children, parent, parentBox, shrinkSizeDeps, expandSizeDeps}
-  ) {
+  size(props, {sizing, component, parentBox, shrinkSizeDeps, expandSizeDeps}) {
+    const {parent, children} = component;
+
     const shrinkVertical =
       sizing === 'shrink' && props.sizingVertical === 'shrink';
     const shrinkHorizontal =
@@ -27,6 +26,14 @@ class FlowBox extends Component {
       sizing === 'expand' && props.sizingVertical === 'expand';
     const expandHorizontal =
       sizing === 'expand' && props.sizingHorizontal === 'expand';
+
+    if (shrinkVertical || shrinkHorizontal) {
+      shrinkSizeDeps.addNode(component.name, component);
+    }
+
+    if (expandVertical || expandHorizontal) {
+      expandSizeDeps.addNode(component.name, component);
+    }
 
     if (shrinkVertical) {
       const {height, childHeights, dependents} = sizeShrinkVertical(
@@ -38,7 +45,9 @@ class FlowBox extends Component {
         this.childBoxes[i].height = childHeights[i];
       }
 
-      shrinkSizeDeps.push(...dependents);
+      for (let dependent of dependents) {
+        shrinkSizeDeps.addNodeAndDependency(dependent, component.name);
+      }
     }
 
     if (shrinkHorizontal) {
@@ -51,11 +60,13 @@ class FlowBox extends Component {
         this.childBoxes[i].width = childWidths[i];
       }
 
-      shrinkSizeDeps.push(...dependents);
+      for (let dependent of dependents) {
+        shrinkSizeDeps.addNodeAndDependency(dependent, component.name);
+      }
     }
 
     if (expandVertical) {
-      expandSizeDeps.push(parent);
+      expandSizeDeps.addNodeAndDependency(parent, component.name);
       this.box.height = parentBox.height;
 
       const {childHeights, dependents} = sizeExpandingVertical(
@@ -67,11 +78,13 @@ class FlowBox extends Component {
         this.childBoxes[i].height = childHeights[i];
       }
 
-      expandSizeDeps.push(...dependents);
+      for (let dependent of dependents) {
+        expandSizeDeps.addNodeAndDependency(dependent, component.name);
+      }
     }
 
     if (expandHorizontal) {
-      expandSizeDeps.push(parent);
+      expandSizeDeps.addNodeAndDependency(parent, component.name);
       this.box.width = parentBox.width;
 
       const {childWidths, dependents} = sizeExpandingHorizontal(
@@ -83,7 +96,9 @@ class FlowBox extends Component {
         this.childBoxes[i].width = childWidths[i];
       }
 
-      expandSizeDeps.push(...dependents);
+      for (let dependent of dependents) {
+        expandSizeDeps.addNodeAndDependency(dependent, component.name);
+      }
     }
   }
 
