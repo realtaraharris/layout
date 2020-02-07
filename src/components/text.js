@@ -325,11 +325,9 @@ function layoutText(props, cache, childBox, renderContext, parent, that) {
   } = props;
   const {text, textHash, hyphenChar, tracking} = textContinuation();
 
-  // const {width} = sizing === 'shrink' ? parent.instance.box : props;
-
-  // TODO: previously we hashed the tracking value. but we should hash the box!
-  const hash = encode().value(Object.assign({}, props, {textHash}));
-  console.log({hash, tracking});
+  const hash = props.autoSizeHeight
+    ? encode().value(Object.assign({}, props, {textHash}))
+    : encode().value(Object.assign({}, props, tracking, {textHash}));
 
   // query the cache. if we have an entry in there, we can skip all this
   const cachedState = cache[hash];
@@ -340,7 +338,6 @@ function layoutText(props, cache, childBox, renderContext, parent, that) {
     that.debugBoxes = cachedState.debugBoxes;
     return cachedState.returnValue;
   }
-  console.log('cachedState:', cachedState);
   tracking.lastLineVisited = 0;
 
   that.childBoxes.push(childBox);
@@ -451,18 +448,9 @@ function layoutText(props, cache, childBox, renderContext, parent, that) {
   }
 
   const finalHeight = maxY - lineHeight + dashMeasurements.height;
-  console.log(`that.box.height:`, that.box.height);
   if (props.autoSizeHeight && that.box.height === 0) {
     that.box.height = finalHeight;
   }
-
-  console.log({finalHeight});
-  // that.box = Object.assign({}, {width, height: finalHeight});
-
-  const returnValue = {
-    width,
-    height: parent.instance.box.height
-  }; //finalHeight};
 
   // if we're down here, we have things we need to add to the cache
   cache[hash] = {
@@ -470,10 +458,11 @@ function layoutText(props, cache, childBox, renderContext, parent, that) {
     tokens: that.tokens,
     finalBoxes: that.finalBoxes,
     debugBoxes: that.debugBoxes,
-    returnValue: returnValue
+    returnValue: {
+      width,
+      height: parent.instance.box.height
+    }
   };
-
-  return returnValue;
 }
 
 class Text extends Component {
@@ -499,7 +488,6 @@ class Text extends Component {
     }
   ) {
     const {parent} = component;
-    console.log('sizing Text', sizing, this.box);
     if (sizing !== 'expand') {
       return;
     }

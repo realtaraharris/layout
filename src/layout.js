@@ -147,8 +147,6 @@ function layout(renderContext, treeRoot, cache) {
   let retries = 0;
 
   while (redoList.length > 0 && retries < MAX_RETRIES) {
-    console.log({retries});
-
     const subtree = redoList.pop();
     const shrinkSizeDeps = new ShinyDepGraph();
     const expandSizeDeps = new ShinyDepGraph();
