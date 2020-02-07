@@ -310,7 +310,7 @@ function typesetLine(
   return {result, debugBoxes};
 }
 
-function fuck(props, cache, childBox, renderContext, parent, that) {
+function layoutText(props, cache, childBox, renderContext, parent, that) {
   const {width, height} = that.box;
 
   const {
@@ -505,7 +505,7 @@ class Text extends Component {
     }
     expandSizeDeps.addNode(component.name, component);
 
-    if (this.box.width === 0) {
+    if (props.autoSizeHeight && this.box.width === 0) {
       const deps = shrinkSizeDeps.dependantsOf(component.name);
 
       const rootAncestorName = deps[0];
@@ -515,13 +515,14 @@ class Text extends Component {
 
     if (props.autoSizeHeight) {
       this.box.width = parentBox.width;
-      fuck(props, cache, childBox, renderContext, parent, this);
     } else {
       this.box = {
         width: parentBox.width,
         height: parentBox.height
       };
     }
+
+    layoutText(props, cache, childBox, renderContext, parent, this);
   }
 
   position(props, {parentBox}) {
