@@ -498,7 +498,7 @@ class Text extends Component {
       redoList
     }
   ) {
-    const {parent, children} = component;
+    const {parent} = component;
     console.log('sizing Text', sizing, this.box);
     if (sizing !== 'expand') {
       return;
@@ -524,7 +524,7 @@ class Text extends Component {
     }
   }
 
-  position(props, {renderContext, childBox, cache, parentBox}) {
+  position(props, {parentBox}) {
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
   }

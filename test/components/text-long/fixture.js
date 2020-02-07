@@ -5,7 +5,6 @@ const {Text, createTextContinuation} = require('../../../src/components/text');
 const Label = require('../../../src/components/label');
 const Margin = require('../../../src/components/margin');
 const FlowBox = require('../../../src/components/flow-box');
-const Box = require('../../../src/components/box');
 
 const createHyphenator = require('hyphen');
 const hyphenationPatternsEnUs = require('hyphen/patterns/en-us');
@@ -32,8 +31,6 @@ module.exports = ({x, y, width, height}) => {
   const secondTextContinuation = createTextContinuation(secondText);
 
   const marginA = 20;
-  const textWidth = 520;
-  const textHeight = 360;
 
   return c(
     Root,
