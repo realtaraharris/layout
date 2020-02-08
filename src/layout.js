@@ -258,13 +258,24 @@ function click(treeRoot, rawEvent, eventName) {
 
 function copyTree(oldTree) {
   const props = oldTree.props;
-  const children = oldTree.children.map(child => copyTree(child, oldTree));
-  return {
+  const children = oldTree.children.map(copyTree);
+  const hash = encode().value(props);
+
+  const result = {
     Component: oldTree.Component,
     instance: new oldTree.Component(props, children.length),
     props,
-    children
+    children,
+    name: `${oldTree.Component.name}-${hash}` // TODO: add depth, breadth
   };
+
+  for (let i = 0; i < result.children.length; i++) {
+    const child = result.children[i];
+    child.parent = result;
+    child.childPosition = i;
+  }
+
+  return result;
 }
 
 module.exports = {
