@@ -39,6 +39,28 @@ function c(componentOrFunction, props, ...children) {
   return result;
 }
 
+function copyTree(oldTree) {
+  const props = oldTree.props;
+  const children = oldTree.children.map(copyTree);
+  const hash = encode().value(props);
+
+  const result = {
+    Component: oldTree.Component,
+    instance: new oldTree.Component(props, children.length),
+    props,
+    children,
+    name: `${oldTree.Component.name}-${hash}` // TODO: add depth, breadth
+  };
+
+  for (let i = 0; i < result.children.length; i++) {
+    const child = result.children[i];
+    child.parent = result;
+    child.childPosition = i;
+  }
+
+  return result;
+}
+
 function walkTreeBreadthFirst(treeRoot, depth, callback) {
   const queue = [{component: treeRoot, depth}];
 
@@ -126,6 +148,7 @@ function render(renderContext, component) {
       continue;
     }
 
+    // TODO: what is l?
     for (let l of layer) {
       renderContext.save();
       renderLayer(renderContext, l, layerName, 0);
@@ -141,8 +164,22 @@ class ShinyDepGraph extends DepGraph {
   }
 }
 
-const MAX_RETRIES = 2;
+const MAX_RETRIES = 10;
 function layout(renderContext, treeRoot, cache) {
+  const sizeDoneCallbacks = {};
+  function collectSizeDone(groupId, continuationId, callback) {
+    if (
+      typeof groupId === 'undefined' ||
+      typeof continuationId === 'undefined'
+    ) {
+      return;
+    }
+
+    if (!sizeDoneCallbacks[groupId]) {
+      sizeDoneCallbacks[groupId] = {};
+    }
+    sizeDoneCallbacks[groupId][continuationId] = callback;
+  }
   const redoList = [treeRoot];
   let retries = 0;
 
@@ -165,7 +202,8 @@ function layout(renderContext, treeRoot, cache) {
         depth,
         shrinkSizeDeps,
         expandSizeDeps,
-        redoList
+        redoList,
+        collectSizeDone
       });
     });
 
@@ -183,11 +221,22 @@ function layout(renderContext, treeRoot, cache) {
         depth,
         shrinkSizeDeps,
         expandSizeDeps,
-        redoList
+        redoList,
+        collectSizeDone
       });
     });
 
     retries++;
+  }
+
+  if (Object.keys(sizeDoneCallbacks).length > 0) {
+    for (let group in sizeDoneCallbacks) {
+      Object.keys(sizeDoneCallbacks[group])
+        .sort()
+        .forEach(key => {
+          sizeDoneCallbacks[group][key]();
+        });
+    }
   }
 
   // third pass: calculate box positions
@@ -254,28 +303,6 @@ function click(treeRoot, rawEvent, eventName) {
       }
     }
   }
-}
-
-function copyTree(oldTree) {
-  const props = oldTree.props;
-  const children = oldTree.children.map(copyTree);
-  const hash = encode().value(props);
-
-  const result = {
-    Component: oldTree.Component,
-    instance: new oldTree.Component(props, children.length),
-    props,
-    children,
-    name: `${oldTree.Component.name}-${hash}` // TODO: add depth, breadth
-  };
-
-  for (let i = 0; i < result.children.length; i++) {
-    const child = result.children[i];
-    child.parent = result;
-    child.childPosition = i;
-  }
-
-  return result;
 }
 
 module.exports = {

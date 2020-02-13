@@ -12,7 +12,8 @@ function createTextContinuation({hyphenChar, rawText, text}) {
   const tracking = {
     syllableCounter: 0,
     tokenCursor: 0,
-    lastLineVisited: 0
+    lastLineVisited: 0,
+    lastContinuationIdVisited: -1
   };
 
   return () => ({
@@ -310,7 +311,17 @@ function typesetLine(
   return {result, debugBoxes};
 }
 
-function layoutText(props, cache, childBox, renderContext, parent, that) {
+function layoutText(
+  props,
+  cache,
+  renderContext,
+  parent,
+  that,
+  redoList,
+  component,
+  shrinkSizeDeps,
+  expandSizeDeps
+) {
   const {width, height} = that.box;
 
   const {
@@ -324,6 +335,14 @@ function layoutText(props, cache, childBox, renderContext, parent, that) {
     textContinuation
   } = props;
   const {text, textHash, hyphenChar, tracking} = textContinuation();
+
+  if (typeof props.continuationId !== 'undefined') {
+    if (tracking.lastContinuationIdVisited - props.continuationId === -1) {
+      tracking.lastContinuationIdVisited++;
+    } else {
+      return;
+    }
+  }
 
   const hash = props.autoSizeHeight
     ? encode().value(Object.assign({}, props, {textHash}))
@@ -339,8 +358,6 @@ function layoutText(props, cache, childBox, renderContext, parent, that) {
     return cachedState.returnValue;
   }
   tracking.lastLineVisited = 0;
-
-  that.childBoxes.push(childBox);
 
   that.tokens = split(
     renderContext,
@@ -465,6 +482,12 @@ function layoutText(props, cache, childBox, renderContext, parent, that) {
   };
 }
 
+function redo(component, dependencies) {
+  const dependencyNames = dependencies.dependantsOf(component.name);
+  const rootAncestorName = dependencyNames[0];
+  return dependencies.getNodeData(rootAncestorName);
+}
+
 class Text extends Component {
   constructor(props) {
     super(props);
@@ -484,7 +507,9 @@ class Text extends Component {
       expandSizeDeps,
       shrinkSizeDeps,
       component,
-      redoList
+      redoList,
+      // sizeDoneMap,
+      collectSizeDone
     }
   ) {
     const {parent} = component;
@@ -494,11 +519,7 @@ class Text extends Component {
     expandSizeDeps.addNode(component.name, component);
 
     if (props.autoSizeHeight && this.box.width === 0) {
-      const deps = shrinkSizeDeps.dependantsOf(component.name);
-
-      const rootAncestorName = deps[0];
-      const rootAncestor = shrinkSizeDeps.getNodeData(rootAncestorName);
-      redoList.push(rootAncestor);
+      redoList.push(redo(component, shrinkSizeDeps));
     }
 
     if (props.autoSizeHeight) {
@@ -510,10 +531,34 @@ class Text extends Component {
       };
     }
 
-    layoutText(props, cache, childBox, renderContext, parent, this);
+    layoutText(
+      props,
+      cache,
+      renderContext,
+      parent,
+      this,
+      redoList,
+      component,
+      shrinkSizeDeps,
+      expandSizeDeps
+    );
+
+    collectSizeDone(props.groupId, props.continuationId, () => {
+      layoutText(
+        props,
+        cache,
+        renderContext,
+        parent,
+        this,
+        redoList,
+        component,
+        shrinkSizeDeps,
+        expandSizeDeps
+      );
+    });
   }
 
-  position(props, {parentBox}) {
+  position(props, {cache, parentBox, renderContext, component}) {
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
   }

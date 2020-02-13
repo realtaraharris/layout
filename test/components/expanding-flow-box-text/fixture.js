@@ -94,7 +94,9 @@ module.exports = ({x, y, width, height}) => {
           operation: 'add',
           overflow: 'continue',
           color: 'black',
-          showBoxes
+          showBoxes,
+          continuationId: 0,
+          groupId: 'Steve Jobs quotes'
         }),
         c(
           Margin,
@@ -160,17 +162,31 @@ module.exports = ({x, y, width, height}) => {
             })
           )
         ),
-        c(Text, {
-          color: 'black',
-          lineHeight: 20,
-          font: 'SourceSerifPro-Regular',
-          size: 12,
-          sizeMode: 'capHeight',
-          textContinuation: textContinuation,
-          operation: 'add',
-          overflow: 'continue',
-          showBoxes
-        })
+        c(
+          Margin,
+          {
+            sizingVertical: 'expand',
+            sizingHorizontal: 'expand',
+            top: 20,
+            bottom: 20,
+            left: 20,
+            right: 20,
+            showBoxes
+          },
+          c(Text, {
+            color: 'black',
+            lineHeight: 20,
+            font: 'SourceSerifPro-Regular',
+            size: 12,
+            sizeMode: 'capHeight',
+            textContinuation: textContinuation,
+            operation: 'add',
+            overflow: 'continue',
+            showBoxes,
+            continuationId: 1,
+            groupId: 'Steve Jobs quotes'
+          })
+        )
       ),
       c(
         FlowBox,
@@ -224,7 +240,9 @@ module.exports = ({x, y, width, height}) => {
           operation: 'add',
           overflow: 'continue',
           color: 'black',
-          showBoxes
+          showBoxes,
+          continuationId: 2,
+          groupId: 'Steve Jobs quotes'
         })
       )
     )
