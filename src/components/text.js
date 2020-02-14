@@ -177,7 +177,6 @@ function getLineBox(lineIndex, stepHeight, width) {
 }
 
 function typesetLine(
-  box,
   {startX, endX, startY, endY, lineIndex},
   tokens,
   tracking,
@@ -407,7 +406,6 @@ function layoutText(
       const lineBoxes = getLineBoxes(lineIndex, lineHeight, width, foo);
       for (let x = 0; x < lineBoxes.length; x++) {
         const {result, debugBoxes} = typesetLine(
-          that.box, // why?
           lineBoxes[x],
           that.tokens,
           tracking,
@@ -440,7 +438,6 @@ function layoutText(
     for (;;) {
       const subLineBox = getLineBox(lineIndex, lineHeight, width);
       const {result, debugBoxes} = typesetLine(
-        that.box,
         subLineBox,
         that.tokens,
         tracking,
