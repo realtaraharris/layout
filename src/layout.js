@@ -61,32 +61,33 @@ function copyTree(oldTree) {
   return result;
 }
 
-function walkTreeBreadthFirst(treeRoot, depth, callback) {
-  const queue = [{component: treeRoot, depth}];
+function walkTreeBreadthFirst(treeRoot, initialDepth, callback) {
+  const queue = [{component: treeRoot, depth: initialDepth}];
 
   while (queue.length > 0) {
-    const {component} = queue.shift();
+    const {component, depth} = queue.shift();
     callback({component, depth});
     queue.push(
       ...component.children.map(child => ({
         component: child,
-        depth: ++depth
+        depth: depth + 1
       }))
     );
   }
 }
 
-function walkTreeReverseBreadthFirst(treeRoot, depth, callback) {
-  const queue = [{component: treeRoot, depth}];
+function walkTreeReverseBreadthFirst(treeRoot, initialDepth, callback) {
+  const queue = [{component: treeRoot, depth: initialDepth}];
   const stack = [];
 
   while (queue.length > 0) {
-    const item = queue.shift();
-    stack.push(item);
+    const {component, depth} = queue.shift();
+    stack.push({component, depth});
+
     queue.push(
-      ...item.component.children.map(child => ({
+      ...component.children.map(child => ({
         component: child,
-        depth: ++depth
+        depth: depth + 1
       }))
     );
   }
