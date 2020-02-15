@@ -310,18 +310,8 @@ function typesetLine(
   return {result, debugBoxes};
 }
 
-function layoutText(
-  props,
-  cache,
-  renderContext,
-  parent,
-  that,
-  redoList,
-  component,
-  shrinkSizeDeps,
-  expandSizeDeps
-) {
-  const {width, height} = that.box;
+function layoutText(props, {cache, renderContext, box, depth, path}) {
+  const {width, height} = box;
 
   const {
     size,
@@ -333,7 +323,7 @@ function layoutText(
     showBoxes,
     textContinuation
   } = props;
-  const {text, textHash, hyphenChar, tracking} = textContinuation();
+  const {text, hyphenChar, tracking} = textContinuation();
 
   if (typeof props.continuationId !== 'undefined') {
     if (tracking.lastContinuationIdVisited - props.continuationId === -1) {
@@ -343,30 +333,31 @@ function layoutText(
     }
   }
 
-  const hash = props.autoSizeHeight
-    ? encode().value(Object.assign({}, props, {textHash}))
-    : encode().value(Object.assign({}, props, tracking, {textHash}));
-
-  // query the cache. if we have an entry in there, we can skip all this
-  const cachedState = cache[hash];
-  if (cachedState) {
-    that.childBoxes = cachedState.childBoxes;
-    that.tokens = cachedState.tokens;
-    that.finalBoxes = cachedState.finalBoxes;
-    that.debugBoxes = cachedState.debugBoxes;
-    return cachedState.returnValue;
+  let tokens = [];
+  {
+    const hashThis = Object.assign({}, props, {depth, path});
+    const tokenHash = encode().value(hashThis);
+    const cachedState = cache[tokenHash];
+    if (cachedState) {
+      tokens = cachedState.tokens;
+    } else {
+      tokens = split(
+        renderContext,
+        text,
+        renderContext.fonts[font],
+        font,
+        size,
+        sizeMode,
+        hyphenChar
+      );
+      if (!cache[tokenHash]) {
+        cache[tokenHash] = {};
+      }
+      cache[tokenHash].tokens = tokens;
+    }
   }
-  tracking.lastLineVisited = 0;
 
-  that.tokens = split(
-    renderContext,
-    text,
-    renderContext.fonts[font],
-    font,
-    size,
-    sizeMode,
-    hyphenChar
-  );
+  tracking.lastLineVisited = 0;
 
   const f = renderContext.fonts[font];
   const dashMeasurements = measureText(
@@ -385,8 +376,8 @@ function layoutText(
   let maxY = 0;
 
   let lineIndex = 0;
-  that.finalBoxes = [];
-  that.debugBoxes = [];
+  let finalBoxes = [];
+  let _debugBoxes = [];
 
   if (polygons) {
     const textHeight = 1e6; // TODO: get rid of this?!
@@ -407,7 +398,7 @@ function layoutText(
       for (let x = 0; x < lineBoxes.length; x++) {
         const {result, debugBoxes} = typesetLine(
           lineBoxes[x],
-          that.tokens,
+          tokens,
           tracking,
           lineHeight,
           spaceWidth,
@@ -418,15 +409,15 @@ function layoutText(
         // keep these next two things seprate from each other. finalBoxes are
         // used to lay the words out, so if these two were stored together, the
         // debug layout view would would have jumbled words
-        that.finalBoxes.push(...result);
-        that.debugBoxes.push(...debugBoxes);
+        finalBoxes.push(...result);
+        _debugBoxes.push(...debugBoxes);
       }
 
       const currentY = lineIndex * lineHeight;
       if (currentY > maxY) {
         break;
       }
-      if (tracking.tokenCursor === that.tokens.length) {
+      if (tracking.tokenCursor === tokens.length) {
         maxY = currentY + lineHeight;
         break;
       }
@@ -439,21 +430,21 @@ function layoutText(
       const subLineBox = getLineBox(lineIndex, lineHeight, width);
       const {result, debugBoxes} = typesetLine(
         subLineBox,
-        that.tokens,
+        tokens,
         tracking,
         lineHeight,
         spaceWidth,
         dashWidth,
         showBoxes
       );
-      that.finalBoxes.push(...result);
-      that.debugBoxes.push(...debugBoxes);
+      finalBoxes.push(...result);
+      _debugBoxes.push(...debugBoxes);
 
       const currentY = lineIndex * lineHeight;
       if (!props.autoSizeHeight && currentY >= height - lineHeight) {
         break;
       }
-      if (tracking.tokenCursor === that.tokens.length) {
+      if (tracking.tokenCursor === tokens.length) {
         maxY = currentY + lineHeight;
         break;
       }
@@ -462,20 +453,16 @@ function layoutText(
   }
 
   const finalHeight = maxY - lineHeight + dashMeasurements.height;
-  if (props.autoSizeHeight && that.box.height === 0) {
-    that.box.height = finalHeight;
+  if (props.autoSizeHeight && box.height === 0) {
+    console.log('in here, finalHeight:', finalHeight);
+    box.height = finalHeight;
   }
 
-  // if we're down here, we have things we need to add to the cache
-  cache[hash] = {
-    childBoxes: that.childBoxes,
-    tokens: that.tokens,
-    finalBoxes: that.finalBoxes,
-    debugBoxes: that.debugBoxes,
-    returnValue: {
-      width,
-      height: parent.instance.box.height
-    }
+  return {
+    box,
+    tokens,
+    finalBoxes,
+    debugBoxes: _debugBoxes
   };
 }
 
@@ -499,20 +486,20 @@ class Text extends Component {
       sizing,
       parentBox,
       cache,
-      childBox,
       renderContext,
       expandSizeDeps,
       shrinkSizeDeps,
       component,
       redoList,
-      // sizeDoneMap,
-      collectSizeDone
+      collectSizeDone,
+      depth,
+      path
     }
   ) {
-    const {parent} = component;
     if (sizing !== 'expand') {
       return;
     }
+    console.log({path});
     expandSizeDeps.addNode(component.name, component);
 
     if (props.autoSizeHeight && this.box.width === 0) {
@@ -528,34 +515,49 @@ class Text extends Component {
       };
     }
 
-    layoutText(
-      props,
+    const blop = layoutText(props, {
       cache,
       renderContext,
-      parent,
-      this,
-      redoList,
-      component,
-      shrinkSizeDeps,
-      expandSizeDeps
-    );
+      box: this.box,
+      depth,
+      path
+    });
+    if (blop) {
+      const {tokens, finalBoxes, debugBoxes} = blop;
+      this.tokens = tokens;
+
+      if (finalBoxes.length > 0) {
+        this.finalBoxes = finalBoxes;
+      }
+      if (debugBoxes.length > 1) {
+        // TODO: this is jacked
+        this.debugBoxes = debugBoxes;
+      }
+    }
 
     collectSizeDone(props.groupId, props.continuationId, () => {
-      layoutText(
-        props,
+      const blop = layoutText(props, {
         cache,
         renderContext,
-        parent,
-        this,
-        redoList,
-        component,
-        shrinkSizeDeps,
-        expandSizeDeps
-      );
+        box: this.box,
+        depth,
+        path
+      });
+      if (blop) {
+        const {tokens, finalBoxes, debugBoxes} = blop;
+        this.tokens = tokens;
+        if (finalBoxes.length > 0) {
+          this.finalBoxes = finalBoxes;
+        }
+        if (debugBoxes.length > 1) {
+          // TODO: this is jacked
+          this.debugBoxes = debugBoxes;
+        }
+      }
     });
   }
 
-  position(props, {cache, parentBox, renderContext, component}) {
+  position(props, {parentBox}) {
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
   }
@@ -563,6 +565,7 @@ class Text extends Component {
   render({font, size, color, showBoxes = false}, {renderContext}) {
     renderContext.beginPath();
     if (showBoxes) {
+      // console.log('render, this.debugBoxes: ', this.debugBoxes);
       for (let {color, x, y, width, height} of this.debugBoxes) {
         renderContext.strokeStyle = color;
         renderContext.strokeRect(this.box.x + x, this.box.y + y, width, height);

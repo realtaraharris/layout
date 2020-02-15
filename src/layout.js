@@ -62,32 +62,34 @@ function copyTree(oldTree) {
 }
 
 function walkTreeBreadthFirst(treeRoot, initialDepth, callback) {
-  const queue = [{component: treeRoot, depth: initialDepth}];
+  const queue = [{component: treeRoot, depth: initialDepth, path: '0'}];
 
   while (queue.length > 0) {
-    const {component, depth} = queue.shift();
-    callback({component, depth});
+    const {component, depth, path} = queue.shift();
+    callback({component, depth, path});
     queue.push(
       ...component.children.map(child => ({
         component: child,
-        depth: depth + 1
+        depth: depth + 1,
+        path: `${path}-${child.childPosition}`
       }))
     );
   }
 }
 
 function walkTreeReverseBreadthFirst(treeRoot, initialDepth, callback) {
-  const queue = [{component: treeRoot, depth: initialDepth}];
+  const queue = [{component: treeRoot, depth: initialDepth, path: '0'}];
   const stack = [];
 
   while (queue.length > 0) {
-    const {component, depth} = queue.shift();
-    stack.push({component, depth});
+    const {component, depth, path} = queue.shift();
+    stack.push({component, depth, path});
 
     queue.push(
       ...component.children.map(child => ({
         component: child,
-        depth: depth + 1
+        depth: depth + 1,
+        path: `${path}-${child.childPosition}`
       }))
     );
   }
@@ -190,7 +192,7 @@ function layout(renderContext, treeRoot, cache) {
     const expandSizeDeps = new ShinyDepGraph();
 
     // first pass: calculate shrinking box sizes
-    walkTreeReverseBreadthFirst(subtree, 0, ({component, depth}) => {
+    walkTreeReverseBreadthFirst(subtree, 0, ({component, depth, path}) => {
       const parentBox =
         component.parent &&
         component.parent.instance.childBoxes[component.childPosition];
@@ -204,12 +206,13 @@ function layout(renderContext, treeRoot, cache) {
         shrinkSizeDeps,
         expandSizeDeps,
         redoList,
-        collectSizeDone
+        collectSizeDone,
+        path
       });
     });
 
     // second pass: calculate expanding box sizes
-    walkTreeBreadthFirst(subtree, 0, ({component, depth}) => {
+    walkTreeBreadthFirst(subtree, 0, ({component, depth, path}) => {
       const parentBox =
         component.parent &&
         component.parent.instance.childBoxes[component.childPosition];
@@ -223,7 +226,8 @@ function layout(renderContext, treeRoot, cache) {
         shrinkSizeDeps,
         expandSizeDeps,
         redoList,
-        collectSizeDone
+        collectSizeDone,
+        path
       });
     });
 
