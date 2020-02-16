@@ -210,11 +210,18 @@ function typesetLine(
     if (!token) {
       break;
     }
+    const previousToken =
+      tracking.tokenCursor > 0 ? tokens[tracking.tokenCursor - 1] : {token: ''};
 
     if (token.token === '\n') {
       tracking.tokenCursor++; // don't render the newline token
-      tracking.lastLineVisited = lineIndex + 1;
-      break; // skip to the next box
+      if (previousToken.token === '\n' && lineIndex === 0) {
+        tracking.lastLineVisited = lineIndex;
+        continue;
+      } else {
+        tracking.lastLineVisited = lineIndex + 1;
+        break; // skip to the next box
+      }
     }
 
     if (lineIndex < tracking.lastLineVisited) {
@@ -437,11 +444,16 @@ function layoutText(props, {cache, renderContext, box, depth, path}) {
         dashWidth,
         showBoxes
       );
+
       finalBoxes.push(...result);
       _debugBoxes.push(...debugBoxes);
 
       const currentY = lineIndex * lineHeight;
-      if (!props.autoSizeHeight && currentY >= height - lineHeight) {
+
+      if (
+        !props.autoSizeHeight &&
+        currentY >= height - lineHeight - dashMeasurements.height
+      ) {
         break;
       }
       if (tracking.tokenCursor === tokens.length) {
@@ -454,7 +466,6 @@ function layoutText(props, {cache, renderContext, box, depth, path}) {
 
   const finalHeight = maxY - lineHeight + dashMeasurements.height;
   if (props.autoSizeHeight && box.height === 0) {
-    console.log('in here, finalHeight:', finalHeight);
     box.height = finalHeight;
   }
 
@@ -499,7 +510,6 @@ class Text extends Component {
     if (sizing !== 'expand') {
       return;
     }
-    console.log({path});
     expandSizeDeps.addNode(component.name, component);
 
     if (props.autoSizeHeight && this.box.width === 0) {
