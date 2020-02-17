@@ -6,3 +6,4 @@ reports/
 .nyc_output/
 coverage/
 test/screenshots/*-diff.png
+test/components/print/actual.pdf

@@ -224,10 +224,6 @@ function typesetLine(
       }
     }
 
-    if (lineIndex < tracking.lastLineVisited) {
-      break;
-    }
-
     if (token.type === 'word') {
       if (tempWidth > finalW - token.width) {
         tracking.lastLineVisited = lineIndex;
@@ -255,7 +251,8 @@ function typesetLine(
 
       tempWidth += token.width + spaceWidth;
       tracking.tokenCursor++;
-    } else if (token.type === 'syllables') {
+    } else {
+      // assume token.type is 'syllables'
       while (token.token[tracking.syllableCounter]) {
         const syl = token.token[tracking.syllableCounter];
         const meas = token.measurements[tracking.syllableCounter];
@@ -309,8 +306,6 @@ function typesetLine(
         tracking.lastLineVisited = lineIndex;
         break;
       }
-    } else {
-      console.error('invalid type:', token.type);
     }
   }
 
@@ -575,7 +570,6 @@ class Text extends Component {
   render({font, size, color, showBoxes = false}, {renderContext}) {
     renderContext.beginPath();
     if (showBoxes) {
-      // console.log('render, this.debugBoxes: ', this.debugBoxes);
       for (let {color, x, y, width, height} of this.debugBoxes) {
         renderContext.strokeStyle = color;
         renderContext.strokeRect(this.box.x + x, this.box.y + y, width, height);
