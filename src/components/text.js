@@ -276,8 +276,8 @@ function typesetLine(
             text: syl,
             x: finalX + tempWidth,
             y: yyy,
-            xOffsetStart: meas.textMetrics.xOffsetStart,
-            xOffsetEnd: meas.textMetrics.xOffsetEnd,
+            xOffsetStart: 0,
+            xOffsetEnd: 0,
             height: token.measurements[tracking.syllableCounter].height
           });
 
@@ -288,8 +288,8 @@ function typesetLine(
             text: '-',
             x: finalX + tempWidth,
             y: yyy,
-            xOffsetStart: meas.textMetrics.xOffsetStart,
-            xOffsetEnd: meas.textMetrics.xOffsetEnd,
+            xOffsetStart: 0,
+            xOffsetEnd: 0,
             height: token.measurements[tracking.syllableCounter].height
           });
 
