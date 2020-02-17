@@ -2,6 +2,11 @@
 
 const util = require('../lib/util');
 
+util.test('components', 'print', {
+  width: 595,
+  height: 842,
+  canvasType: 'pdf'
+});
 util.test('components', 'text');
 util.test('components', 'text-concave-cutout');
 util.test('components', 'text-diamond'); // TODO: rename to text-diamond-bounding-polygon

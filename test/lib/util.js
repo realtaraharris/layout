@@ -18,9 +18,6 @@ const fonts = {
   )
 };
 
-const WIDTH = 800;
-const HEIGHT = 600;
-
 /**
  * Clears the terminal's scrollback buffer
  */
@@ -37,20 +34,32 @@ function setupComponentTest(fixture, options) {
   });
 
   // NB: per the opentype.js docs, call this *after* registering fonts
-  const canvas = createCanvas(WIDTH, HEIGHT);
+  const canvas = createCanvas(
+    options.width,
+    options.height,
+    options.canvasType
+  );
   const renderContext = canvas.getContext('2d');
+  if (options.canvasType === 'pdf') {
+    renderContext.textDrawingMode = 'glyph'; // causes node-canvas to embed text
+  }
   renderContext.fonts = fonts;
 
   let cache = {};
   const treeRoot = layout(
     renderContext,
-    fixture({x: 0, y: 0, width: WIDTH, height: HEIGHT}),
+    fixture({
+      x: 0,
+      y: 0,
+      width: options.width,
+      height: options.height
+    }),
     cache
   );
 
-  if (options && options.dumpTree) {
+  if (options.dumpTree) {
     printTree(treeRoot, 0);
-  } else if (options && options.dumpFullTree) {
+  } else if (options.dumpFullTree) {
     console.log(util.inspect(treeRoot, false, null, true));
   }
 
@@ -64,7 +73,7 @@ function debugDot(ctx, target) {
   ctx.fillRect(target.clientX, target.clientY, 10, 10);
 }
 
-function screenshot(base, canvas, t) {
+function screenshot(base, canvas, cb) {
   const actualFull = `${base}/actual.png`;
   const expectedFull = `${base}/expected.png`;
   const diffFull = `${base}/diff.png`;
@@ -82,9 +91,6 @@ function screenshot(base, canvas, t) {
     .onComplete(result => {
       const exactMatch = result.misMatchPercentage === '0.00';
 
-      t.ok(result.isSameDimensions);
-      t.ok(exactMatch);
-
       if (!exactMatch) {
         const diffImage = result.getDiffImage();
         diffImage.pack().pipe(fs.createWriteStream(diffFull));
@@ -92,17 +98,51 @@ function screenshot(base, canvas, t) {
         fs.existsSync(diffFull) && fs.unlinkSync(diffFull);
       }
 
-      t.end();
+      cb(result.isSameDimensions, exactMatch);
     });
 }
 
 function executeTest(suite, testName, testRunner, options) {
+  const finalOptions = Object.assign(
+    {},
+    {
+      dumpTree: false,
+      width: 800,
+      height: 600,
+      canvasType: undefined
+    },
+    options
+  );
+
   testRunner(testName, t => {
     const {canvas} = setupComponentTest(
       require(`../${suite}/${testName}/fixture`),
-      options
+      finalOptions
     );
-    screenshot(`${__dirname}/../${suite}/${testName}`, canvas, t);
+
+    if (finalOptions.canvasType === 'pdf') {
+      const result = canvas.toBuffer('application/pdf', {
+        title: 'sample pdf',
+        keywords: 'layout test',
+        creationDate: new Date()
+      });
+
+      fs.writeFileSync(
+        `${__dirname}/../${suite}/${testName}/actual.pdf`,
+        result
+      );
+      t.end();
+    } else {
+      screenshot(
+        `${__dirname}/../${suite}/${testName}`,
+        canvas,
+        (isSameDimensions, exactMatch) => {
+          t.ok(isSameDimensions);
+          t.ok(exactMatch);
+          t.end();
+        }
+      );
+    }
   });
 }
 

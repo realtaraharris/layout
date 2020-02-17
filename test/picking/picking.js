@@ -4,6 +4,9 @@ const tape = require('tape-catch');
 const {setupComponentTest, debugDot, screenshot} = require('../lib/util');
 const {click} = require('../../src/layout');
 
+const WIDTH = 800;
+const HEIGHT = 600;
+
 tape('click a label', t => {
   t.plan(8);
   const onLabelClick = event => {
@@ -21,7 +24,8 @@ tape('click a label', t => {
   };
   const buttonClickingFixture = require('./fixtures/button-click');
   const {canvas, ctx, treeRoot} = setupComponentTest(
-    buttonClickingFixture({onLabelClick})
+    buttonClickingFixture({onLabelClick}),
+    {width: WIDTH, height: HEIGHT}
   );
 
   const rawEvent = {clientX: 12, clientY: 24};
@@ -29,7 +33,15 @@ tape('click a label', t => {
 
   debugDot(ctx, rawEvent);
 
-  screenshot(`${__dirname}/click-a-label`, canvas, t); // second, third assertions
+  screenshot(
+    `${__dirname}/click-a-label`,
+    canvas,
+    (isSameDimensions, exactMatch) => {
+      t.ok(isSameDimensions);
+      t.ok(exactMatch);
+      t.end();
+    }
+  );
 });
 
 tape('click a button', t => {
@@ -44,14 +56,23 @@ tape('click a button', t => {
   };
   const buttonClickingFixture = require('./fixtures/button-click');
   const {canvas, ctx, treeRoot} = setupComponentTest(
-    buttonClickingFixture({onButtonClick})
+    buttonClickingFixture({onButtonClick}),
+    {width: WIDTH, height: HEIGHT}
   );
 
   const rawEvent = {clientX: 146, clientY: 110};
   click(treeRoot, rawEvent, 'click');
 
   debugDot(ctx, rawEvent);
-  screenshot(`${__dirname}/click-a-button`, canvas, t); // second, third assertions
+  screenshot(
+    `${__dirname}/click-a-button`,
+    canvas,
+    (isSameDimensions, exactMatch) => {
+      t.ok(isSameDimensions);
+      t.ok(exactMatch);
+      t.end();
+    }
+  );
 });
 
 tape('click a button inside a viewport', t => {
@@ -66,14 +87,23 @@ tape('click a button inside a viewport', t => {
   };
   const viewportClickingFixture = require('./fixtures/viewport-click');
   const {canvas, ctx, treeRoot} = setupComponentTest(
-    viewportClickingFixture({onLabelClick})
+    viewportClickingFixture({onLabelClick}),
+    {width: WIDTH, height: HEIGHT}
   );
 
   const rawEvent = {clientX: 105, clientY: 190};
   click(treeRoot, rawEvent, 'click');
 
   debugDot(ctx, rawEvent);
-  screenshot(`${__dirname}/click-inside-viewport`, canvas, t); // second, third assertions
+  screenshot(
+    `${__dirname}/click-inside-viewport`,
+    canvas,
+    (isSameDimensions, exactMatch) => {
+      t.ok(isSameDimensions);
+      t.ok(exactMatch);
+      t.end();
+    }
+  );
 });
 
 tape('click an occluded button inside a viewport', t => {
@@ -85,14 +115,23 @@ tape('click an occluded button inside a viewport', t => {
   const {canvas, ctx, treeRoot} = setupComponentTest(
     viewportClickingFixture({
       onLabelClick
-    })
+    }),
+    {width: WIDTH, height: HEIGHT}
   );
 
   const rawEvent = {clientX: 80, clientY: 190};
   click(treeRoot, rawEvent, 'click');
 
   debugDot(ctx, rawEvent);
-  screenshot(`${__dirname}/click-occluded-button-inside-viewport`, canvas, t); // second, third assertions
+  screenshot(
+    `${__dirname}/click-occluded-button-inside-viewport`,
+    canvas,
+    (isSameDimensions, exactMatch) => {
+      t.ok(isSameDimensions);
+      t.ok(exactMatch);
+      t.end();
+    }
+  );
 });
 
 tape('mouse over a label', t => {
@@ -110,7 +149,8 @@ tape('mouse over a label', t => {
     mousemoveClickingFixture({
       firstLabelEventHandler,
       secondLabelEventHandler
-    })
+    }),
+    {width: WIDTH, height: HEIGHT}
   );
 
   const xOffset = 100;
@@ -123,5 +163,13 @@ tape('mouse over a label', t => {
   click(treeRoot, rawEvent, 'mousemove');
   debugDot(ctx, rawEvent);
 
-  screenshot(`${__dirname}/mouse-over-a-label`, canvas, t); // second, third assertions
+  screenshot(
+    `${__dirname}/mouse-over-a-label`,
+    canvas,
+    (isSameDimensions, exactMatch) => {
+      t.ok(isSameDimensions);
+      t.ok(exactMatch);
+      t.end();
+    }
+  );
 });
