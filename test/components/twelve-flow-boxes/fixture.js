@@ -33,6 +33,8 @@ function generateFlowBox(
       showBoxes: false
     }),
     c(Rectangle, {
+      sizingHorizontal: 'expand',
+      sizingVertical: 'expand',
       color: 'rgba(255, 203, 5, 0.1)',
       topLeft: 0,
       topRight: 0,

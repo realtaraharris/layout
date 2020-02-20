@@ -24,4 +24,8 @@ function roundRect(
   renderContext.closePath();
 }
 
-module.exports = {roundRect};
+function circle(renderContext, x, y, radius) {
+  renderContext.arc(x, y, radius, 0, 2 * Math.PI);
+}
+
+module.exports = {roundRect, circle};

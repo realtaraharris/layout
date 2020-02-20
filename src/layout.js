@@ -170,24 +170,21 @@ class ShinyDepGraph extends DepGraph {
 const MAX_RETRIES = 10;
 function layout(renderContext, treeRoot, cache) {
   const sizeDoneCallbacks = {};
-  function collectSizeDone(groupId, continuationId, callback) {
-    if (
-      typeof groupId === 'undefined' ||
-      typeof continuationId === 'undefined'
-    ) {
+  function collectSizeDone(groupId, itemId, callback) {
+    if (typeof groupId === 'undefined' || typeof itemId === 'undefined') {
       return;
     }
 
     if (!sizeDoneCallbacks[groupId]) {
       sizeDoneCallbacks[groupId] = {};
     }
-    sizeDoneCallbacks[groupId][continuationId] = callback;
+    sizeDoneCallbacks[groupId][itemId] = callback;
   }
-  const redoList = [treeRoot];
-  let retries = 0;
+  const sizeRedoList = [treeRoot];
+  let sizeRetries = 0;
 
-  while (redoList.length > 0 && retries < MAX_RETRIES) {
-    const subtree = redoList.pop();
+  while (sizeRedoList.length > 0 && sizeRetries < MAX_RETRIES) {
+    const subtree = sizeRedoList.pop();
     const shrinkSizeDeps = new ShinyDepGraph();
     const expandSizeDeps = new ShinyDepGraph();
 
@@ -205,7 +202,7 @@ function layout(renderContext, treeRoot, cache) {
         depth,
         shrinkSizeDeps,
         expandSizeDeps,
-        redoList,
+        redoList: sizeRedoList,
         collectSizeDone,
         path
       });
@@ -225,13 +222,13 @@ function layout(renderContext, treeRoot, cache) {
         depth,
         shrinkSizeDeps,
         expandSizeDeps,
-        redoList,
+        redoList: sizeRedoList,
         collectSizeDone,
         path
       });
     });
 
-    retries++;
+    sizeRetries++;
   }
 
   if (Object.keys(sizeDoneCallbacks).length > 0) {
@@ -244,19 +241,49 @@ function layout(renderContext, treeRoot, cache) {
     }
   }
 
-  // third pass: calculate box positions
-  walkTreeBreadthFirst(treeRoot, 0, ({component, depth}) => {
-    const parentBox =
-      component.parent &&
-      component.parent.instance.childBoxes[component.childPosition];
-    component.instance.position(component.props, {
-      renderContext,
-      cache,
-      component,
-      parentBox,
-      depth
+  const positionDoneCallbacks = {};
+  function collectPositionDone(groupId, itemId, callback) {
+    if (typeof groupId === 'undefined' || typeof itemId === 'undefined') {
+      return;
+    }
+
+    if (!positionDoneCallbacks[groupId]) {
+      positionDoneCallbacks[groupId] = {};
+    }
+    positionDoneCallbacks[groupId][itemId] = callback;
+  }
+  const positionRedoList = [treeRoot];
+  let positionRetries = 0;
+
+  while (positionRedoList.length > 0 && positionRetries < MAX_RETRIES) {
+    const subtree = positionRedoList.pop();
+    walkTreeBreadthFirst(subtree, 0, ({component, depth}) => {
+      const parentBox =
+        component.parent &&
+        component.parent.instance.childBoxes[component.childPosition];
+      component.instance.position(component.props, {
+        renderContext,
+        cache,
+        component,
+        parentBox,
+        depth,
+        redoList: positionRedoList,
+        collectPositionDone
+      });
     });
-  });
+  }
+
+  if (Object.keys(positionDoneCallbacks).length > 0) {
+    for (let group in positionDoneCallbacks) {
+      let accumulatedVector = {x: 0, y: 0};
+      console.log({accumulatedVector});
+      Object.keys(positionDoneCallbacks[group])
+        .sort()
+        .forEach(key => {
+          positionDoneCallbacks[group][key](accumulatedVector);
+        });
+    }
+  }
 
   return treeRoot;
 }

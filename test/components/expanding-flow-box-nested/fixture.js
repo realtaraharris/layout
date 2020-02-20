@@ -32,6 +32,8 @@ module.exports = ({x, y, width, height}) => {
           showBoxes: true
         },
         c(Rectangle, {
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
           color: 'blue',
           topLeft: 0,
           topRight: 0,
@@ -52,6 +54,8 @@ module.exports = ({x, y, width, height}) => {
           showBoxes: true
         },
         c(Rectangle, {
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
           color: 'green',
           topLeft: 0,
           topRight: 0,

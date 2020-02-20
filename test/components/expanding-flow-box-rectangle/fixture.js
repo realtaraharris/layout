@@ -67,6 +67,8 @@ module.exports = ({x, y, width, height}) => {
           )
         ),
         c(Rectangle, {
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
           color: 'rgba(255, 221, 0, 1)',
           topLeft: 0,
           topRight: 0,
@@ -127,6 +129,8 @@ module.exports = ({x, y, width, height}) => {
           )
         ),
         c(Rectangle, {
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
           color: 'orange',
           topLeft: 0,
           topRight: 0,
@@ -179,6 +183,8 @@ module.exports = ({x, y, width, height}) => {
           )
         ),
         c(Rectangle, {
+          sizingHorizontal: 'expand',
+          sizingVertical: 'expand',
           color: 'red',
           topLeft: 0,
           topRight: 0,

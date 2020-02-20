@@ -42,12 +42,20 @@ module.exports = ({x, y, width, height}) => {
         c(
           Box,
           {width: 200, height: 200, showBoxes: true},
-          c(Rectangle, {color: 'rgba(128,128,0,0.5)'})
+          c(Rectangle, {
+            sizingHorizontal: 'expand',
+            sizingVertical: 'expand',
+            color: 'rgba(128,128,0,0.5)'
+          })
         ),
         c(
           Box,
           {width: 20, height: 20, showBoxes: false},
-          c(Rectangle, {color: 'rgba(0,128,128,0.5)'})
+          c(Rectangle, {
+            sizingHorizontal: 'expand',
+            sizingVertical: 'expand',
+            color: 'rgba(0,128,128,0.5)'
+          })
         ),
         c(Label, {
           font: 'SourceSansPro-Regular',
