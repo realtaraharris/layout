@@ -17,36 +17,19 @@ class Measure extends Component {
       props.groupId,
       props.measurementId,
       accumulatedVector => {
-        // console.log(
-        //   `before: groupId: ${props.groupId}, measurementId: ${props.measurementId}, x: ${accumulatedVector.x}, y: ${accumulatedVector.y}`
-        // );
-
-        if (props.measurementId === 1) {
-          accumulatedVector.x += this.box.x;
-          accumulatedVector.y += this.box.y;
-        } else {
-          accumulatedVector.x -= this.box.x;
-          accumulatedVector.y -= this.box.y;
-        }
-
-        // console.log(
-        //   `after: groupId: ${props.groupId}, measurementId: ${props.measurementId}, x: ${accumulatedVector.x}, y: ${accumulatedVector.y}`
-        // );
+        accumulatedVector.x += this.box.x;
+        accumulatedVector.y += this.box.y;
       }
     );
   }
 
-  render({width, height, showBoxes}, {renderContext}) {
-    // if (showBoxes) {
-    renderContext.strokeStyle = 'green';
-    // renderContext.strokeRect(this.box.x, this.box.y, width, height);
-    // renderContext.fillStyle = 'lightgray';
-    // renderContext.fillRect(this.box.x, this.box.y, width, height);
-
-    renderContext.beginPath();
-    circle(renderContext, this.box.x, this.box.y, 3);
-    renderContext.stroke();
-    // }
+  render({showBoxes}, {renderContext}) {
+    if (showBoxes) {
+      renderContext.strokeStyle = 'green';
+      renderContext.beginPath();
+      circle(renderContext, this.box.x, this.box.y, 3);
+      renderContext.stroke();
+    }
   }
 }
 

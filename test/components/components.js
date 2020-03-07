@@ -3,6 +3,7 @@
 const {test, only} = require('../lib/util'); // eslint-disable-line
 
 const suite = 'components';
+test(suite, 'offset-measure', {dumpTree: false});
 test(suite, 'expanding-flow-box-simple', {dumpTree: false});
 test(suite, 'flow-box-expand-horizontal-shrink-vertical', {dumpTree: false});
 test(suite, 'flow-box-combinations', {dumpTree: false});

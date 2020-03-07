@@ -1,5 +1,12 @@
 'use strict';
 
+function redo(component, dependencies) {
+  const dependencyNames = dependencies.dependantsOf(component.name);
+  const rootAncestorName = dependencyNames[0];
+  return dependencies.getNodeData(rootAncestorName);
+}
+exports.redo = redo;
+
 function* circularDoublingIterator(array) {
   let firstIndex = -1;
   let secondIndex = 0;

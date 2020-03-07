@@ -8,13 +8,24 @@ class Window extends Component {
     this.childBoxes = [{x: 0, y: 0, width: 0, height: 0}];
   }
 
-  position({x, y}) {
+  position({x, y}, {positionDeps, component, positionRetries}) {
+    if (positionRetries > 0) {
+      return;
+    }
+
     this.box.x = x;
     this.box.y = y;
 
     for (let childBox of this.childBoxes) {
       childBox.x += x;
       childBox.y += y;
+    }
+
+    positionDeps.addNode(component.name, component);
+
+    const {children} = component;
+    for (let child of children) {
+      positionDeps.addNodeAndDependency(child, component.name);
     }
   }
 

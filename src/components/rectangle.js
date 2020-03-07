@@ -46,7 +46,14 @@ class Rectangle extends Component {
     }
   }
 
-  position(props, {parentBox}) {
+  position(props, {parentBox, component, positionDeps}) {
+    // children will always be positioned by this component, so track them here
+    positionDeps.addNode(component.name, component);
+    const {children} = component;
+    for (let child of children) {
+      positionDeps.addNodeAndDependency(child, component.name);
+    }
+
     this.box.x = parentBox.x;
     this.box.y = parentBox.y;
 

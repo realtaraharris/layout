@@ -17,8 +17,7 @@ function c(componentOrFunction, props, ...children) {
   const finalProps = connectedProps
     ? Object.assign({}, connectedProps, props)
     : props;
-
-  const filteredChildren = children.filter(Boolean);
+  const filteredChildren = children.flat().filter(Boolean);
   const instance = new Component(finalProps, filteredChildren.length);
   const hash = encode().value(finalProps);
 
@@ -170,7 +169,7 @@ class ShinyDepGraph extends DepGraph {
 const MAX_RETRIES = 10;
 function layout(renderContext, treeRoot, cache) {
   const sizeDoneCallbacks = {};
-  function collectSizeDone(groupId, itemId, callback) {
+  const collectSizeDone = (groupId, itemId, callback) => {
     if (typeof groupId === 'undefined' || typeof itemId === 'undefined') {
       return;
     }
@@ -179,7 +178,7 @@ function layout(renderContext, treeRoot, cache) {
       sizeDoneCallbacks[groupId] = {};
     }
     sizeDoneCallbacks[groupId][itemId] = callback;
-  }
+  };
   const sizeRedoList = [treeRoot];
   let sizeRetries = 0;
 
@@ -241,22 +240,26 @@ function layout(renderContext, treeRoot, cache) {
     }
   }
 
-  const positionDoneCallbacks = {};
-  function collectPositionDone(groupId, itemId, callback) {
-    if (typeof groupId === 'undefined' || typeof itemId === 'undefined') {
-      return;
-    }
-
-    if (!positionDoneCallbacks[groupId]) {
-      positionDoneCallbacks[groupId] = {};
-    }
-    positionDoneCallbacks[groupId][itemId] = callback;
-  }
   const positionRedoList = [treeRoot];
   let positionRetries = 0;
+  let accumulatedVector = {x: 0, y: 0};
 
   while (positionRedoList.length > 0 && positionRetries < MAX_RETRIES) {
     const subtree = positionRedoList.pop();
+    const positionDeps = new ShinyDepGraph({circular: true});
+
+    const positionDoneCallbacks = {};
+    const collectPositionDone = (groupId, itemId, callback) => {
+      if (typeof groupId === 'undefined' || typeof itemId === 'undefined') {
+        return;
+      }
+
+      if (!positionDoneCallbacks[groupId]) {
+        positionDoneCallbacks[groupId] = {};
+      }
+      positionDoneCallbacks[groupId][itemId] = callback;
+    };
+
     walkTreeBreadthFirst(subtree, 0, ({component, depth}) => {
       const parentBox =
         component.parent &&
@@ -267,21 +270,22 @@ function layout(renderContext, treeRoot, cache) {
         component,
         parentBox,
         depth,
+        positionDeps,
         redoList: positionRedoList,
-        collectPositionDone
+        collectPositionDone,
+        positionRetries: positionRetries
       });
     });
-  }
+    positionRetries++;
 
-  if (Object.keys(positionDoneCallbacks).length > 0) {
-    for (let group in positionDoneCallbacks) {
-      let accumulatedVector = {x: 0, y: 0};
-      console.log({accumulatedVector});
-      Object.keys(positionDoneCallbacks[group])
-        .sort()
-        .forEach(key => {
-          positionDoneCallbacks[group][key](accumulatedVector);
-        });
+    if (Object.keys(positionDoneCallbacks).length > 0) {
+      for (let group in positionDoneCallbacks) {
+        Object.keys(positionDoneCallbacks[group])
+          .sort()
+          .forEach(key => {
+            positionDoneCallbacks[group][key](accumulatedVector);
+          });
+      }
     }
   }
 

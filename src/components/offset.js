@@ -1,6 +1,7 @@
 'use strict';
 
 const Component = require('../component');
+const {redo} = require('../util');
 
 class Offset extends Component {
   constructor(props) {
@@ -19,34 +20,40 @@ class Offset extends Component {
     ];
   }
 
-  position(props, {parentBox, collectPositionDone}) {
-    this.box.x = parentBox.x + props.x;
-    this.box.y = parentBox.y + props.y;
-
-    for (let childBox of this.childBoxes) {
-      childBox.x += this.box.x;
-      childBox.y += this.box.y;
+  position(
+    props,
+    {
+      parentBox,
+      component,
+      positionDeps,
+      collectPositionDone,
+      positionRetries,
+      redoList
+    }
+  ) {
+    positionDeps.addNode(component.name, component);
+    const {children} = component;
+    for (let child of children) {
+      positionDeps.addNodeAndDependency(child, component.name);
     }
 
     collectPositionDone(
       props.groupId,
       props.measurementId,
       accumulatedVector => {
-        console.log(
-          `before: groupId: ${props.groupId}, measurementId: ${props.measurementId}, x: ${this.box.x}, y: ${this.box.y}`
-        );
+        if (positionRetries === 0) {
+          this.box.x = parentBox.x - accumulatedVector.x;
+          this.box.y = parentBox.y - accumulatedVector.y;
 
-        this.box.x = parentBox.x + accumulatedVector.x - 100;
-        this.box.y = parentBox.y + accumulatedVector.y - 100;
-
-        for (let childBox of this.childBoxes) {
-          childBox.x = this.box.x + accumulatedVector.x;
-          childBox.y = this.box.y + accumulatedVector.y;
+          for (let childBox of this.childBoxes) {
+            childBox.x = this.box.x;
+            childBox.y = this.box.y;
+          }
         }
 
-        console.log(
-          `after: groupId: ${props.groupId}, measurementId: ${props.measurementId}, x: ${this.box.x}, y: ${this.box.y}`
-        );
+        if (positionRetries === 0) {
+          redoList.push(redo(component, positionDeps));
+        }
       }
     );
   }

@@ -5,6 +5,7 @@ const {insertSorted} = require('../geometry');
 const {fromPolygons} = require('../../lib/csg/src/csg');
 const {measureText, fillText} = require('../font');
 const encode = require('hashcode').hashCode;
+const {redo} = require('../util');
 
 function createTextContinuation({hyphenChar, rawText, text}) {
   const textHash = encode().value(rawText);
@@ -470,12 +471,6 @@ function layoutText(props, {cache, renderContext, box, depth, path}) {
     finalBoxes,
     debugBoxes: _debugBoxes
   };
-}
-
-function redo(component, dependencies) {
-  const dependencyNames = dependencies.dependantsOf(component.name);
-  const rootAncestorName = dependencyNames[0];
-  return dependencies.getNodeData(rootAncestorName);
 }
 
 class Text extends Component {
