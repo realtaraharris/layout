@@ -9,13 +9,13 @@ function c(componentOrFunction, props, ...children) {
   let Component, connectedProps;
   if (type === 'object') {
     Component = componentOrFunction.Component;
-    connectedProps = componentOrFunction.props;
+    connectedProps = componentOrFunction.getProps();
   } else if (type === 'function') {
     Component = componentOrFunction;
   }
 
   const finalProps = connectedProps
-    ? Object.assign({}, connectedProps, props)
+    ? Object.assign({}, props, connectedProps)
     : props;
   const filteredChildren = children.flat().filter(Boolean);
   const instance = new Component(finalProps, filteredChildren.length);
@@ -292,6 +292,20 @@ function layout(renderContext, treeRoot, cache) {
   return treeRoot;
 }
 
+function key(treeRoot, rawEvent, eventName) {
+  walkTreeBreadthFirst(treeRoot, 0, ({component}) => {
+    if (component.props.onKeyDown && eventName === 'keydown') {
+      component.props.onKeyDown({eventName, rawEvent, component});
+    }
+    if (component.props.onKeyPress && eventName === 'keypress') {
+      component.props.onKeyPress({eventName, rawEvent, component});
+    }
+    if (component.props.onKeyUp && eventName === 'keyup') {
+      component.props.onKeyUp({eventName, rawEvent, component});
+    }
+  });
+}
+
 function click(treeRoot, rawEvent, eventName) {
   let results = [];
   walkTreeBreadthFirst(treeRoot, 0, ({component}) => {
@@ -346,5 +360,6 @@ module.exports = {
   render,
   layout,
   click,
+  key,
   copyTree
 };
