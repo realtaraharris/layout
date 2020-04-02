@@ -168,6 +168,20 @@ class ShinyDepGraph extends DepGraph {
 
 const MAX_RETRIES = 10;
 function layout(renderContext, treeRoot, cache) {
+  // first pass: apply props from Context components to their subtrees
+  let contextNodes = [];
+  walkTreeBreadthFirst(treeRoot, 0, ({component}) => {
+    if (component.instance.constructor.name === 'Context') {
+      contextNodes.push(component);
+    }
+  });
+  for (let node of contextNodes) {
+    walkTreeBreadthFirst(node, 0, ({component}) => {
+      Object.assign(component.props, node.props);
+    });
+  }
+
+  // second pass: calculate box sizes
   const sizeDoneCallbacks = {};
   const collectSizeDone = (groupId, itemId, callback) => {
     if (typeof groupId === 'undefined' || typeof itemId === 'undefined') {
@@ -181,7 +195,6 @@ function layout(renderContext, treeRoot, cache) {
   };
   const sizeRedoList = [treeRoot];
   let sizeRetries = 0;
-
   while (sizeRedoList.length > 0 && sizeRetries < MAX_RETRIES) {
     const subtree = sizeRedoList.pop();
     const shrinkSizeDeps = new ShinyDepGraph();
@@ -240,6 +253,7 @@ function layout(renderContext, treeRoot, cache) {
     }
   }
 
+  // third pass: calculate box positions
   const positionRedoList = [treeRoot];
   let positionRetries = 0;
   let accumulatedVector = {x: 0, y: 0};
